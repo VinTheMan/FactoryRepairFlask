@@ -5,29 +5,29 @@ networks:
     driver: bridge
 services:
   mongodb:
-    image: mongo:4.2.8
-    container_name: mongodb
+    image: ${IMAGE_MONGODB}
+    container_name: ${CONTAINER_MONGODB}
     hostname: mongodb
     environment:
       - MONGO_INITDB_DATABASE=CooperExposure
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=root
     volumes:
-      - ./volumes/mongodb:/data/db
+      - ${VOLUMES_MONGODB}:/data/db
     ports:
       - 27017:27017
     networks:
       - backend
 
   flask:
-    build: ./Flask
-    container_name: flaskimage
+    image: ${IMAGE_FLASK}
+    build: ${BUILD_FLASK}
+    container_name: ${CONTAINER_FLASK}
     volumes:
-      - ./volumes/Flask/storage:/storage
-      - ./volumes/Flask/static:/app/static
-      - ./volumes/Flask/templates:/app/templates
-      - ./volumes/Flask/conf:/app/conf
-      - ./volumes/Flask/src:/app
+      - ${VOLUMES_FLASK_STATIC}:/app/static
+      - ${VOLUMES_FLASK_TEMPLATES}:/app/templates
+      - ${VOLUMES_FLASK_CONF}:/app/conf
+      - ${VOLUMES_FLASK_SRC}:/app
     depends_on:
       - mongodb
     links:
@@ -39,8 +39,9 @@ services:
       - backend
 
   nginx:
-    build: ./nginx
-    container_name: nginx
+    image: ${IMAGE_NGINX}
+    build: ${BUILD_NGINX}
+    container_name: ${CONTAINER_NGINX}
     depends_on:
       - flask
     links:
@@ -48,9 +49,8 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./volumes/nginx/html:/var/share/nginx
-      - ./volumes/nginx/log:/var/log/nginx
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - ${VOLUMES_NGINX_SHARE}:/var/share/nginx
+      - ${VOLUMES_NGINX_LOG}:/var/log/nginx
     networks:
       - frontend
       - backend       
