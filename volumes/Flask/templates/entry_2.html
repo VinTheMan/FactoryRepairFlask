@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    </meta>
+    <!-- <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="entrystyle.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css" /> -->
+
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/style.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/style.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/entrystyle.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/bootstrap.min.css')}}">
+    <title>FactroyRapair Entry</title>
+</head>
+
+<body>
+    <!-- <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../vendors/jquery/jquery.min.js"></script> -->
+
+    <script src="{{url_for('static', filename='/bayesnet/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{url_for('static', filename='/bayesnet/vendors/jquery/jquery.min.js')}}"></script>
+
+    <div class="head">FactoryRepair Entry</div>
+    <br />
+    <form id="entryForm" class="entry needs-validation" novalidate>
+        <h1> Entry </h1>
+        <input id="input_factory" list="factory" class="form-control" type="text" placeholder="Factory" required>
+        <div class="invalid-feedback">
+            Please choose a factory.
+        </div>
+        <datalist id="factory">
+            <option value="F1">
+            <option value="F2">
+        </datalist>
+        <input id="input_project" list="project" class="form-control" type="text" placeholder="Project" required>
+        <div class="invalid-feedback">
+            Please choose a project.
+        </div>
+        <datalist id="project">
+            <option value="Gucii">
+            <option value="Arris">
+        </datalist>
+        <input id="input_isn" list="isn" class="form-control" type="text" placeholder="ISN" required>
+        <div class="invalid-feedback">
+            Please input an isn.
+        </div>
+
+        <input id="submitBtn" type="submit" value="Submit">
+        <button id="submitBtnHidden" class="d-none" type="submit">Submit form</button>
+    </form>
+    <br />
+
+    <script src="{{url_for('static', filename='/bayesnet/js/entry_2.js')}}"></script>
+    <!-- <script src="entry_2.js"></script> -->
+</body>
+
+</html>

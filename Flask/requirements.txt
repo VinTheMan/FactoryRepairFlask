@@ -1,0 +1,16 @@
+Flask
+Redis
+xlsxwriter
+xlrd
+pandas
+pymongo
+configparser
+wheel
+Werkzeug
+XlsxWriter
+pytz
+weka
+wekapy
+requests
+numpy
+gunicorn

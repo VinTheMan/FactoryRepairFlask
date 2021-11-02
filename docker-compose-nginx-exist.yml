@@ -1,0 +1,57 @@
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+services:
+  mongodb:
+    image: mongo:4.2.8
+    container_name: mongodb
+    hostname: mongodb
+    environment:
+      - MONGO_INITDB_DATABASE=CooperExposure
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+    volumes:
+      - /opt/docker/volumes/mongodb:/data/db
+    ports:
+      - 27017:27017
+    networks:
+      - backend
+
+  flask:
+ #   build: ./Flask
+    image: flaskimage_4_flask
+    container_name: flaskimage
+    volumes:
+      - /storage:/storage
+      - /opt/docker/volumes/Flask/static:/app/static
+      - /opt/docker/volumes/Flask/templates:/app/templates
+      - /opt/docker/volumes/Flask/conf:/app/conf
+      - /opt/docker/volumes/Flask/src:/app
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    ports:
+      - 5000:5000
+    networks:
+      - frontend
+      - backend
+
+  nginx:
+ #   build: ./nginx
+    image: flaskimage_4_nginx
+    container_name: nginx
+    depends_on:
+      - flask
+    links:
+      - flask
+    ports:
+      - 80:80
+    volumes:
+      - /opt/docker/volumes/nginx/html:/var/share/nginx
+      - /opt/docker/volumes/nginx/log:/var/log/nginx
+    networks:
+      - frontend
+      - backend       

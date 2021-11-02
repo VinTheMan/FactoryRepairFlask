@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    </meta>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="uploadstyle.css">
+    <link rel="stylesheet" href="../css/notyf.min.css" />
+    <title>FactroyRapair Uplaod</title>
+    <!--
+    <style type="text/css">
+        .head{
+            background-color:#003344; color:white; font-weight:bold; font-size:30px;
+            text-align:center; padding:10px;
+        }
+    </style>
+    -->
+</head>
+
+<body>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../vendors/jquery/jquery.min.js"></script>
+
+    <div class="head">FactoryRepair Upload</div>
+    <br />
+    <form id="uploadForm" class="upload needs-validation" novalidate>
+        <h1> Upload </h1>
+        <input id="dateHere" class="form-control" style="color: black;" type="text" placeholder="Date" disabled />
+        <input id="projectHere" type="text" class="form-control" style="color: black;" placeholder="Project" disabled />
+        <input id="factoryHere" type="text" class="form-control" style="color: black;" placeholder="Factory" disabled />
+        <input id="isnHere" type="text" class="form-control" placeholder="ISN" disabled/>
+        <input id="solutionHere" type="text" class="form-control" placeholder="Solution" disabled/>
+        <input id="input_solution" list="solutions" type="text" class="form-control" placeholder="Solution" required/>
+        <div class="invalid-feedback">
+            Please input a solution.
+        </div>
+        <datalist id="solutions">
+            <option value="No Solution">
+        </datalist>
+        <input id="submitBtn" type="submit" value="Submit">
+        <button id="submitBtnHidden" class="d-none" type="submit">Submit</button>
+        <input id="backBtn" type="button" value="back" />
+    </form>
+    <br />
+
+
+    <script type="text/javascript" src="../js/notyf.min.js"></script>
+    <script src="upload_2.js"></script>
+
+</body>
+
+</html>

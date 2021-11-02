@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    </meta>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="questionstyle.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <title>FactroyRapair Question</title>
+</head>
+
+<body>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../vendors/jquery/jquery.min.js"></script>
+
+    <div class="head">FactoryRepair Question</div>
+    <br />
+    <form id="questionForm" class="question needs-validation" novalidate>
+        <h1> Question </h1>
+        <input id="input_question" class="form-control" list="question" type="text" placeholder="Question" required>
+        <div class="invalid-feedback">
+            Please input a question.
+        </div>
+        <datalist id="question">
+            <option value="銅露">
+            <option value="不開機">
+        </datalist>
+
+        <input id="submitBtn" type="submit" value="Submit">
+        <button id="submitBtnHidden" class="d-none" type="submit">Submit form</button>
+    </form>
+    <br />
+
+    <script src="question_2.js"></script>
+
+</body>
+
+</html>
