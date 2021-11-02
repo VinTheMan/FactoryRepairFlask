@@ -5,6 +5,7 @@ from flask import url_for
 from flask import render_template
 from flask import session
 from flask import flash
+from flask import jsonify
 import json
 import os
 import time
@@ -134,7 +135,6 @@ app.secret_key = os.urandom(24)
 def login():
     #func_load_mongo_settings()
     return render_template("login_2.html")
-    #return render_template("login.html")
 
 @app.route("/entry")
 def entry():
@@ -156,7 +156,7 @@ def entry():
     
 
     if g_factory != None:
-        render_template("entry_2.html")
+        render_template("login_2.html")
         return redirect(url_for('main'))
         # return redirect(url_for('question'))
     else:
@@ -298,11 +298,11 @@ def result():
     global g_solution
     return render_template("IT_result.html", Date=g_date, Project=g_project, Factory=g_factory, ISN=g_isn, Solution=g_solution)
 
-@app.route("/RepairMember")
+@app.route("/RepairMember", methods=['POST'])
 def member():
     g_username = request.args.get("username","")
     g_passwd = request.args.get("passwd","")
-    
+    g_factory = request.args.get('f')
     # check member data in DB
     #global mongo_db_repair 
     
@@ -318,16 +318,15 @@ def member():
     if g_mongo_DailyRepairMember_collection != None:
         g_authentication = func_Check_MemberData(g_mongo_DailyRepairMember_collection, g_username, g_passwd)
 
-    if g_authentication == True:
-        return render_template("entry_2.html")
+    # if g_authentication == True:
+    #     return render_template("question_2.html")
+    # else:
+    #     flash('Authenticate Fail!!')
+    #     return render_template("login_2.html")    
+
+    if (g_username == "Jonathan") and (g_passwd == "123"):
+        return jsonify(message='success!'),200
     else:
-        flash('Authenticate Fail!!')
-        return render_template("login_2.html")    
-'''
-    if g_username == "Jonathan":
-        return render_template("entry_2.html")
-    else:
-        flash('logged in fail!!')
-        return render_template("login_2.html")
-'''
+        return jsonify(message='login Failed w/ user: Jonathan !'),420
+
 

@@ -4,16 +4,17 @@
 <head>
     <meta charset="utf-8">
     </meta>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="../style.css" />
-    <link rel="stylesheet" href="questionstyle.css">
-    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/style.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/style.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/questionstyle.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/bootstrap.min.css')}}">
     <title>FactroyRapair Question</title>
 </head>
 
 <body>
-    <script src="../js/bootstrap.bundle.min.js"></script>
-    <script src="../vendors/jquery/jquery.min.js"></script>
+    <script src="{{url_for('static', filename='/bayesnet/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{url_for('static', filename='/bayesnet/vendors/jquery/jquery.min.js')}}"></script>
 
     <div class="head">FactoryRepair Question</div>
     <br />
@@ -32,9 +33,8 @@
         <button id="submitBtnHidden" class="d-none" type="submit">Submit form</button>
     </form>
     <br />
-
-    <script src="question_2.js"></script>
-
+    
+    <script src="{{url_for('static', filename='/bayesnet/js/question_2.js')}}"></script>
 </body>
 
 </html>

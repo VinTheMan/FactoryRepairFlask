@@ -3,7 +3,8 @@
 # /public/storage
 # /storage/*.key
 # /vendor
-/mongodb/diagnostic.data/*
+/volumes/mongodb/*
+/mongodb/*
 .env.backup
 .phpunit.result.cache
 docker-compose.override.yml
