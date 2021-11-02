@@ -48,7 +48,7 @@ $(document).ready(function () {
             data: { username: $username, passwd: $passwd, f: $f },
             dataType: "json",
             error: function (request,status, message) {
-                alert(request.responseJSON.message);
+                alert(request.message);
             },
             success: function () {
                 self.location.href = '/question';
