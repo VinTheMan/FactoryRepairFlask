@@ -70,19 +70,6 @@ $(document).ready(function () {
         //         alert(data);
         //     }
         // });
-
-        $.ajax({                 // for test
-            url: "/GetXML",
-            method: 'POST',
-            dataType: "json",
-            error: function (request) {
-                // remember to filter out size 0 array
-                console.log(request);
-            },
-            success: function (data) {
-                console.log(data);
-            }
-        });
     });
 
 

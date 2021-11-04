@@ -272,32 +272,32 @@ var _load_google_spreadsheet = function () {
 
 // -----------------------
 
-var _load_data_from_filepath = function (_selector, _file_path, _callback) {
-    console.log(_file_path);
-    $.ajax({
-        url: _file_path,
-        method: 'GET',
-        dataType: "text"
-    }).done(function (_data) {
-        console.log(_selector);
-        $(_selector).val(_data);
-        _callback();
-    });
-    $.ajax({
-        url: get_session_id() + "_copy.xml",
-        method: 'GET',
-        dataType: "text"
-    }).done(function (_data) {
-        $('#change_data').val(_data);
-    });
-    $.ajax({
-        url: get_session_id() + ".xml",
-        method: 'GET',
-        dataType: "text"
-    }).done(function (_data) {
-        $('#original_data').val(_data);
-    });
-};
+// var _load_data_from_filepath = function (_selector, _file_path, _callback) {
+//     console.log(_file_path);
+//     $.ajax({
+//         url: _file_path,
+//         method: 'GET',
+//         dataType: "text"
+//     }).done(function (_data) {
+//         console.log(_selector);
+//         $(_selector).val(_data);
+//         _callback();
+//     });
+//     $.ajax({
+//         url: get_session_id() + "_copy.xml",
+//         method: 'GET',
+//         dataType: "text"
+//     }).done(function (_data) {
+//         $('#change_data').val(_data);
+//     });
+//     $.ajax({
+//         url: get_session_id() + ".xml",
+//         method: 'GET',
+//         dataType: "text"
+//     }).done(function (_data) {
+//         $('#original_data').val(_data);
+//     });
+// };
 
 var _change_tirgger_input = function () {
     var _selector = $(this).data("trigger-selector");
@@ -305,29 +305,29 @@ var _change_tirgger_input = function () {
 };
 
 // -----------------------
-function get_session_id () {
-    var $session_id_as_filename = true;
-    $.ajax({
-        type: "post",
-        url: "/get_fileName",
-        data: { session_id_as_filename: $session_id_as_filename },
-        dataType: 'json',              // let's set the expected response format
-        success: function (response) {
-            var myObj = JSON.parse(response); // is this?
-            var myName = response.name; // or this ?
-            sessionStorage.setItem('XMLfileName', JSON.stringify(myName)); // set the file name in user's browsers
-            return myName ;
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.warn(jqXHR.responseText);
-            alert(errorThrown);
+// function get_session_id () {
+//     var $session_id_as_filename = true;
+//     $.ajax({
+//         type: "post",
+//         url: "/get_fileName",
+//         data: { session_id_as_filename: $session_id_as_filename },
+//         dataType: 'json',              // let's set the expected response format
+//         success: function (response) {
+//             var myObj = JSON.parse(response); // is this?
+//             var myName = response.name; // or this ?
+//             sessionStorage.setItem('XMLfileName', JSON.stringify(myName)); // set the file name in user's browsers
+//             return myName ;
+//         },
+//         error: function (jqXHR, textStatus, errorThrown) {
+//             console.warn(jqXHR.responseText);
+//             alert(errorThrown);
             
-            return false;
-        } // error
-    }); // end of ajax
+//             return false;
+//         } // error
+//     }); // end of ajax
 
-    return false;
-};
+//     return false;
+// };
 
 $(function () {
     $('.menu .item').tab();
@@ -351,19 +351,34 @@ $(function () {
 
     //$('.menu .item').tab();
 
-    var fileName = "";
-    if (sessionStorage.getItem("change_probability_filename") != null) {
-        fileName = JSON.parse(sessionStorage.getItem('change_probability_filename'));
-    } // if
-    else {
-        fileName = get_session_id(); 
-        // fileName = "Factory_model_new_solution";
-    } // else
+    // var fileName = "";
+    // if (sessionStorage.getItem("change_probability_filename") != null) {
+    //     fileName = JSON.parse(sessionStorage.getItem('change_probability_filename'));
+    // } // if
+    // else {
+    //     fileName = get_session_id(); 
+    //     // fileName = "Factory_model_new_solution";
+    // } // else
 
     // now we load from text area and not from file path
     // _load_data_from_filepath("#input_data", "./" + fileName + ".xml", _combine_input);
 
     // _load_data_from_filepath("#input_data", "./data.xml", _combine_input);
+
+    $.ajax({                 // for test
+        url: "/GetXML",
+        method: 'POST',
+        dataType: "json",
+        error: function (request) {
+            // remember to filter out size 0 array
+            console.log(request);
+        },
+        success: function (response) {
+            console.log(response.data);
+            $("#input_data").val(response.data);
+            $("#input_data").trigger("change");
+        }
+    });
     /*
     $('#copy_source_code').click(function () {
         PULI_UTIL.clipboard.copy($("#preview").val());
