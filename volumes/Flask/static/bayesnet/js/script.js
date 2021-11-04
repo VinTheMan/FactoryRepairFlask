@@ -360,9 +360,10 @@ $(function () {
         // fileName = "Factory_model_new_solution";
     } // else
 
-    _load_data_from_filepath("#input_data", "./" + fileName + ".xml", _combine_input);
+    // now we load from text area and not from file path
+    // _load_data_from_filepath("#input_data", "./" + fileName + ".xml", _combine_input);
 
-    //_load_data_from_filepath("#input_data", "./data.xml", _combine_input);
+    // _load_data_from_filepath("#input_data", "./data.xml", _combine_input);
     /*
     $('#copy_source_code').click(function () {
         PULI_UTIL.clipboard.copy($("#preview").val());

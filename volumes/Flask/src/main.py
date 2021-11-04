@@ -12,6 +12,10 @@ import time
 import datetime
 import traceback
 import sys
+import logging
+import xml.etree.ElementTree
+
+from werkzeug.exceptions import HTTPException
 
 from pymongo import MongoClient
 
@@ -43,24 +47,6 @@ g_factory = None
 g_isn = None
 g_solution = None
 g_solved = None
-
-def abort_msg(e):
-    """500 bad request for exception
-
-    Returns:
-        500 and msg which caused problems
-    """
-    error_class = e.__class__.__name__ # 引發錯誤的 class
-    detail = e.args[0] # 得到詳細的訊息
-    cl, exc, tb = sys.exc_info() # 得到錯誤的完整資訊 Call Stack
-    lastCallStack = traceback.extract_tb(tb)[-1] # 取得最後一行的錯誤訊息
-    fileName = lastCallStack[0] # 錯誤的檔案位置名稱
-    lineNum = lastCallStack[1] # 錯誤行數 
-    funcName = lastCallStack[2] # function 名稱
-    # generate the error message
-    errMsg = "Exception raise in file: {}, line {}, in {}: [{}] {}. Please contact the member who is the person in charge of project!".format(fileName, lineNum, funcName, error_class, detail)
-    # return 500 code
-    abort(500, errMsg)
 
 def func_load_mongo_settings():
     global mongo_db_repair 
@@ -142,6 +128,7 @@ app=Flask(
     static_folder="static",
     static_url_path="/"
 )
+
 # for flash & for gunicorn
 #app.secret_key = '12345'
 app.secret_key = os.urandom(24)
@@ -149,9 +136,19 @@ app.secret_key = os.urandom(24)
 # for flash 
 #SECRET_KEY = '12345'
 
+if __name__ == '__main__':
+    app.run(host='0.0.0.0',port=1234, debug=False)
+
+@app.route("/GetXML",methods=['POST'])
+def func_Get_XML_And_Return_String():
+    e = xml.etree.ElementTree.parse("Factory_model_new_solution.xml").getroot()
+    #return json.dumps({key_field:g_mongo_DailyRepairConfig_collection.distinct(key_field)}),550
+    str='<BIF VERSION="0.3">\n<NETWORK>\n<NAME>New Network</NAME>\n<VARIABLE TYPE="nature">\n<NAME>Factory2</NAME>\n<OUTCOME>No</OUTCOME>\n<OUTCOME>Yes</OUTCOME>\n</VARIABLE>\n<VARIABLE TYPE="nature">\n<NAME>FixPosition</NAME>\n<OUTCOME>No</OUTCOME>\n<OUTCOME>Yes</OUTCOME>\n</VARIABLE>\n<VARIABLE TYPE="nature">\n<NAME>B0B1</NAME>\n<OUTCOME>No</OUTCOME>\n<OUTCOME>Yes</OUTCOME>\n</VARIABLE>\n<VARIABLE TYPE="nature">\n<NAME>Route</NAME>\n<OUTCOME>No</OUTCOME>\n<OUTCOME>Yes</OUTCOME>\n</VARIABLE>\n<VARIABLE TYPE="nature">\n<NAME>M0M1</NAME>\n<OUTCOME>No</OUTCOME>\n<OUTCOME>Yes</OUTCOME>\n</VARIABLE>\n<VARIABLE TYPE="nature">\n<NAME>New1</NAME>\n<OUTCOME>No</OUTCOME>\n<OUTCOME>Yes</OUTCOME>\n</VARIABLE>\n<VARIABLE TYPE="nature">\n<NAME>Solved\n</NAME>\n<OUTCOME>No</OUTCOME>\n<OUTCOME>Yes</OUTCOME>\n</VARIABLE>\n<DEFINITION>\n<FOR>Factory2</FOR>\n<TABLE>\n0.48717948717949 0.51282051282051\n</TABLE>\n</DEFINITION>\n<DEFINITION>\n<FOR>FixPosition</FOR>\n<GIVEN>Factory2</GIVEN>\n<TABLE>\n0.47368421052632 0.52631578947368\n0.9 0.1\n</TABLE>\n</DEFINITION>\n<DEFINITION>\n<FOR>B0B1</FOR>\n<GIVEN>Factory2</GIVEN>\n<TABLE>\n0.71052631578947 0.28947368421053\n0.675 0.325\n</TABLE>\n</DEFINITION>\n<DEFINITION>\n<FOR>Route</FOR>\n<GIVEN>Factory2</GIVEN>\n<TABLE>\n0.78947368421053 0.21052631578947\n0.76666666666667 0.23333333333333\n</TABLE>\n</DEFINITION>\n<DEFINITION>\n<FOR>M0M1</FOR>\n<GIVEN>Factory2</GIVEN>\n<TABLE>\n0.82894736842105 0.17105263157895\n0.8125 0.1875\n</TABLE>\n</DEFINITION>\n<DEFINITION>\n<FOR>New1</FOR>\n<GIVEN>Factory2</GIVEN>\n<TABLE>\n0.83157894736842 0.16842105263158\n0.85 0.15\n</TABLE>\n</DEFINITION>\n<DEFINITION>\n<FOR>Solved\n</FOR>\n<GIVEN>FixPosition</GIVEN>\n<GIVEN>B0B1</GIVEN>\n<GIVEN>Route</GIVEN>\n<GIVEN>M0M1</GIVEN>\n<GIVEN>New1</GIVEN>\n<TABLE>\n1 0\n0 1\n0 1\n0 0\n0 1\n0 0\n0 0\n0 0\n0 1\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 1\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n</TABLE>\n</DEFINITION>\n</NETWORK>\n</BIF>'
+    return str
+
 @app.route("/")
 def login():
-    #func_load_mongo_settings()
+    func_load_mongo_settings()
     return render_template("login_2.html")
 
 @app.route("/entry")
@@ -180,23 +177,29 @@ def entry():
     else:
         return render_template("entry_2.html")
 
-@app.route("/question")
+@app.route("/gen_csv_and_xml",methods=['POST'])
 def question():
-    return render_template("question_2.html")    
+    qquestion = request.form.get('qquestion')
+    result = "銅露" # test
+    # result = SOME_PYTHON_FUNCTION(qquestion)
+    return jsonify(question=result, filename="Factory_model_new_solution" ),200
+
+@app.route("/question",methods=['GET'])
+def question_get():
+    return render_template("question_2.html")   
 
 @app.route("/main")
 def main():
     global g_solution
     global g_solved
 
-    g_solution = request.args.get("finial_solution","")
+    # g_solution = request.args.get("finial_solution","")
     
-    if g_solution != None:
-        g_solved = 1
+    # if g_solution != None:
+    #     g_solved = 1
     
     print("finial_solution : ", g_solution)
-    return render_template("index.html") 
-    # return render_template("main_2.html")  
+    return render_template("index.html")  
 
 @app.route("/upload")
 def upload():
@@ -227,6 +230,15 @@ def test():
     return 'My name is {}'.format(name)
     
 
+@app.route("/Getkey",methods=['POST'])
+def func_Get_Distinct_Of_Key_MongoDocument():
+    key_field = request.form.get('key_field')
+    
+    # return jsonify(message=key_field),420
+    if key_field == None or key_field == "":
+        key_field = 'Date'
+    result = g_mongo_DailyRepairConfig_collection.distinct(key_field)
+    return jsonify(message=result),200
 
 @app.route("/FactoryRepair")
 def show():
@@ -314,13 +326,13 @@ def result():
     global g_project
     global g_isn
     global g_solution
-    return render_template("IT_result.html", Date=g_date, Project=g_project, Factory=g_factory, ISN=g_isn, Solution=g_solution)
+    return render_template("upload_2.html", Date=g_date, Project=g_project, Factory=g_factory, ISN=g_isn, Solution=g_solution)
 
 @app.route("/RepairMember", methods=['POST'])
 def member():
-    g_username = request.args.get("username","")
-    g_passwd = request.args.get("passwd","")
-    g_factory = request.args.get('f')
+    g_username = request.form.get("username","")
+    g_passwd = request.form.get("passwd","")
+    g_factory = request.form.get('f')
     # check member data in DB
     #global mongo_db_repair 
     
@@ -336,18 +348,19 @@ def member():
     if g_mongo_DailyRepairMember_collection != None:
         g_authentication = func_Check_MemberData(g_mongo_DailyRepairMember_collection, g_username, g_passwd)
 
-    # if g_authentication == True:
-    #     return render_template("question_2.html")
-    # else:
-    #     flash('Authenticate Fail!!')
-    #     return render_template("login_2.html")    
-
-    if (g_username == "Jonathan") and (g_passwd == "123"):
-        try:
-            return jsonify(message='success!'),200
-        except Exception as e:
-            abort_msg(e)
+    if g_authentication == True:
+        return jsonify(message='Success !'),200
     else:
+        # flash('Authenticate Fail!!')
+        func_Get_Distinct_Of_Key_MongoDocument()
         return jsonify(message='login Failed w/ user: Jonathan !'),420
+
+    # if (g_username == "Jonathan") and (g_passwd == "123"):
+    #     try:
+    #         return jsonify(message='success!'),200
+    #     except Exception as e:
+    #         abort_msg(e)
+    # else:
+    #     return jsonify(message='login Failed w/ user: Jonathan !'),420
 
 

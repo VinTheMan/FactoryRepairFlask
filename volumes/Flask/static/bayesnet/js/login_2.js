@@ -32,7 +32,7 @@ $(document).ready(function () {
     $("#loginForm").on("submit", function (e) {
         e.preventDefault();
 
-        if (!$("#input_factory").val() || !$("#input_project").val() || !$("#input_isn").val()) {
+        if (!$("#input_factory").val()) {
             // validation failed
         } else {
             console.log($("#input_factory").val()); // test
@@ -42,19 +42,47 @@ $(document).ready(function () {
         var $username = $("#input_username").val();
         var $passwd = $("#input_passwd").val();
         var $f = $("#input_factory").val();
-        $.ajax({
-            url: "/RepairMember",
+        // $.ajax({
+        //     url: "/RepairMember",
+        //     method: 'POST',
+        //     data: { username: $username, passwd: $passwd, f: $f },
+        //     dataType: "json",
+        //     error: function (request) {
+        //         // remember to filter out size 0 array
+        //         alert(request.responseJSON.message);
+        //     },
+        //     success: function () {
+        //         self.location.href = '/question';
+        //     }
+        // });
+
+        // var $key_field = "Hi";
+        // $.ajax({                 // for test
+        //     url: "/Getkey",
+        //     method: 'POST',
+        //     data: { key_field: $key_field },
+        //     dataType: "json",
+        //     error: function (request) {
+        //         // remember to filter out size 0 array
+        //         alert(request.responseJSON.message);
+        //     },
+        //     success: function (data) {
+        //         alert(data);
+        //     }
+        // });
+
+        $.ajax({                 // for test
+            url: "/GetXML",
             method: 'POST',
-            data: { username: $username, passwd: $passwd, f: $f },
             dataType: "json",
-            error: function (request,status, message) {
-                alert(request.message);
+            error: function (request) {
+                // remember to filter out size 0 array
+                console.log(request);
             },
-            success: function () {
-                self.location.href = '/question';
+            success: function (data) {
+                console.log(data);
             }
         });
-
     });
 
 

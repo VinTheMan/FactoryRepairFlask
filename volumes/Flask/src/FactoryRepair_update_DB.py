@@ -13,7 +13,7 @@ sys.path.append(os.path.dirname(os.path.realpath(__file__)) + '/..')
 from NiFi_mongo_settings import mongo_repair_setting, mongo_user_setting
 from collections import defaultdict
 from dateutil.parser import parse
-
+app = Flask(__name__)
 
 # Global variables
 g_config = None
@@ -220,6 +220,6 @@ def main():
     #print(g_authentication)
 
 if __name__ == '__main__':
-   
-    main()
+    app.debug = True
+    app.run()
    

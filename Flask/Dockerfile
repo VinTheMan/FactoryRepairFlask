@@ -25,7 +25,7 @@ RUN apt-get update && apt-get install -qq -y \
 
 # Define environment variable
 #ENV NAME World
-
+ENV FLASK_DEBUG=1
 # Run app.py when the container launches
 #CMD ["python", "app.py"]
 CMD ["gunicorn", "-w", "1", "-b", "0.0.0.0:5000", "main:app"]

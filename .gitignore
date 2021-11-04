@@ -5,8 +5,6 @@
 # /vendor
 /volumes/nginx/log/*
 /volumes/Flask/src/__pycache__/*
-/volumes/mongodb/*
-/mongodb/*
 .env.backup
 .phpunit.result.cache
 docker-compose.override.yml

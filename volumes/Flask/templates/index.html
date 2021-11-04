@@ -8,44 +8,40 @@
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="-1" />
 
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="vendors/semantic-ui/semantic.min.css" />
-    <link rel="stylesheet" href="vendors/font-awesome/all.css" />
-    <link rel="stylesheet" href="factory/style.css" />
-    <link rel="stylesheet" href="factory/mainstyle.css" />
-    <link rel="stylesheet" href="factory/test.css" />
-    <link rel="stylesheet" href="css/notyf.min.css" />
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/style.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/style.css')}}">
+
+    <!-- <link rel="stylesheet" href="{{url_for('static', filename='/css/mainstyle.css')}}"> -->
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/vendors/semantic-ui/semantic.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/vendors/font-awesome/all.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/notyf.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/bootstrap.min.css')}}">
     <title>
         BayesNet Viewer
     </title>
 </head>
 
 <body class="">
-    <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="vendors/jquery/jquery.min.js"></script>
-    <script src="vendors/semantic-ui/semantic.min.js"></script>
-    <script src="vendors/puli-util/puli-util.clipboard.js"></script>
+    <script src="{{url_for('static', filename='/bayesnet/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{url_for('static', filename='/bayesnet/vendors/jquery/jquery.min.js')}}"></script>
 
-    <!--
-<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
--->
+    <script src="{{url_for('static', filename='/bayesnet/vendors/semantic-ui/semantic.min.js')}}"></script>
+    <script src="{{url_for('static', filename='/bayesnet/vendors/puli-util/puli-util.clipboard.js')}}"></script>
 
-    <script type="text/javascript" src="bayes.js"></script>
-    <!-- <script type="text/javascript" src="sick.js"></script> -->
-    <script type="text/javascript" src="bayesnet-viewer.js"></script>
+    <script src="{{url_for('static', filename='/bayesnet/js/bayes.js')}}"></script>
+    <script src="{{url_for('static', filename='/bayesnet/js/bayesnet-viewer.js')}}"></script>
 
-    <script src='vendors/responsivevoice/responsivevoice.js'></script>
-    <script src="vendors/jquery-ui/jquery-ui.min.js"></script>
-    <script src="script.js"></script>
+    <script src="{{url_for('static', filename='/bayesnet/vendors/responsivevoice/responsivevoice.js')}}"></script>
+    <script src="{{url_for('static', filename='/bayesnet/vendors/jquery-ui/jquery-ui.min.js')}}"></script>
+    <script src="{{url_for('static', filename='/bayesnet/js/script.js')}}"></script>
 
     <!-- 繪圖需要的所有函式庫 -->
-    <script type="text/javascript" src="div_graph/raphael-min.js"></script>
-    <script type="text/javascript" src="div_graph/dracula_graffle.js"></script>
-    <script type="text/javascript" src="div_graph/dracula_graph.js"></script>
-    <link rel="stylesheet" href="div_graph/dracula_graph.css" />
-    <script type="text/javascript" src="div_graph/div_graph.js"></script>
-    <script type="text/javascript" src="div_graph/dragscroll.js"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/div_graph/raphael-min.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/div_graph/dracula_graffle.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/div_graph/dracula_graph.js')}}"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/div_graph/dracula_graph.css')}}">
+    <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/div_graph/div_graph.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/div_graph/dragscroll.js')}}"></script>
     <!-- 繪圖需要的所有函式庫 -->
 
 
@@ -236,10 +232,10 @@
     </div>
 
     <div class="w-100" style="height: 5ch;"></div><!-- </div>breaks cols to a new line-->
-    <script type="text/javascript" src="js/notyf.min.js"></script>
-    <script src="pdf.js"></script>
-    <script src="pdf.worker.js"></script>
-    <script src="index.js"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/js/notyf.min.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/js/pdf.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/js/pdf.worker.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/js/index.js')}}"></script>
 
 </body>
 
