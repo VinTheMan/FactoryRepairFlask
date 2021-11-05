@@ -43,7 +43,7 @@ function FindNextSol() {
         });
 
         // go to upload page
-        setTimeout(function () { window.location.href = 'http://127.0.0.1:5000/upload_2.html'; }, 1600);
+        // setTimeout(function () { window.location.href = '/Result'; }, 1600);
     } // if
     else {
         pdf = './download/' + nodeNames[indexXL] + '.pdf';
@@ -88,8 +88,8 @@ function CheckFactory() {
 
 function reDrawGraph(fileName) {
     $("#theGraphs").show(); // show the graph
-    //_load_data_from_filepath("#input_data", "./" + fileName + ".xml", _combine_input);
     // $("#theGraphs").hide(); // hide the graph
+    _draw_result_table(JSON.parse(sessionStorage.getItem('changed_xml')));
     var factoryy = JSON.parse(sessionStorage.getItem('factoryy'));
 
     if (factoryy === "F2") {
@@ -114,7 +114,7 @@ function reDrawGraph(fileName) {
     $.ajax({
         type: "post",
         url: "download.php",
-        data: { test: test , fileName : get_session_id() + "_copy"},
+        data: { test: test},
         dataType:'json',
         success: function(data) {
             console.log('ok');
@@ -156,6 +156,8 @@ function FileExist()
 
 $(document).ready(function () {
 
+
+    sessionStorage.removeItem('changed_xml');
     //FileExist();
     $('#f2').on('click', function (e) {
         e.preventDefault();

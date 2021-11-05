@@ -4,11 +4,13 @@
 <head>
     <meta charset="utf-8">
     </meta>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="../style.css" />
-    <link rel="stylesheet" href="../css/bootstrap.min.css" />
-    <link rel="stylesheet" href="uploadstyle.css">
-    <link rel="stylesheet" href="../css/notyf.min.css" />
+
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/style.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/style.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/uploadstyle.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/notyf.min.css')}}">
+
     <title>FactroyRapair Uplaod</title>
     <!--
     <style type="text/css">
@@ -21,17 +23,16 @@
 </head>
 
 <body>
-    <script src="../js/bootstrap.bundle.min.js"></script>
-    <script src="../vendors/jquery/jquery.min.js"></script>
+    <script src="{{url_for('static', filename='/bayesnet/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{url_for('static', filename='/bayesnet/vendors/jquery/jquery.min.js')}}"></script>
 
     <div class="head">FactoryRepair Upload</div>
     <br />
     <form id="uploadForm" class="upload needs-validation" novalidate>
         <h1> Upload </h1>
         <input id="dateHere" class="form-control" style="color: black;" type="text" placeholder="Date" disabled />
-        <input id="projectHere" type="text" class="form-control" style="color: black;" placeholder="Project" disabled />
         <input id="factoryHere" type="text" class="form-control" style="color: black;" placeholder="Factory" disabled />
-        <input id="isnHere" type="text" class="form-control" placeholder="ISN" disabled/>
+        <input id="questionHere" type="text" class="form-control" placeholder="Question" disabled/>
         <input id="solutionHere" type="text" class="form-control" placeholder="Solution" disabled/>
         <input id="input_solution" list="solutions" type="text" class="form-control" placeholder="Solution" required/>
         <div class="invalid-feedback">
@@ -46,9 +47,8 @@
     </form>
     <br />
 
-
-    <script type="text/javascript" src="../js/notyf.min.js"></script>
-    <script src="upload_2.js"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/js/notyf.min.js')}}"></script>
+    <script src="{{url_for('static', filename='/bayesnet/js/upload_2.js')}}"></script>
 
 </body>
 

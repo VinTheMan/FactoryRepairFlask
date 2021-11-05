@@ -42,19 +42,19 @@ $(document).ready(function () {
         var $username = $("#input_username").val();
         var $passwd = $("#input_passwd").val();
         var $f = $("#input_factory").val();
-        // $.ajax({
-        //     url: "/RepairMember",
-        //     method: 'POST',
-        //     data: { username: $username, passwd: $passwd, f: $f },
-        //     dataType: "json",
-        //     error: function (request) {
-        //         // remember to filter out size 0 array
-        //         alert(request.responseJSON.message);
-        //     },
-        //     success: function () {
-        //         self.location.href = '/question';
-        //     }
-        // });
+        $.ajax({
+            url: "/RepairMember",
+            method: 'POST',
+            data: { username: $username, passwd: $passwd, f: $f },
+            dataType: "json",
+            error: function (request) {
+                // remember to filter out size 0 array
+                alert(request.responseJSON.message);
+            },
+            success: function () {
+                self.location.href = '/question';
+            }
+        });
 
         // var $key_field = "Date";
         // $.ajax({                 // for test
