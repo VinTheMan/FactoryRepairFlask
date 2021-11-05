@@ -221,7 +221,7 @@ def upload():
     print("finial_solution : ", g_solution)
     print("------ ---- -----")
     # render_template("upload_3.html", Date=g_date, Project=g_project, Factory=g_factory, ISN=g_isn, Solution=g_solution)
-    return render_template("upload_3.html", Date=g_date, Project=g_project, Factory=g_factory, ISN=g_isn, Solution=g_solution)
+    return jsonify(message=xml_str),200
     # return render_template("IT_result.html", Date=g_date, Project=g_project, Factory=g_factory, ISN=g_isn, Solution=g_solution)
 
 @app.route("/test")
