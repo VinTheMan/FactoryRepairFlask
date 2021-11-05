@@ -34,24 +34,9 @@ $(document).ready(function () {
             sessionStorage.setItem('questionn', JSON.stringify($("#input_question").val()));
         } // if
 
-        var $qquestion = $("#input_question").val() ;
-        $.ajax({
-            url: '/gen_csv_and_xml',
-            method: 'POST',
-            data: { qquestion: $qquestion },
-            dataType: "json",
-            error: function (request) {
-                // remember to filter out size 0 array
-                alert(request.responseJSON.message);
-            },
-            success: function () {
+        var $qquestion = $("#input_question").val();
 
-            },
-            complete: function (request) {
-                sessionStorage.setItem('filename', JSON.stringify(request.responseJSON.filename));
-                self.location.href = '/main';
-            }
-        });
+        self.location.href = '/main';
     });
 
 
