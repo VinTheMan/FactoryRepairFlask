@@ -22,6 +22,7 @@ var _combine_input_copy = function () {
     //_download_dynamic_classification_file();
     //_download_bayes_net_xml_file();
     var _xml =  JSON.parse(sessionStorage.getItem('changed_xml'));
+    console.log(123);
     //console.log(_xml);
     //var _csv = $("#input_data").val();
     //_load_csv_to_ct_json(_csv);
@@ -57,7 +58,14 @@ if (typeof (tinyMCE) === "object") {
         setup: function (ed) {
             ed.on('change', function (e) {
                 //console.log('the content ', ed.getContent());
-                _combine_input();
+                if(sessionStorage.getItem("change_probability_filename") != null) {
+                    _combine_input_copy();
+                }
+                else
+                {
+                    _combine_input();
+                }
+
             });
         }
     });
@@ -382,7 +390,7 @@ $(function () {
     // var $condition1 = JSON.parse(sessionStorage.getItem('factoryy'));
     // var $condition1 = JSON.parse(sessionStorage.getItem('questionn'));
     var $condition1 = "F1"; // test
-    var $condition2 = "CC"; // test
+    var $condition2 = ""; // test
     $.ajax({                 // for test
         url: "/GetCSV",
         method: 'POST',
@@ -397,7 +405,7 @@ $(function () {
             $("#input_data").val(response.data);
             $("#change_data").val(response.data);
             $("#input_data").trigger("change");
-            if (sessionStorage.getItem("changed_xml") === null) 
+            if (sessionStorage.getItem("changed_xml") == null) 
             {
                 var data = $("#input_data").val();
                 // console.log(data); // test

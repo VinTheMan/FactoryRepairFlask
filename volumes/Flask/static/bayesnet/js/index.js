@@ -155,7 +155,7 @@ function reDrawGraph(fileName) {
 
 $(document).ready(function () {
 
-    sessionStorage.removeItem('changed_xml');
+    //sessionStorage.removeItem('changed_xml');
     
     $('#f2').on('click', function (e) {
         e.preventDefault();

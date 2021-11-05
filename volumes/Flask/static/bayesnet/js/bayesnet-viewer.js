@@ -401,8 +401,8 @@ var _draw_cpt_window = function (_name, _c, _name_given, _name_outcome, _name_cp
 };
 
 
-
 var myFunction = function () {
+    change = "";
     out = "";
     replace = "";
     for (var _i = 0; _i < copy_c.length; _i++) {
@@ -425,31 +425,44 @@ var myFunction = function () {
         }
         replace = replace + '\n';
     }
-
     //get input xml (string type)
     var test = JSON.parse(sessionStorage.getItem("changed_xml"));
+    var testold = JSON.parse(sessionStorage.getItem("changed_xml"));
     console.log(test) ; // test
     //get which table change
     tablename = '<FOR>' + tablename + '</FOR>';
+
     str = '<TABLE>';
     str1 = '</TABLE>';
-    
+    console.log(tablename);
     //find index
     index = test.search(tablename);
     indexbegin = test.indexOf(str, index);
     indexend = test.indexOf(str1, index);
-
+    console.log(index);
+    console.log(indexbegin);
+    console.log(indexend);
     //replaced string
-    for (let i = indexbegin + 8; i < indexend - 2; i++) {
+    for (let i = indexbegin + 8; i < indexend ; i++) {
         out = out + test[i];
     }
 
     
+    test = test.slice( index );
+
+    console.log(test);
+    console.log(out);
+    console.log(replace);
+    console.log(test);
     //replace by change input
-    test = test.replace(out, replace);
+    change = test.replace(out , replace);
+    console.log(change);
+    testold = testold.replace(test , change);
     
+    console.log(testold) ; // test
+
     //sessionStorage.setItem('changed_xml', test);
-    sessionStorage.setItem('changed_xml', JSON.stringify(test)); // test
+    sessionStorage.setItem('changed_xml', JSON.stringify(testold)); // test
 
     reDrawGraph("copy");
     //send to php 
