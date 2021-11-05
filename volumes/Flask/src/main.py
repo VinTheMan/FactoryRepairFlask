@@ -13,6 +13,7 @@ import datetime
 import traceback
 import sys
 import logging
+import pandas as pd
 import xml.etree.ElementTree
 
 from werkzeug.exceptions import HTTPException
@@ -51,16 +52,16 @@ g_solved = None
 def func_load_mongo_settings():
     global mongo_db_repair 
     global g_mongo_DailyRepairConfig_collection, g_mongo_Repair_Config_collection, g_mongo_DailyRepairMember_collection
-
+    global g_test
     # connect to Server and open DB
     #mongo_db_repair = mongo_repair_setting()
     #mongo_db_user = mongo_user_setting()
     mongo_db_client = MongoClient(host='mongodb', port=27017, username='root', password='root', authSource='admin')
-    mongo_db_repair = mongo_db_client['CooperExposure']
+    mongo_db_repair = mongo_db_client['admin']
 
     # get 'DailyRepairContent' collection
     g_mongo_DailyRepairConfig_collection = mongo_db_repair['DailyRepairContent']
-
+    g_test = mongo_db_repair['Test']
     # get 'Repair_Config' collection
     g_mongo_Repair_Config_collection = mongo_db_repair['Repair_Config']
 
@@ -229,6 +230,99 @@ def test():
     name = request.args.get('name')
     return 'My name is {}'.format(name)
     
+@app.route("/GetCSV",methods=['POST'])
+def func_Get_CSV_From_MongoDocument():
+    func_load_mongo_settings()
+    query_condition1 = request.args.get('condition1')
+    query_condition2 = request.args.get('condition2')
+    if query_condition1 == None or query_condition1 == "":
+        query_condition1 = "F1"
+    if query_condition2 == None or query_condition2 == "":
+        query_condition2 = "Cisco"
+    result = g_test.find({"ErrorName":query_condition2})
+    # result = g_test.find()
+    Action_list = []
+    for doc in result:
+        dict = doc["Solution"]
+        if doc['Factory'] == query_condition1:
+            dict[query_condition1] = 1
+        else:
+            dict[query_condition1] = 0
+        Action_list.append(dict)
+    df = pd.DataFrame(Action_list)
+    df = df.fillna(0)
+    cols = df.columns.tolist()
+    cols.insert(0,cols.pop(cols.index(query_condition1)))
+    cols.insert(len(cols)-1,cols.pop(cols.index("Solved")))
+    df_final=df[cols]
+    df_final= df_final.sort_values(by=cols[1:], ascending=True)
+    df_final['All'] = df_final['Solved']
+    df_final['solution_count'] =  df_final.groupby(cols)["All"].transform('count')
+    df_final['All_Count'] =  df_final.groupby(cols[:-2])["All"].transform('count')
+    df_final.to_csv("Result.csv", index=False)
+    #
+    RowsCount = len(df_final.index)
+    xml_str = ""
+    Header = '<BIF VERSION="0.3">\n<NETWORK>\n<NAME>New Network</NAME>\n'
+    End = '</NETWORK>\n</BIF>'
+    xml_str+=Header
+    for field in cols:
+        Field_Body ='<VARIABLE TYPE="nature"><NAME>' + field + '</NAME><OUTCOME>No</OUTCOME> <OUTCOME>Yes</OUTCOME></VARIABLE>\n'
+        xml_str+=Field_Body
+    First_Layer_list =cols[0]
+    Second_Layer_list =cols[1:-1]
+    Third_Layer_list =cols[-1]
+    #First Layer 
+    First_Layer_Body = '<DEFINITION><FOR>' + query_condition1 + '</FOR><TABLE>\n'
+    mask1 = df_final[query_condition1] == 0
+    mask2 = df_final[query_condition1] == 1
+    First_Layer_P0_Count = len(df_final[(mask1)])
+    First_Layer_P1_Count = RowsCount-First_Layer_P0_Count
+    P0 = First_Layer_P0_Count/RowsCount
+    P1 = 1-P0
+    First_Layer_Body += str(P0) + ' ' + str(P1) + '\n'
+    First_Layer_Body += '</TABLE></DEFINITION>\n'
+    xml_str+=First_Layer_Body
+    Second_Layer_Body = ""
+    #Second Layer
+    
+    for field2 in Second_Layer_list:
+        Second_Layer_Body +='<DEFINITION><FOR>' + field2 + '</FOR>\n'
+        Second_Layer_Body +='<GIVEN>' + query_condition1 + '</GIVEN>'
+        Second_Layer_Body +='<TABLE>\n'
+        mask3 = df_final[field2] == 0
+        if len(df_final[(mask1 & mask3)]) >0:
+            P00= len(df_final[(mask1 & mask3)])/ len(df_final[(mask1)])
+        else:
+            P00 = 0
+        if len(df_final[(mask2 & mask3)]) >0:
+            P10= len(df_final[(mask2 & mask3)])/ len(df_final[(mask2)])
+        else:
+            P10 = 0
+        Second_Layer_Body +=str(P00) + ' ' +str(1-P00) + '\n'
+        Second_Layer_Body+=str(P10) + ' ' +str(1-P10) + '\n'
+        Second_Layer_Body +='</TABLE></DEFINITION>'
+    xml_str+=Second_Layer_Body
+    #Third Layer    
+    Third_Layer_Body = ""
+    Third_Layer_Body +='<DEFINITION><FOR>' + str(cols[-1]) + '</FOR>\n'
+    for field2 in Second_Layer_list:
+        Third_Layer_Body +='<GIVEN>' + field2 + '</GIVEN>\n'
+    Third_Layer_Body +='<TABLE>\n'
+    for index, row in df_final.iterrows():
+        P000 = row['solution_count'] / row['All_Count']
+        Third_Layer_Body +=str(P000) + ' ' + str(1-P000) + '\n'
+    Third_Layer_Body +='</TABLE></DEFINITION>'
+    #for row in df_final.rows:
+    xml_str+=Third_Layer_Body
+    #
+    xml_str+=End
+    f = open('output.xml', 'w')
+    f.write(xml_str)
+    f.close()
+    #
+    #return json.dumps({key_field:g_mongo_DailyRepairConfig_collection.distinct(key_field)}),550
+    return jsonify(data=xml_str),200
 
 @app.route("/Getkey",methods=['POST'])
 def func_Get_Distinct_Of_Key_MongoDocument():
@@ -237,7 +331,7 @@ def func_Get_Distinct_Of_Key_MongoDocument():
     # return jsonify(message=key_field),420
     if key_field == None or key_field == "":
         key_field = 'Date'
-    result = g_mongo_DailyRepairConfig_collection.distinct(key_field)
+    result = g_test.distinct(key_field)
     return jsonify(message=result),200
 
 @app.route("/FactoryRepair")
@@ -269,7 +363,7 @@ def show():
     print("------ ---- -----")
 
     #global mongo_db_repair 
-    #func_load_mongo_settings()
+    func_load_mongo_settings()
     #g_mongo_DailyRepairConfig_collection = mongo_db_repair['DailyRepairContent']
 
     global g_mongo_DailyRepairConfig_collection

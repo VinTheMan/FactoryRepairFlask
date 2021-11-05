@@ -56,7 +56,7 @@ $(document).ready(function () {
         //     }
         // });
 
-        // var $key_field = "Hi";
+        // var $key_field = "Date";
         // $.ajax({                 // for test
         //     url: "/Getkey",
         //     method: 'POST',

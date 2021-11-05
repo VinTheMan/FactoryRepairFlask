@@ -9,7 +9,7 @@ services:
     container_name: mongodb
     hostname: mongodb
     environment:
-      - MONGO_INITDB_DATABASE=CooperExposure
+      - MONGO_INITDB_DATABASE=admin
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=root
     volumes:

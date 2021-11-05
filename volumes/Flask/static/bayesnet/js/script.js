@@ -365,9 +365,12 @@ $(function () {
 
     // _load_data_from_filepath("#input_data", "./data.xml", _combine_input);
 
+    var $condition1 = "F1";
+    var $condition2 = "CC";
     $.ajax({                 // for test
-        url: "/GetXML",
+        url: "/GetCSV",
         method: 'POST',
+        data: { condition1: $condition1, condition2: $condition2 },
         dataType: "json",
         error: function (request) {
             // remember to filter out size 0 array
