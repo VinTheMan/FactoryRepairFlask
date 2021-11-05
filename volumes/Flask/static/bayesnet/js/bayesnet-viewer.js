@@ -468,8 +468,9 @@ var myFunction = function () {
     //replace by change input
     test = test.replace(out, replace);
     
+    sessionStorage.setItem('changed_xml', test);
     //send to php 
-    $.ajax({
+    /*$.ajax({
         type: "post",
         url: "download.php",
         data: { test: test , filename : get_session_id() + "_copy"},
@@ -484,7 +485,7 @@ var myFunction = function () {
                 alert(errorThrown);
             }
         });
-    
+    */
     //close modal 
     $('#exampleModal').modal('hide');
 

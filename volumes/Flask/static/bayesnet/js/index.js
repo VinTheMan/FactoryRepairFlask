@@ -88,7 +88,7 @@ function CheckFactory() {
 
 function reDrawGraph(fileName) {
     $("#theGraphs").show(); // show the graph
-    _load_data_from_filepath("#input_data", "./" + fileName + ".xml", _combine_input);
+    //_load_data_from_filepath("#input_data", "./" + fileName + ".xml", _combine_input);
     // $("#theGraphs").hide(); // hide the graph
     var factoryy = JSON.parse(sessionStorage.getItem('factoryy'));
 
@@ -107,7 +107,7 @@ function reDrawGraph(fileName) {
     } // else
 } // reDrawGraph
 
-var copyfunction = function () {
+/*var copyfunction = function () {
     
     var test = $("#original_data").val();
     //send to php 
@@ -151,12 +151,12 @@ function FileExist()
             console.log('file exist');
         }
     });
-}
+}*/
 
 
 $(document).ready(function () {
 
-    FileExist();
+    //FileExist();
     $('#f2').on('click', function (e) {
         e.preventDefault();
         // CleanUpAllClicked();
@@ -289,13 +289,13 @@ $(document).ready(function () {
         var fileName = "";
         CleanUpAllClicked();
         if ($("#changeXMLBtn").text() === "Use Edited") {
-            fileName = get_session_id() + "_copy"; 
+            fileName = "_copy"; 
             sessionStorage.setItem('change_probability_filename', JSON.stringify(fileName));
             $("#changeXMLBtn").text("Use Database");
             $("#copyfromdatabase").show();
         } // if
         else {
-            fileName = get_session_id();
+            fileName = "new";
             sessionStorage.removeItem('change_probability_filename');
             $("#changeXMLBtn").text("Use Edited");
             $("#copyfromdatabase").hide();
@@ -308,21 +308,7 @@ $(document).ready(function () {
     $("#copyfromdatabase").on('click', function (e) {
         e.preventDefault();
         var test = $("#original_data").val();
-        $.ajax({
-            type: "post",
-            url: "download.php",
-            data: { test: test  , fileName : get_session_id() + "_copy"},
-            dataType:'json',
-            success: function(data) {
-                console.log('ok');
-                //console.log(data);
-                reDrawGraph(get_session_id() + "_copy");
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.warn(jqXHR.responseText);
-                    alert(errorThrown);
-                }
-            });
+        console.log("database to copy");
     });
 
     (function () {

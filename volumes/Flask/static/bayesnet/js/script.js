@@ -368,9 +368,9 @@ $(function () {
     var $condition1 = "F1";
     var $condition2 = "CC";
     $.ajax({                 // for test
-        url: "/GetCSV",
+        url: "/GetXML",
         method: 'POST',
-        data: { condition1: $condition1, condition2: $condition2 },
+        // data: { condition1: $condition1, condition2: $condition2 },
         dataType: "json",
         error: function (request) {
             // remember to filter out size 0 array
@@ -379,6 +379,8 @@ $(function () {
         success: function (response) {
             console.log(response.data);
             $("#input_data").val(response.data);
+            $("#change_data").val(response.data);
+            $("#original_data").val(response.data);
             $("#input_data").trigger("change");
         }
     });
