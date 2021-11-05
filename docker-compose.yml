@@ -33,7 +33,7 @@ services:
     links:
       - mongodb
     ports:
-      - 5000:5000
+      - 5001:5000
     networks:
       - frontend
       - backend
@@ -46,7 +46,7 @@ services:
     links:
       - flask
     ports:
-      - 80:80
+      - 8088:80
     volumes:
       - ./volumes/nginx/html:/var/share/nginx
       - ./volumes/nginx/log:/var/log/nginx
