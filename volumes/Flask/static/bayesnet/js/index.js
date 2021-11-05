@@ -225,7 +225,7 @@ $(document).ready(function () {
         $("#allDynamic").hide();
         // setTimeout(function () { location.reload(); }, 1600);
         // go to upload page
-        setTimeout(function () { window.location.href = 'http://127.0.0.1:5000/upload_2.html'; }, 1600);
+        setTimeout(function () { window.location.href = '/Result'; }, 1600);
     });
 
     $('#noBtn').on('click', function (e) {
