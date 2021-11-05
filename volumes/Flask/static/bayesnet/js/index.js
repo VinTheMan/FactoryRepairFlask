@@ -46,11 +46,11 @@ function FindNextSol() {
         // setTimeout(function () { window.location.href = '/Result'; }, 1600);
     } // if
     else {
-        pdf = '/getPDF?pdf_name=' + nodeNames[indexXL];
+        pdf = './download/' + nodeNames[indexXL] + '.pdf';
         var bayesnet_solution = $(".bayesnet-solution > table > tbody").empty();
         bayesnet_solution.append('<tr>' +
             '<td class="w-50"><strong class="fs-1">' + nodeNames[indexXL] + '</strong></td>' +
-            '<td class="w-50"><strong class="fs-1">' + '<a href="/getPDF?pdf_name=' + nodeNames[indexXL] + '" target="_blank">Open in new window</a>' + '</strong></td>' +
+            '<td class="w-50"><strong class="fs-1">' + '<a href="./download/' + nodeNames[indexXL] + '.pdf" target="_blank">Open in new window</a>' + '</strong></td>' +
             '</tr>'
         );
     } // else

@@ -379,27 +379,28 @@ $(function () {
 
     // _load_data_from_filepath("#input_data", "./data.xml", _combine_input);
 
-    var $condition1 = "F1";
-    var $condition2 = "CC";
+    // var $condition1 = JSON.parse(sessionStorage.getItem('factoryy'));
+    // var $condition1 = JSON.parse(sessionStorage.getItem('questionn'));
+    var $condition1 = "F1"; // test
+    var $condition2 = "CC"; // test
     $.ajax({                 // for test
-        url: "/GetXML",
+        url: "/GetCSV",
         method: 'POST',
-        // data: { condition1: $condition1, condition2: $condition2 },
+        data: { condition1: $condition1, condition2: $condition2 },
         dataType: "json",
         error: function (request) {
             // remember to filter out size 0 array
             console.log(request);
         },
         success: function (response) {
-            console.log(response.data);
+            // console.log(response.data); // test
             $("#input_data").val(response.data);
             $("#change_data").val(response.data);
             $("#input_data").trigger("change");
             if (sessionStorage.getItem("changed_xml") === null) 
             {
                 var data = $("#input_data").val();
-
-                console.log(data);
+                // console.log(data); // test
                 sessionStorage.setItem('changed_xml', JSON.stringify(data));
                 console.log('copy success');
             }
