@@ -2,7 +2,7 @@ from flask import Flask
 from flask import request
 from flask import redirect
 from flask import url_for
-from flask import render_template
+from flask import render_template, make_response
 from flask import session
 from flask import flash
 from flask import jsonify
@@ -15,6 +15,7 @@ import sys
 import logging
 import pandas as pd
 import xml.etree.ElementTree
+import base64
 
 from werkzeug.exceptions import HTTPException
 
@@ -30,6 +31,7 @@ from NiFi_mongo_settings import mongo_repair_setting, mongo_user_setting
 from FactoryRepair_authentication import func_Check_MemberData
 
 # global variables
+PDF_FOLDER = os.path.join('static', 'download')
 mongo_db_repair = None
 
 g_config = None
@@ -177,13 +179,6 @@ def entry():
     else:
         return render_template("entry_2.html")
 
-@app.route("/gen_csv_and_xml",methods=['POST'])
-def question():
-    qquestion = request.form.get('qquestion')
-    result = "銅露" # test
-    # result = SOME_PYTHON_FUNCTION(qquestion)
-    return jsonify(question=result, filename="Factory_model_new_solution" ),200
-
 @app.route("/question",methods=['GET'])
 def question_get():
     return render_template("question_2.html")   
@@ -200,6 +195,14 @@ def main():
     
     # print("finial_solution : ", g_solution)
     return render_template("index.html")  
+
+@app.route("/getPDF",methods=['GET'])
+def getPDF():
+    pdf_filename = request.args.get('pdf_name') + '.pdf'
+    pdf_file = os.path.join(PDF_FOLDER, pdf_filename)
+    with open(pdf_file, 'r') as f: 
+        pdf_base64 = base64.b64encode(f.read()).decode("utf-8")
+    return jsonify(result=pdf_base64),200
 
 @app.route("/upload")
 def upload():
@@ -221,7 +224,7 @@ def upload():
     print("finial_solution : ", g_solution)
     print("------ ---- -----")
     # render_template("upload_3.html", Date=g_date, Project=g_project, Factory=g_factory, ISN=g_isn, Solution=g_solution)
-    return jsonify(message=xml_str),200
+    return jsonify(message="upload_success"),200
     # return render_template("IT_result.html", Date=g_date, Project=g_project, Factory=g_factory, ISN=g_isn, Solution=g_solution)
 
 @app.route("/test")
@@ -232,8 +235,8 @@ def test():
 @app.route("/GetCSV",methods=['POST'])
 def func_Get_CSV_From_MongoDocument():
     func_load_mongo_settings()
-    query_condition1 = request.args.get('condition1')
-    query_condition2 = request.args.get('condition2')
+    query_condition1 = request.form.get('condition1')
+    query_condition2 = request.form.get('condition2')
     if query_condition1 == None or query_condition1 == "":
         query_condition1 = "F1"
     if query_condition2 == None or query_condition2 == "":

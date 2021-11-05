@@ -46,11 +46,11 @@ function FindNextSol() {
         // setTimeout(function () { window.location.href = '/Result'; }, 1600);
     } // if
     else {
-        pdf = './download/' + nodeNames[indexXL] + '.pdf';
+        pdf = '/getPDF?pdf_name=' + nodeNames[indexXL];
         var bayesnet_solution = $(".bayesnet-solution > table > tbody").empty();
         bayesnet_solution.append('<tr>' +
             '<td class="w-50"><strong class="fs-1">' + nodeNames[indexXL] + '</strong></td>' +
-            '<td class="w-50"><strong class="fs-1">' + '<a href="./download/' + nodeNames[indexXL] + '.pdf" target="_blank">Open in new window</a>' + '</strong></td>' +
+            '<td class="w-50"><strong class="fs-1">' + '<a href="/getPDF?pdf_name=' + nodeNames[indexXL] + '" target="_blank">Open in new window</a>' + '</strong></td>' +
             '</tr>'
         );
     } // else
@@ -289,13 +289,13 @@ $(document).ready(function () {
         var fileName = "";
         CleanUpAllClicked();
         if ($("#changeXMLBtn").text() === "Use Edited") {
-            fileName = get_session_id() + "_copy"; 
+            // fileName = get_session_id() + "_copy"; 
             sessionStorage.setItem('change_probability_filename', JSON.stringify(fileName));
             $("#changeXMLBtn").text("Use Database");
             $("#copyfromdatabase").show();
         } // if
         else {
-            fileName = get_session_id();
+            // fileName = get_session_id();
             sessionStorage.removeItem('change_probability_filename');
             $("#changeXMLBtn").text("Use Edited");
             $("#copyfromdatabase").hide();

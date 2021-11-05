@@ -13,7 +13,7 @@ var _combine_input = function () {
     //_load_csv_to_ct_json(_csv);
     _draw_result_table(_xml);
 
-};	// var _combine_input = function () {
+};	// var _combine_input = function ()
 
 // ---------------------------------------
 

@@ -1,3 +1,4 @@
-F1,FixPosition,B0-B1,M0-M1,Route,None,M2-M3,B0B1,Solved,All,solution_count,All_Count
-1,0,0,0,0,0.0,0.0,1,1,1,2,2
-1,0,0,0,0,0.0,0.0,1,1,1,2,2
+F1,B0B1,B0B5,Solved,All,solution_count,All_Count
+1,0.0,1.0,1,1,1,1
+1,1.0,0.0,0,0,1,2
+1,1.0,0.0,1,1,1,2
