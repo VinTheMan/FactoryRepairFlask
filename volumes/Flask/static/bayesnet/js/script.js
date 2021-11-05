@@ -13,7 +13,21 @@ var _combine_input = function () {
     //_load_csv_to_ct_json(_csv);
     _draw_result_table(_xml);
 
-};	// var _combine_input = function ()
+};
+var _combine_input_copy = function () {
+    // �}�Y�]�w
+    _reset_result();
+    // ------------------------------------------
+    // ��ƳB�z�]�w
+    //_download_dynamic_classification_file();
+    //_download_bayes_net_xml_file();
+    var _xml =  JSON.parse(sessionStorage.getItem('changed_xml'));
+    //console.log(_xml);
+    //var _csv = $("#input_data").val();
+    //_load_csv_to_ct_json(_csv);
+    _draw_result_table(_xml);
+
+};		// var _combine_input = function () {
 
 // ---------------------------------------
 
@@ -365,14 +379,12 @@ $(function () {
 
     // _load_data_from_filepath("#input_data", "./data.xml", _combine_input);
 
-    // var $condition1 = JSON.parse(sessionStorage.getItem('factoryy'));
-    // var $condition2 = JSON.parse(sessionStorage.getItem('questionn'));
-    var $condition1 = "F1"; // test
-    var $condition2 = "CC"; // test
-    $.ajax({                // for test
-        url: "/GetCSV",
+    var $condition1 = "F1";
+    var $condition2 = "CC";
+    $.ajax({                 // for test
+        url: "/GetXML",
         method: 'POST',
-        data: { condition1: $condition1, condition2: $condition2 },
+        // data: { condition1: $condition1, condition2: $condition2 },
         dataType: "json",
         error: function (request) {
             // remember to filter out size 0 array
@@ -381,7 +393,20 @@ $(function () {
         success: function (response) {
             console.log(response.data);
             $("#input_data").val(response.data);
+            $("#change_data").val(response.data);
             $("#input_data").trigger("change");
+            if (sessionStorage.getItem("changed_xml") === null) 
+            {
+                var data = $("#input_data").val();
+
+                console.log(data);
+                sessionStorage.setItem('changed_xml', JSON.stringify(data));
+                console.log('copy success');
+            }
+            else
+            {
+                console.log('already exist');
+            }
         }
     });
     /*
