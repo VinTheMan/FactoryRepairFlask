@@ -400,26 +400,6 @@ var _draw_cpt_window = function (_name, _c, _name_given, _name_outcome, _name_cp
     }, 0);*/
 };
 
-function reDrawGraph(fileName) {
-    $("#theGraphs").show(); // show the graph
-    _load_data_from_filepath("#input_data", "./" + fileName + ".xml", _combine_input);
-    // $("#theGraphs").hide(); // hide the graph
-    var factoryy = JSON.parse(sessionStorage.getItem('factoryy'));
-
-    if (factoryy === "F2") {
-        $('#f2').click();
-    } // if
-    else {
-        $('#nonf2').click();
-    } // else
-
-    if (sessionStorage.getItem("change_probability_filename") != null) {
-        $("#changeXMLBtn").text("Use non-edited probability");
-    } // if
-    else {
-        $("#changeXMLBtn").text("Use edited probability");
-    } // else
-} // reDrawGraph
 
 
 var myFunction = function () {
@@ -447,7 +427,7 @@ var myFunction = function () {
     }
 
     //get input xml (string type)
-    var test = $("#change_data").val();
+    var test = JSON.parse(sessionStorage.getItem("changed_xml"));
     console.log(test) ; // test
     //get which table change
     tablename = '<FOR>' + tablename + '</FOR>';
@@ -468,7 +448,10 @@ var myFunction = function () {
     //replace by change input
     test = test.replace(out, replace);
     
-    sessionStorage.setItem('changed_xml', test);
+    //sessionStorage.setItem('changed_xml', test);
+    sessionStorage.setItem('changed_xml', JSON.stringify(test)); // test
+
+    reDrawGraph("copy");
     //send to php 
     /*$.ajax({
         type: "post",

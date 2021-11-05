@@ -13,7 +13,21 @@ var _combine_input = function () {
     //_load_csv_to_ct_json(_csv);
     _draw_result_table(_xml);
 
-};	// var _combine_input = function () {
+};
+var _combine_input_copy = function () {
+    // �}�Y�]�w
+    _reset_result();
+    // ------------------------------------------
+    // ��ƳB�z�]�w
+    //_download_dynamic_classification_file();
+    //_download_bayes_net_xml_file();
+    var _xml =  JSON.parse(sessionStorage.getItem('changed_xml'));
+    //console.log(_xml);
+    //var _csv = $("#input_data").val();
+    //_load_csv_to_ct_json(_csv);
+    _draw_result_table(_xml);
+
+};		// var _combine_input = function () {
 
 // ---------------------------------------
 
@@ -380,8 +394,19 @@ $(function () {
             console.log(response.data);
             $("#input_data").val(response.data);
             $("#change_data").val(response.data);
-            $("#original_data").val(response.data);
             $("#input_data").trigger("change");
+            if (sessionStorage.getItem("changed_xml") === null) 
+            {
+                var data = $("#input_data").val();
+
+                console.log(data);
+                sessionStorage.setItem('changed_xml', JSON.stringify(data));
+                console.log('copy success');
+            }
+            else
+            {
+                console.log('already exist');
+            }
         }
     });
     /*

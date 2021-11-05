@@ -89,7 +89,15 @@ function CheckFactory() {
 function reDrawGraph(fileName) {
     $("#theGraphs").show(); // show the graph
     // $("#theGraphs").hide(); // hide the graph
-    _draw_result_table(JSON.parse(sessionStorage.getItem('changed_xml')));
+    //_draw_result_table(JSON.parse(sessionStorage.getItem('changed_xml')));
+    if(fileName == "new")
+    {
+        _combine_input();
+    }
+    else if(fileName == "copy")
+    {
+        _combine_input_copy();
+    }
     var factoryy = JSON.parse(sessionStorage.getItem('factoryy'));
 
     if (factoryy === "F2") {
@@ -126,39 +134,29 @@ function reDrawGraph(fileName) {
             }
     });
 };
-
-function FileExist() 
+*/
+/*function FileExist() 
 {
-    $.ajax({
-        url: get_session_id() + "_copy.xml",
-        method: 'GET',
-        dataType: "text",
-        error: function(err)
-        {
-            //file not exists
-            if(err.status == 404)
-            {
-                copyfunction();
-            }
-            else
-            {
-                console.log(err);
-            }
-        },
-        success: function()
-        {
-            //file exists
-            console.log('file exist');
-        }
-    });
+    if (sessionStorage.getItem("changed_xml") === null) 
+    {
+        var data = $("#input_data").val();
+
+        console.log(data);
+        sessionStorage.setItem('changed_xml', JSON.stringify(data));
+        console.log('copy success');
+    }
+    else
+    {
+        console.log('already exist');
+    }
+
 }*/
 
 
 $(document).ready(function () {
 
-
     sessionStorage.removeItem('changed_xml');
-    //FileExist();
+    
     $('#f2').on('click', function (e) {
         e.preventDefault();
         // CleanUpAllClicked();
@@ -291,7 +289,7 @@ $(document).ready(function () {
         var fileName = "";
         CleanUpAllClicked();
         if ($("#changeXMLBtn").text() === "Use Edited") {
-            fileName = "_copy"; 
+            fileName = "copy"; 
             sessionStorage.setItem('change_probability_filename', JSON.stringify(fileName));
             $("#changeXMLBtn").text("Use Database");
             $("#copyfromdatabase").show();
@@ -309,7 +307,9 @@ $(document).ready(function () {
 
     $("#copyfromdatabase").on('click', function (e) {
         e.preventDefault();
-        var test = $("#original_data").val();
+        var test = $("#change_data").val();
+        sessionStorage.setItem('changed_xml', JSON.stringify(test));
+        reDrawGraph("copy");
         console.log("database to copy");
     });
 
@@ -453,7 +453,6 @@ $(document).ready(function () {
         document.querySelector("#show-pdf-button").style.display = 'block';
         closePDF();
     });
-
 }); // on document ready
 
 $(window).on('load', function () {
