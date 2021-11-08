@@ -1,0 +1,28 @@
+NumberofAction = 2
+NumberofCombinations = 4
+Start Combinations
+00
+01
+10
+11
+ `B0B1` == 0& `B0B5` == 0
+ `B0B1` == 0& `B0B5` > 0
+ `B0B1` > 0& `B0B5` == 0
+ `B0B1` > 0& `B0B5` > 0
+Start finding
+ `B0B1` == 0& `B0B5` == 0
+B0B1,0,B0B5,0
+ `B0B1` > 0& `B0B5` > 0
+B0B1,1,B0B5,1
+ `B0B1` == 0& `B0B5` == 0
+Len of df_Condition = 1
+Len of df_Solved = 0
+ `B0B1` == 0& `B0B5` > 0
+Len of df_Condition = 1
+Len of df_Solved = 1
+ `B0B1` > 0& `B0B5` == 0
+Len of df_Condition = 2
+Len of df_Solved = 1
+ `B0B1` > 0& `B0B5` > 0
+Len of df_Condition = 1
+Len of df_Solved = 0

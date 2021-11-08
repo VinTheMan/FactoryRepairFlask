@@ -390,7 +390,7 @@ $(function () {
     var $condition1 = JSON.parse(sessionStorage.getItem('factoryy'));
     var $condition2 = JSON.parse(sessionStorage.getItem('questionn'));
     // var $condition1 = "F1"; // test
-    // var $condition2 = ""; // test
+    // var $condition2 = "CC"; // test
     $.ajax({                 // for test
         url: "/GetCSV",
         method: 'POST',

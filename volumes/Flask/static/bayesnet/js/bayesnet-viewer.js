@@ -187,14 +187,8 @@ var _draw_result_table = function (_xml_text) {
 
         $('#isDone').click();
         // sessionStorage.setItem('factoryy', JSON.stringify('F2')); // test
-        var factoryy = JSON.parse(sessionStorage.getItem('factoryy'));
+        $('#f2').click();
 
-        if (factoryy === "F2") {
-            $('#f2').click();
-        } // if
-        else {
-            $('#nonf2').click();
-        } // else
 
         if (sessionStorage.getItem("change_probability_filename") != null) {
             $("#changeXMLBtn").text("Use Database");
@@ -410,15 +404,13 @@ var myFunction = function () {
             //console.log($("#" + tablename + _i + _j).val());
             //forarray[tablename][_i][_j] = ($("#" + tablename + _i + _j ).val());
             //replace string
-            if(($("#" + tablename + _i + _j).val() > 1 || ($("#" + tablename + _i + _j).val()) < 0))
-            {
+            if (($("#" + tablename + _i + _j).val() > 1 || ($("#" + tablename + _i + _j).val()) < 0)) {
                 $("#" + tablename + _i + _j).css('border-color', 'red');
-                $('#error').css('display','block');
+                $('#error').css('display', 'block');
                 return false;
             }
-            else
-            {
-                $('#error').css('display','none');
+            else {
+                $('#error').css('display', 'none');
                 $("#" + tablename + _i + _j).css('border-color', '');
                 replace = replace + ($("#" + tablename + _i + _j).val()) + ' ';
             }
@@ -428,7 +420,7 @@ var myFunction = function () {
     //get input xml (string type)
     var test = JSON.parse(sessionStorage.getItem("changed_xml"));
     var testold = JSON.parse(sessionStorage.getItem("changed_xml"));
-    console.log(test) ; // test
+    console.log(test); // test
     //get which table change
     tablename = '<FOR>' + tablename + '</FOR>';
 
@@ -443,23 +435,23 @@ var myFunction = function () {
     console.log(indexbegin);
     console.log(indexend);
     //replaced string
-    for (let i = indexbegin + 8; i < indexend ; i++) {
+    for (let i = indexbegin + 8; i < indexend; i++) {
         out = out + test[i];
     }
 
-    
-    test = test.slice( index );
+
+    test = test.slice(index);
 
     console.log(test);
     console.log(out);
     console.log(replace);
     console.log(test);
     //replace by change input
-    change = test.replace(out , replace);
+    change = test.replace(out, replace);
     console.log(change);
-    testold = testold.replace(test , change);
-    
-    console.log(testold) ; // test
+    testold = testold.replace(test, change);
+
+    console.log(testold); // test
 
     //sessionStorage.setItem('changed_xml', test);
     sessionStorage.setItem('changed_xml', JSON.stringify(testold)); // test

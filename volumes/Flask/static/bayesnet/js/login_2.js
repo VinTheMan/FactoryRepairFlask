@@ -22,6 +22,9 @@ $(document).ready(function () {
     (function () {
         sessionStorage.clear();
         localStorage.clear();
+        $("#input_username").val("Jonathan");
+        $("#input_passwd").val("123");
+        $("#input_factory").val("F1");
     })();
 
     $("#submitBtn").on("click", function (e) {
@@ -39,36 +42,20 @@ $(document).ready(function () {
             sessionStorage.setItem('factoryy', JSON.stringify($("#input_factory").val()));
         } // if
 
-        // var $username = $("#input_username").val();
-        // var $passwd = $("#input_passwd").val();
-        // var $f = $("#input_factory").val();
-        // $.ajax({
-        //     url: "/RepairMember",
-        //     method: 'POST',
-        //     data: { username: $username, passwd: $passwd, f: $f },
-        //     dataType: "json",
-        //     error: function (request) {
-        //         // remember to filter out size 0 array
-        //         alert(request.responseJSON.message);
-        //     },
-        //     success: function () {
-        //         self.location.href = '/question';
-        //     }
-        // });
-
-        var $testArray = ['FixPosition', 'B0B1', 'M0M1'];
-        $.ajax({                 // for test
-            url: "/Getkey",
+        var $username = $("#input_username").val();
+        var $passwd = $("#input_passwd").val();
+        var $f = $("#input_factory").val();
+        $.ajax({
+            url: "/RepairMember",
             method: 'POST',
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify({ Factory: "F2", Actions: $testArray, ErrorName: "銅露", Solved: "0" }),
+            data: { username: $username, passwd: $passwd, f: $f },
             dataType: "json",
             error: function (request) {
                 // remember to filter out size 0 array
                 alert(request.responseJSON.message);
             },
-            success: function (data) {
-                alert(data);
+            success: function () {
+                self.location.href = '/question';
             }
         });
     });

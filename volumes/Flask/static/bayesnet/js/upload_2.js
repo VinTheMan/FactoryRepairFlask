@@ -62,6 +62,22 @@ $(document).ready(function () {
     $("#uploadForm").on("submit", function (e) {
         e.preventDefault();
 
+        var $testArray = ['FixPosition', 'B0B1', 'M0M1'];
+        $.ajax({                 // for test
+            url: "/InsertRecord",
+            method: 'POST',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({ Factory: "F2", Actions: $testArray, ErrorName: "銅露", Solved: "0" }),
+            dataType: "json",
+            error: function (request) {
+                // remember to filter out size 0 array
+                alert(request.responseJSON.message);
+            },
+            success: function (data) {
+                alert(data);
+            }
+        });
+
         if (!$("#input_isn").val() || !$("#input_solution").val()) {
             // validation failed
         } else {
@@ -80,7 +96,7 @@ $(document).ready(function () {
                     y: "bottom"
                 }
             });
-            setTimeout(function () { window.location.href = 'http://127.0.0.1:5000/IT_result.html'; }, 1600);
+            // setTimeout(function () { window.location.href = '/'; }, 1000);
         } // if
     });
 

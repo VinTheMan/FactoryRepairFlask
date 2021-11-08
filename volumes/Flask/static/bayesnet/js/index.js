@@ -14,15 +14,19 @@ var pdf = "";
 
 function FindNextSol() {
     var indexXL = -1;
-    for (let a = 0; a < yesYes.length - 1; a++) {
-        if (yesYes[a] !== 100 && yesYes[a] !== 0) {
+    for (let a = 0; a < nodeNames.length - 1; a++) {
+        if ($('tr[node_id="' + nodeNames[a] + '"]').find('li[value_index="1"]').hasClass("set") ||
+            $('tr[node_id="' + nodeNames[a] + '"]').find('li[value_index="0"]').hasClass("set")) {
+            // ignore the already checked
+        } // if
+        else {
             if (indexXL === -1) {
                 indexXL = a;
             } // if
-            else if (yesYes[indexXL] <= yesYes[a]) {
+            else if (yesYes[indexXL] <= yesYes[a] || yesYes[indexXL] === "NaN") {
                 indexXL = a;
             } // else if
-        } // if
+        } // else
     } // for
 
     if (indexXL === -1) { // if no more solutions are found
@@ -43,7 +47,7 @@ function FindNextSol() {
         });
 
         // go to upload page
-        // setTimeout(function () { window.location.href = '/Result'; }, 1600);
+        setTimeout(function () { window.location.href = '/Result'; }, 1600);
     } // if
     else {
         pdf = './download/' + nodeNames[indexXL] + '.pdf';
@@ -67,14 +71,9 @@ function CleanUpAllClicked() {
 
 function CheckFactory() {
     // sessionStorage.setItem('factoryy', JSON.stringify('F2')); // test
-    var factoryy = JSON.parse(sessionStorage.getItem('factoryy'));
-
-    if (factoryy === "F2") {
-        $('#f2').click();
-    } // if
-    else {
-        $('#nonf2').click();
-    } // else
+    // var factoryy = JSON.parse(sessionStorage.getItem('factoryy'));
+    CleanUpAllClicked();
+    $('#f2').click();
 
     if (sessionStorage.getItem("change_probability_filename") != null) {
         $("#changeXMLBtn").text("Use Database");
@@ -90,22 +89,16 @@ function reDrawGraph(fileName) {
     $("#theGraphs").show(); // show the graph
     // $("#theGraphs").hide(); // hide the graph
     //_draw_result_table(JSON.parse(sessionStorage.getItem('changed_xml')));
-    if(fileName == "new")
-    {
+    if (fileName == "new") {
         _combine_input();
     }
-    else if(fileName == "copy")
-    {
+    else if (fileName == "copy") {
         _combine_input_copy();
     }
     var factoryy = JSON.parse(sessionStorage.getItem('factoryy'));
 
-    if (factoryy === "F2") {
-        $('#f2').click();
-    } // if
-    else {
-        $('#nonf2').click();
-    } // else
+    CleanUpAllClicked();
+    $('#f2').click();
 
     if (sessionStorage.getItem("change_probability_filename") != null) {
         $("#changeXMLBtn").text("Use Database");
@@ -155,16 +148,20 @@ function reDrawGraph(fileName) {
 
 $(document).ready(function () {
 
-    //sessionStorage.removeItem('changed_xml');
+    sessionStorage.removeItem('is_there_solutionn');  // initialize
+    sessionStorage.removeItem('changed_xml');
+
+    CleanUpAllClicked();
+    $('#f2').click();
     
     $('#f2').on('click', function (e) {
         e.preventDefault();
         // CleanUpAllClicked();
-        if ($('tr[node_id="Factory2"]').find('li[value_index="1"]').hasClass("set")) { // if the option is already clicked
+        if ($('tr[node_id="' + nodeNames[0] + '"]').find('li[value_index="1"]').hasClass("set")) { // if the option is already clicked
             // do nothing
         } // if
         else {
-            $('tr[node_id="Factory2"]').find('li[value_index="1"]').find('input').click();
+            $('tr[node_id="' + nodeNames[0] + '"]').find('li[value_index="1"]').find('input').click();
             FindNextSol();
         } // else
 
@@ -175,11 +172,11 @@ $(document).ready(function () {
     $('#nonf2').on('click', function (e) {
         e.preventDefault();
         // CleanUpAllClicked();
-        if ($('tr[node_id="Factory2"]').find('li[value_index="0"]').hasClass("set")) { // if the option is already clicked
+        if ($('tr[node_id="' + nodeNames[0] + '"]').find('li[value_index="0"]').hasClass("set")) { // if the option is already clicked
             // do nothing
         } // if
         else {
-            $('tr[node_id="Factory2"]').find('li[value_index="0"]').find('input').click();
+            $('tr[node_id="' + nodeNames[0] + '"]').find('li[value_index="0"]').find('input').click();
             FindNextSol();
         } // else
 
@@ -289,7 +286,7 @@ $(document).ready(function () {
         var fileName = "";
         CleanUpAllClicked();
         if ($("#changeXMLBtn").text() === "Use Edited") {
-            fileName = "copy"; 
+            fileName = "copy";
             sessionStorage.setItem('change_probability_filename', JSON.stringify(fileName));
             $("#changeXMLBtn").text("Use Database");
             $("#copyfromdatabase").show();

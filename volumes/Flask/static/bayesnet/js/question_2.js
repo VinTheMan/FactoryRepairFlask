@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    sessionStorage.removeItem('questionn');
     (function () {
         'use strict'
 
