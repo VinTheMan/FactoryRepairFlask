@@ -37,8 +37,10 @@
 
     <!-- 繪圖需要的所有函式庫 -->
     <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/div_graph/raphael-min.js')}}"></script>
-    <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/div_graph/dracula_graffle.js')}}"></script>
-    <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/div_graph/dracula_graph.js')}}"></script>
+    <script type="text/javascript"
+        src="{{url_for('static', filename='/bayesnet/div_graph/dracula_graffle.js')}}"></script>
+    <script type="text/javascript"
+        src="{{url_for('static', filename='/bayesnet/div_graph/dracula_graph.js')}}"></script>
     <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/div_graph/dracula_graph.css')}}">
     <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/div_graph/div_graph.js')}}"></script>
     <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/div_graph/dragscroll.js')}}"></script>
@@ -54,14 +56,15 @@
         &nbsp;&nbsp;&nbsp;
         <button id="changeXMLBtn" class="col col-auto btn btn-secondary btn-lg"></button>
         &nbsp;&nbsp;&nbsp;
-        <button id="copyfromdatabase" class="col col-auto btn btn-secondary btn-lg" style="display: none;">Copy From Database</button>
+        <button id="copyfromdatabase" class="col col-auto btn btn-secondary btn-lg" style="display: none;">Copy From
+            Database</button>
     </div>
 
     <form class="file-process-framework" action="" class="main">
         <h1 id="mainProblem"> Main </h1>
         <div class="ui bottom attached active tab segment input-field-container">
 
-            <div class="item active" data-tab="mode_textarea" style="display: none;" >文字框輸入</div>
+            <div class="item active" data-tab="mode_textarea" style="display: none;">文字框輸入</div>
             <div class="ui top attached tabular menu" style="display: none;">
                 <div class="active item" data-tab="mode_file">選擇檔案輸入</div>
             </div>
@@ -83,7 +86,8 @@
             <div class="d-none">
                 <label for="original_data"></label>
                 <textarea class="change-trigger focus_select" id="original_data"></textarea>
-                <input type="file" id="original_data" class="file-change-trigger" data-file-to-textarea="#original_data" />
+                <input type="file" id="original_data" class="file-change-trigger"
+                    data-file-to-textarea="#original_data" />
             </div>
 
             <div class="ui bottom attached active tab segment" data-tab="mode_file" style="display: none;">
@@ -100,7 +104,8 @@
             <div class="d-none">
                 <label for="original_data"></label>
                 <textarea class="change-trigger focus_select" id="original_data"></textarea>
-                <input type="file" id="original_data" class="file-change-trigger" data-file-to-textarea="#original_data" />
+                <input type="file" id="original_data" class="file-change-trigger"
+                    data-file-to-textarea="#original_data" />
             </div>
             <br>
             <div id="theGraphs" class="column">
@@ -126,8 +131,8 @@
                 </div>
             </div>
 
-            <input class="btn btn-outline-secondary btn-lg"
-                onclick="self.location.href='/question'" type="button" value="Back to Question Selection" />
+            <input class="btn btn-outline-secondary btn-lg" onclick="self.location.href='/question'" type="button"
+                value="Back to Question Selection" />
 
         </div>
     </form>
@@ -196,23 +201,24 @@
         <button class="col col-auto btn btn-secondary btn-sm" id="close-pdf-button">Close PDF</button>
     </div>
 
-    <div id="pdf-main-container">
-        <div id="pdf-loader">Loading document ...</div>
-        <div id="pdf-contents">
-            <div id="pdf-meta">
-                <div id="page-count-container">Page <div id="pdf-current-page"></div> of <div id="pdf-total-pages">
+    <div class="row w-100 gy-0 justify-content-center">
+        <div id="pdf-main-container" class="col col-auto">
+            <div id="pdf-loader">Loading document ...</div>
+            <div id="pdf-contents">
+                <div id="pdf-meta">
+                    <div id="page-count-container">Page <div id="pdf-current-page"></div> of <div id="pdf-total-pages">
+                        </div>
+                    </div>
+                    <div id="pdf-buttons">
+                        <button id="pdf-prev">Previous</button>
+                        <button id="pdf-next">Next</button>
                     </div>
                 </div>
-                <div id="pdf-buttons">
-                    <button id="pdf-prev">Previous</button>
-                    <button id="pdf-next">Next</button>
-                </div>
+                <canvas id="pdf-canvas" width="900"></canvas>
+                <div id="page-loader">Loading page ...</div>
             </div>
-            <canvas id="pdf-canvas" width="400"></canvas>
-            <div id="page-loader">Loading page ...</div>
         </div>
     </div>
-
     <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
     <div id="askIfOccurs" class="row justify-content-center align-items-center">
         <div id="allDynamic" class="collapse card col-6 text-center">

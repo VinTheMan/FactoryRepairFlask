@@ -153,7 +153,7 @@ $(document).ready(function () {
 
     CleanUpAllClicked();
     $('#f2').click();
-    
+
     $('#f2').on('click', function (e) {
         e.preventDefault();
         // CleanUpAllClicked();
@@ -333,7 +333,7 @@ $(document).ready(function () {
     (function () {
         // sessionStorage.setItem('questionn', JSON.stringify('銅露')); // test
         var mainQ = JSON.parse(sessionStorage.getItem('questionn'));
-        $("#mainProblem").text("Main Problem: " + mainQ);
+        $("#mainProblem").text("Main Issue: " + mainQ);
         $("#askMainQ").html('排除此現象後，<strong style="color: #db7c07;">' + mainQ + '</strong>是否解決？');
     })();
 

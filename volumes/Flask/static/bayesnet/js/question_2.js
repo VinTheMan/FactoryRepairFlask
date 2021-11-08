@@ -33,11 +33,8 @@ $(document).ready(function () {
         } else {
             console.log($("#input_question").val()); // test
             sessionStorage.setItem('questionn', JSON.stringify($("#input_question").val()));
+            self.location.href = '/main';
         } // if
-
-        var $qquestion = $("#input_question").val();
-
-        self.location.href = '/main';
     });
 
 
