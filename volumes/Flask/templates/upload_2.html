@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/notyf.min.css')}}">
 
-    <title>FactroyRapair Uplaod</title>
+    <title>FactroyRapair Result</title>
     <!--
     <style type="text/css">
         .head{
@@ -26,9 +26,9 @@
     <script src="{{url_for('static', filename='/bayesnet/js/bootstrap.bundle.min.js')}}"></script>
     <script src="{{url_for('static', filename='/bayesnet/vendors/jquery/jquery.min.js')}}"></script>
 
-    <div class="head">FactoryRepair Upload</div>
+    <div class="head">FactoryRepair Result</div>
     <br />
-    <form id="uploadForm" class="upload needs-validation" novalidate>
+    <!-- <form id="uploadForm" class="upload needs-validation" novalidate>
         <h1> Upload </h1>
         <input id="dateHere" class="form-control" style="color: black;" type="text" placeholder="Date" disabled />
         <input id="factoryHere" type="text" class="form-control" style="color: black;" placeholder="Factory" disabled />
@@ -44,8 +44,14 @@
         <input id="submitBtn" type="submit" value="Submit">
         <button id="submitBtnHidden" class="d-none" type="submit">Submit</button>
         <input id="backBtn" type="button" value="back" />
-    </form>
-    <br />
+    </form> -->
+
+    <div class="row justify-content-center">
+        <span class="col col-auto">Work in progress</span>
+        <div class="w-100" style="height: 3ch;"></div><!-- </div>breaks cols to a new line-->
+        <input class="btn btn-outline-secondary btn-lg col col-auto"
+                onclick="self.location.href='/'" type="button" value="Back to Login" />
+    </div>
 
     <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/js/notyf.min.js')}}"></script>
     <script src="{{url_for('static', filename='/bayesnet/js/upload_2.js')}}"></script>

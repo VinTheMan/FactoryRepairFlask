@@ -61,12 +61,12 @@
         <h1 id="mainProblem"> Main </h1>
         <div class="ui bottom attached active tab segment input-field-container">
 
-            <div class="item active" data-tab="mode_textarea">文字框輸入</div>
+            <div class="item active" data-tab="mode_textarea" style="display: none;" >文字框輸入</div>
             <div class="ui top attached tabular menu" style="display: none;">
                 <div class="active item" data-tab="mode_file">選擇檔案輸入</div>
             </div>
 
-            <div class="ui bottom attached  tab segment active" data-tab="mode_textarea">
+            <div class="ui bottom attached  tab segment active" data-tab="mode_textarea" style="display: none;">
                 <div class="field">
                     <label for="input_data">請輸入BIF XML資料</label>
                     <textarea class="change-trigger focus_select" id="input_data"></textarea>
@@ -126,9 +126,8 @@
                 </div>
             </div>
 
-            <!-- <input onclick="self.location.href='http://127.0.0.1:5000/upload_2.html'" type="button" value="Submit" /> -->
             <input class="btn btn-outline-secondary btn-lg"
-                onclick="self.location.href='http://127.0.0.1:5000/entry_2.html'" type="button" value="Back to Entry" />
+                onclick="self.location.href='/question'" type="button" value="Back to Question Selection" />
 
         </div>
     </form>
