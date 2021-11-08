@@ -388,7 +388,7 @@ $(function () {
     // _load_data_from_filepath("#input_data", "./data.xml", _combine_input);
 
     var $condition1 = JSON.parse(sessionStorage.getItem('factoryy'));
-    var $condition1 = JSON.parse(sessionStorage.getItem('questionn'));
+    var $condition2 = JSON.parse(sessionStorage.getItem('questionn'));
     // var $condition1 = "F1"; // test
     // var $condition2 = ""; // test
     $.ajax({                 // for test

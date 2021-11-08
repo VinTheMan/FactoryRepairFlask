@@ -51,6 +51,8 @@ g_isn = None
 g_solution = None
 g_solved = None
 
+logging.basicConfig(level=logging.DEBUG)
+
 def func_load_mongo_settings():
     global mongo_db_repair 
     global g_mongo_DailyRepairConfig_collection, g_mongo_Repair_Config_collection, g_mongo_DailyRepairMember_collection
@@ -328,13 +330,16 @@ def func_Get_CSV_From_MongoDocument():
 
 @app.route("/Getkey",methods=['POST'])
 def func_Get_Distinct_Of_Key_MongoDocument():
-    key_field = request.form.get('key_field')
+    key_field = request.get_json(force=True)
+    # array_obj = json.loads(key_field) # testt
+    # return jsonify(message=key_field),420 # test
+    # if key_field == None or key_field == "":
+    #     key_field = 'Date'
+    # result = g_test.distinct(key_field)
     
-    # return jsonify(message=key_field),420
-    if key_field == None or key_field == "":
-        key_field = 'Date'
-    result = g_test.distinct(key_field)
-    return jsonify(message=result),200
+    print("--------------//------------ 4 ", file=sys.stderr)
+    print(key_field, file=sys.stderr)
+    return jsonify(message="hi"),200
 
 @app.route("/FactoryRepair")
 def show():
