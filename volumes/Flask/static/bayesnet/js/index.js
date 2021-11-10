@@ -12,7 +12,7 @@ var _PDF_DOC,
     _CANVAS = document.querySelector('#pdf-canvas');
 var pdf = "";
 
-var actionArray = [] ;
+var actionArray = [];
 
 function FindNextSol() {
     var indexXL = -1;
@@ -49,20 +49,47 @@ function FindNextSol() {
             }
         });
 
-        var not_solve = 0 ;
+        var not_solve = 0;
         // go to upload page
         sessionStorage.setItem('actionArray', JSON.stringify(actionArray));
         sessionStorage.setItem('solved', JSON.stringify(not_solve));
         setTimeout(function () { window.location.href = '/Result'; }, 1600);
     } // if
     else {
-        pdf = './download/' + nodeNames[indexXL] + '.pdf';
+        $("video").removeAttr('data-src');
+        $("video").removeAttr('src');
+
+
         var bayesnet_solution = $(".bayesnet-solution > table > tbody").empty();
         bayesnet_solution.append('<tr>' +
             '<td class="w-50"><strong class="fs-1">' + nodeNames[indexXL] + '</strong></td>' +
-            '<td class="w-50"><strong class="fs-1">' + '<a href="./download/' + nodeNames[indexXL] + '.pdf" target="_blank">Open in new window</a>' + '</strong></td>' +
+            '<td class="w-50"><strong class="fs-1">' + '<a href="./download/' + nodeNames[indexXL] + '.mp4" target="_blank">Open in new window</a>' + '</strong></td>' +
             '</tr>'
         );
+
+        // ------------  embedded Video --------
+        var video = document.getElementById('solutionVideo');
+        var source = document.createElement('source');
+
+        source.setAttribute('src', './download/' + nodeNames[indexXL] + '.mp4');
+        source.setAttribute('type', 'video/mp4');
+
+        video.innerHTML = '';
+        video.appendChild(source);
+        video.pause();
+        video.load();
+        //------------------------------------------
+
+        // ------------  embedded PDF --------
+        // pdf = './download/' + nodeNames[indexXL] + '.pdf';
+        // var bayesnet_solution = $(".bayesnet-solution > table > tbody").empty();
+        // bayesnet_solution.append('<tr>' +
+        //     '<td class="w-50"><strong class="fs-1">' + nodeNames[indexXL] + '</strong></td>' +
+        //     '<td class="w-50"><strong class="fs-1">' + '<a href="./download/' + nodeNames[indexXL] + '.pdf" target="_blank">Open in new window</a>' + '</strong></td>' +
+        //     '</tr>'
+        // );
+        //-------------------------------------
+
     } // else
 
 } // FindNextSol
@@ -229,7 +256,7 @@ $(document).ready(function () {
         $("#allDynamic").hide();
         // setTimeout(function () { location.reload(); }, 1600);
         // go to upload page
-        var solved = 1 ;
+        var solved = 1;
         sessionStorage.setItem('actionArray', JSON.stringify(actionArray));
         sessionStorage.setItem('solved', JSON.stringify(solved));
         setTimeout(function () { window.location.href = '/Result'; }, 1600);

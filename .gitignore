@@ -10,6 +10,7 @@
 /volumes/Flask/src/Result.csv
 /volumes/Flask/src/output.xml
 /volumes/Flask/src/Combinations.txt
+/volumes/Flask/static/download/*
 ./volumes/mongodb/*
 .env.backup
 .phpunit.result.cache

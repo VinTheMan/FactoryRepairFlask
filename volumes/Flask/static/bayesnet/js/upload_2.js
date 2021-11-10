@@ -37,7 +37,6 @@ $(document).ready(function () {
     $("#factoryHere").val(factoryy);
     $("#questionHere").val(questionn);
     if (sessionStorage.getItem('solutionn') != null) {
-        $("#solutionHere").show();
         $("#solutionHere").val(JSON.parse(sessionStorage.getItem('solutionn')));
     } //if
     else {
