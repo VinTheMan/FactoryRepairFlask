@@ -12,6 +12,8 @@ var _PDF_DOC,
     _CANVAS = document.querySelector('#pdf-canvas');
 var pdf = "";
 
+var actionArray = [] ;
+
 function FindNextSol() {
     var indexXL = -1;
     for (let a = 0; a < nodeNames.length - 1; a++) {
@@ -33,7 +35,8 @@ function FindNextSol() {
         console.log('report new solution or no solution');
 
         $('tr[node_id="Solved"]').find('li[value_index="0"]').find('input').click();
-        sessionStorage.setItem('is_there_solutionn', JSON.stringify('no')); // test
+        sessionStorage.setItem('is_there_solutionn', JSON.stringify('no'));
+        sessionStorage.removeItem('solutionn');
         $("#allDynamic").hide();
         notyf.error({
             message: "No Solution Found !",
@@ -46,7 +49,10 @@ function FindNextSol() {
             }
         });
 
+        var not_solve = 0 ;
         // go to upload page
+        sessionStorage.setItem('actionArray', JSON.stringify(actionArray));
+        sessionStorage.setItem('solved', JSON.stringify(not_solve));
         setTimeout(function () { window.location.href = '/Result'; }, 1600);
     } // if
     else {
@@ -193,6 +199,7 @@ $(document).ready(function () {
         } // if
         else {
             $('tr[node_id="' + currentSolutionName + '"]').find('li[value_index="1"]').find('input').click();
+            actionArray.push(currentSolutionName);
         } // else
 
         $("#allDynamic").hide();
@@ -222,6 +229,9 @@ $(document).ready(function () {
         $("#allDynamic").hide();
         // setTimeout(function () { location.reload(); }, 1600);
         // go to upload page
+        var solved = 1 ;
+        sessionStorage.setItem('actionArray', JSON.stringify(actionArray));
+        sessionStorage.setItem('solved', JSON.stringify(solved));
         setTimeout(function () { window.location.href = '/Result'; }, 1600);
     });
 

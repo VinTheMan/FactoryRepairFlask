@@ -20,20 +20,24 @@
     <br />
     <form id="questionForm" class="question needs-validation" novalidate>
         <h1> Question </h1>
-        <input id="input_question" class="form-control" list="question" type="text" placeholder="Question" required>
-        <div class="invalid-feedback">
+        <input id="input_question" class="form-control mb-2" type="text" placeholder="Question" autocomplete="off" required>
+        <div id="feedBackforQ" class="invalid-feedback">
             Please input a question.
         </div>
-        <datalist id="question">
-            <option value="SmartDebug"></option>
-            <option value="Cisco"></option>
-            <option value="CC"></option>
-        </datalist>
+        <ul id="myMenu" class="list-group list-group-flush" style="display: none;">
+        </ul>
 
         <input id="submitBtn" type="submit" value="Submit">
         <button id="submitBtnHidden" class="d-none" type="submit">Submit form</button>
     </form>
-    <br />
+
+    <div class="w-100" style="height: 5ch;"></div><!-- </div>breaks cols to a new line-->
+
+    <div class="row w-100 gy-0 gx-0 justify-content-center">
+        <!-- <button id="newQuestion" class="col col-auto btn btn-outline-secondary">
+            Create New Question
+        </button> -->
+    </div>
 
     <script src="{{url_for('static', filename='/bayesnet/js/question_2.js')}}"></script>
 </body>

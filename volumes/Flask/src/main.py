@@ -21,6 +21,7 @@ import math
 from werkzeug.exceptions import HTTPException
 
 from pymongo import MongoClient
+from pymongo import errors
 
 # to connect DB
 from NiFi_mongo_settings import mongo_repair_setting, mongo_user_setting
@@ -59,20 +60,21 @@ def Convert(a):
     return res_dct
 
 def func_load_mongo_settings():
+    global g_config_collection
     global mongo_db_repair 
     global g_mongo_DailyRepairConfig_collection, g_mongo_Repair_Config_collection, g_mongo_DailyRepairMember_collection
     global g_test
-    # connect to Server and open DB
-    #mongo_db_repair = mongo_repair_setting()
-    #mongo_db_user = mongo_user_setting()
+
     mongo_db_client = MongoClient(host='mongodb', port=27017, username='root', password='root', authSource='admin')
     mongo_db_repair = mongo_db_client['admin']
 
     # get 'DailyRepairContent' collection
     g_mongo_DailyRepairConfig_collection = mongo_db_repair['DailyRepairContent']
+    
     g_test = mongo_db_repair['Test']
     # get 'Repair_Config' collection
     g_mongo_Repair_Config_collection = mongo_db_repair['Repair_Config']
+    g_config_collection = mongo_db_repair['Config']
 
     # get 'DailyRepairMember' collection
     g_mongo_DailyRepairMember_collection = mongo_db_repair['DailyRepairMember']
@@ -518,6 +520,22 @@ def func_Return_XML_From_MongoDocument():
 #     #return json.dumps({key_field:g_mongo_DailyRepairConfig_collection.distinct(key_field)}),550
 #     return jsonify(data=xml_str),200
 
+@app.route("/GetErrorName", methods=['POST'])
+def func_Get_Distinct_Of_ErrorName_MongoDocument():
+    # Return except e or "ErrorName Not Found" or ErrorName_list
+    func_load_mongo_settings()
+    ErrorName_list = []
+    try:
+        result = g_test.distinct('ErrorName')
+    except errors.ConnectionFailure as e:
+        return jsonify(message = e),420
+    if result == None:
+        return jsonify(message = "ErrorName Not Found"),420
+    for tmp in result:
+        ErrorName_list.append(tmp)
+
+    return jsonify(message = ErrorName_list) ,200
+
 @app.route("/Getkey",methods=['POST'])
 def func_Get_Distinct_Of_Key_MongoDocument():
     key_field = request.get_json(force=True)
@@ -652,4 +670,90 @@ def member():
     else:
         return jsonify(message='login Failed w/ user: Jonathan !'),420
 
+@app.route("/UpdateErrorNameAndActions", methods=['POST']) # 新增erro name時
+def func_Update_ErrorName_And_Actions():
+    # input ErrorName , Actions  <-- list
+    # return except: e or "Success"
+    func_load_mongo_settings()
+    result = request.get_json()
+    update_query={"ErrorName": result['ErrorName']}
+    document={"Actions":result['Actions']}
+    try:
+        g_config_collection.find_one_and_update(update_query, {"$set":document},  upsert=True)
+    except errors.ConnectionFailure as e:
+        return jsonify(message = e) ,420
+    return jsonify(message = "Success") ,200
 
+@app.route("/GetErrorNameConfig", methods=['POST'])
+def func_Get_ErrorName_Config():
+    # input ErrorName
+    # return except e or "ErrorName Not Found or doc
+    func_load_mongo_settings()
+    result = request.get_json()
+    update_query={"ErrorName": result['ErrorName']}
+    try:
+        ErrorName_doc = g_config_collection.find_one(update_query)
+    except errors.ConnectionFailure as e:
+        return jsonify(message = e),420
+    if ErrorName_doc.count() == 0 or ErrorName_doc == None:
+        return jsonify(message = "ErrorName Not Found"),420
+    Action_list = ErrorName_doc.get("Actions", [])
+    # doc = {"ErrorName": result['ErrorName'],"Actions":Action_list}
+    doc = Action_list
+    return jsonify(message = doc) ,200
+
+@app.route("/DeleteAction", methods=['POST'])
+def func_Delete_Action():
+    # input ErrorName , Action
+    # return except: e or "ErrorName Not Found" or "Success"
+    # Base on ErrorName to delete one Action
+    func_load_mongo_settings()
+    result = request.get_json()
+    update_query={"ErrorName": result['ErrorName']}
+    #ErrorName_doc = g_config_collection.find_one(update_query)
+    try:
+        ErrorName_doc = g_config_collection.find_one(update_query)
+    except errors.ConnectionFailure as e:
+        return jsonify(message = e) ,420
+    if ErrorName_doc.count() == 0 or ErrorName_doc == None:
+        return jsonify(message = "ErrorName Not Found") ,420
+    RemoveAction = result['Action']
+    Action_list = ErrorName_doc.get("Actions", [])
+    New_Action_list = []
+    for Action in Action_list:
+        if Action != RemoveAction:
+            New_Action_list.append(Action)
+    document={"Actions":New_Action_list}
+    #g_config_collection.find_one_and_update(update_query, {"$set":document},  upsert=True)
+    try:
+        result = g_config_collection.find_one_and_update(update_query, {"$set":document},  upsert=True)
+    except errors.ConnectionFailure as e:
+        return jsonify(message = e) ,420
+    return jsonify(message = "Success") ,200
+
+@app.route("/AddAction" , methods=['POST']) #無解 欲新增Action時
+def func_Add_Action():
+    # input ErrorName , Action
+    # return except: e or "ErrorName Not Found" or "Success"
+    # Base on ErrorName to Add one Action
+    func_load_mongo_settings()
+    result = request.get_json()
+    update_query={"ErrorName": result['ErrorName']}
+    #ErrorName_doc = g_config_collection.find_one(update_query)
+    try:
+        ErrorName_doc = g_config_collection.find_one(update_query)
+    except errors.ConnectionFailure as e:
+        return jsonify(message = e) ,420
+    if ErrorName_doc.count() == 0 or ErrorName_doc == None:
+        return jsonify(message = "ErrorName Not Found") ,420
+    AddAction = result['Action']
+    Action_list = ErrorName_doc.get("Actions", [])
+    if AddAction not in Action_list:
+        Action_list.append(AddAction)
+    document={"Actions":Action_list}
+    #g_config_collection.find_one_and_update(update_query, {"$set":document},  upsert=True)
+    try:
+        result = g_config_collection.find_one_and_update(update_query, {"$set":document},  upsert=True)
+    except errors.ConnectionFailure as e:
+        return jsonify(message = e),420
+    return jsonify(message = "Success"),200
