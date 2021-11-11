@@ -32,11 +32,15 @@ $(document).ready(function () {
     var datee = output;
     var factoryy = JSON.parse(sessionStorage.getItem('factoryy'));
     var questionn = JSON.parse(sessionStorage.getItem('questionn'));
-
+    var actionArray = JSON.parse(sessionStorage.getItem('actionArray'));
     $("#dateHere").val(datee);
     $("#factoryHere").val(factoryy);
     $("#questionHere").val(questionn);
     if (sessionStorage.getItem('solutionn') != null) {
+        for( let a = 0 ; a < actionArray.length - 1 ; a++ ) {
+            $("#solutionHere").before( '<input type="text" class="form-control mt-0" style="color: black;" placeholder="Solution" value="' + actionArray[a] + '"disabled/>' );
+        } // for
+
         $("#solutionHere").val(JSON.parse(sessionStorage.getItem('solutionn')));
     } //if
     else {

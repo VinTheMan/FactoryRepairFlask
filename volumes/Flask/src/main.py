@@ -545,8 +545,8 @@ def func_Get_Distinct_Of_Key_MongoDocument():
     #     key_field = 'Date'
     # result = g_test.distinct(key_field)
     
-    print("--------------//------------ 4 ", file=sys.stderr)
-    print(key_field, file=sys.stderr)
+    # print("--------------//------------ 4 ", file=sys.stderr) # test
+    # print(key_field, file=sys.stderr) # test
     return jsonify(message="hi"),200
 
 @app.route("/FactoryRepair")
@@ -636,6 +636,11 @@ def result():
     global g_isn
     global g_solution
     return render_template("upload_2.html", Date=g_date, Project=g_project, Factory=g_factory, ISN=g_isn, Solution=g_solution)
+
+@app.route("/create_question")
+def questioncreatpage():
+    return render_template("questionCreate.html")
+
 
 @app.route("/RepairMember", methods=['POST'])
 def member():

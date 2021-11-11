@@ -83,6 +83,11 @@ $(document).ready(function () {
             })
     })();
 
+    $("#newQuestion").on("click", function (e) {
+        e.preventDefault();
+        self.location.href = '/create_question';
+    });
+
     $("#submitBtn").on("click", function (e) {
         e.preventDefault();
         $("#submitBtnHidden").click();
@@ -99,7 +104,6 @@ $(document).ready(function () {
             var indexx = -1;
             for (let i = 0; i < $error_names.length; i++) {
                 if ($error_names[i] === $("#input_question").val()) {
-
                     indexx = i;
                 } // if
             } // for
