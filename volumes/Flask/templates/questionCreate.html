@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{url_for('static', filename='/css/style.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/style.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/notyf.min.css')}}">
     <title>FactroyRapair Question</title>
 </head>
 
@@ -17,6 +18,10 @@
 
     <div class="head">FactoryRepair New</div>
     <br />
+    <div class="col col-auto">
+        <input class="btn btn-outline-secondary btn-lg col col-auto" onclick="self.location.href='/question'"
+            type="button" value="Back to Issue Selection" />
+    </div>
     <ul class="nav nav-tabs row justify-content-center" id="myTab" role="tablist">
         <li class="nav-item col col-auto" role="presentation">
             <button class="nav-link active" id="new_issue_tab" data-bs-toggle="tab" data-bs-target="#issue"
@@ -37,8 +42,8 @@
                 </div>
                 <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
                 <div class="col-5">
-                    <input id="input_issue" class="form-control text-center" type="text" placeholder="Issue" autocomplete="off"
-                        required>
+                    <input id="input_issue" class="form-control text-center" type="text" placeholder="Issue"
+                        autocomplete="off" required>
                     <div id="feedBackforQ" class="invalid-feedback">
                         Please input an issue.
                     </div>
@@ -49,8 +54,8 @@
                 </div>
                 <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
                 <div class="col-5">
-                    <input id="input_action" class="input_action form-control text-center" type="text" placeholder="Action" autocomplete="off"
-                        required>
+                    <input id="input_action" class="input_action form-control text-center" type="text"
+                        placeholder="Action" autocomplete="off" required>
                     <div class="invalid-feedback">
                         Please input a action.
                     </div>
@@ -74,10 +79,53 @@
         </div>
         <div class="tab-pane fade row justify-content-center" id="solutions" role="tabpanel"
             aria-labelledby="add_solution_tab">
-
+            <form id="addActionForm" class="row justify-content-center needs-validation" novalidate>
+                <div class="col-auto">
+                    <label for="exit_issue_input" class="form-label">Existing Issue</label>
+                </div>
+                <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
+                <div class="col-5">
+                    <input id="exit_issue_input" class="form-control text-center" type="text"
+                        placeholder="Existing Issue" autocomplete="off" required>
+                    <div id="feedBackforQ" class="invalid-feedback">
+                        Please choose an issue.
+                    </div>
+                    <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
+                    <ul id="myMenu" class="list-group list-group-flush" style="display: none;">
+                    </ul>
+                </div>
+                <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
+                <div class="col-auto">
+                    <label for="add_action" class="form-label">Add Action</label>
+                </div>
+                <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
+                <div class="col-5">
+                    <input id="add_action" class="add_action form-control text-center" type="text" placeholder="Action"
+                        autocomplete="off" required>
+                    <div class="invalid-feedback">
+                        Please input a action.
+                    </div>
+                </div>
+                <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
+                <!-- <div id="insertB4" class="col-auto">
+                    <button id="moreAction" class="form-control btn btn-secondary" type="button">More Action</button>
+                </div> -->
+                <!-- <div class="col-auto">
+                    <input class="form-control" type="file" accept=".mp4" id="uploadfile" name="NewVideoUpload"
+                        required>
+                    <div class="invalid-feedback">
+                        Please upload a MP4 video.
+                    </div>
+                </div> -->
+                <div class="w-100" style="height: 5ch;"></div><!-- </div>breaks cols to a new line-->
+                <div class="col-auto">
+                    <button id="submitBtn" class="form-control btn btn-primary" type="submit">Submit</button>
+                </div>
+            </form>
         </div>
     </div>
 
+    <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/js/notyf.min.js')}}"></script>
     <script src="{{url_for('static', filename='/bayesnet/js/questionCreate.js')}}"></script>
 </body>
 

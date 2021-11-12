@@ -54,6 +54,7 @@ $(document).ready(function () {
         success: function (response) {
             $error_names = response.message;
             console.log($error_names); // test
+            $("#myMenu").empty();
             for (let a = 0; a < $error_names.length; a++) {
                 $("#myMenu").append('<a class="listBtn list-group-item list-group-item-action list-group-item-warning" href="#">' +
                     $error_names[a] + '</a>');

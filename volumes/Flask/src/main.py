@@ -527,6 +527,7 @@ def func_Get_Distinct_Of_ErrorName_MongoDocument():
     ErrorName_list = []
     try:
         result = g_test.distinct('ErrorName')
+        # result = g_config_collection.distinct('ErrorName')
     except errors.ConnectionFailure as e:
         return jsonify(message = e),420
     if result == None:
@@ -686,8 +687,8 @@ def func_Update_ErrorName_And_Actions():
     try:
         g_config_collection.find_one_and_update(update_query, {"$set":document},  upsert=True)
     except errors.ConnectionFailure as e:
-        return jsonify(message = e) ,420
-    return jsonify(message = "Success") ,200
+        return jsonify(message = e),420
+    return jsonify(message = "Success"),200
 
 @app.route("/GetErrorNameConfig", methods=['POST'])
 def func_Get_ErrorName_Config():
@@ -700,7 +701,7 @@ def func_Get_ErrorName_Config():
         ErrorName_doc = g_config_collection.find_one(update_query)
     except errors.ConnectionFailure as e:
         return jsonify(message = e),420
-    if ErrorName_doc.count() == 0 or ErrorName_doc == None:
+    if ErrorName_doc == None:
         return jsonify(message = "ErrorName Not Found"),420
     Action_list = ErrorName_doc.get("Actions", [])
     # doc = {"ErrorName": result['ErrorName'],"Actions":Action_list}
@@ -717,10 +718,11 @@ def func_Delete_Action():
     update_query={"ErrorName": result['ErrorName']}
     #ErrorName_doc = g_config_collection.find_one(update_query)
     try:
-        ErrorName_doc = g_config_collection.find_one(update_query)
+        # ErrorName_doc = g_config_collection.find_one(update_query)
+        ErrorName_doc = g_test.find_one(update_query)
     except errors.ConnectionFailure as e:
         return jsonify(message = e) ,420
-    if ErrorName_doc.count() == 0 or ErrorName_doc == None:
+    if ErrorName_doc == None:
         return jsonify(message = "ErrorName Not Found") ,420
     RemoveAction = result['Action']
     Action_list = ErrorName_doc.get("Actions", [])
@@ -744,12 +746,12 @@ def func_Add_Action():
     func_load_mongo_settings()
     result = request.get_json()
     update_query={"ErrorName": result['ErrorName']}
-    #ErrorName_doc = g_config_collection.find_one(update_query)
     try:
-        ErrorName_doc = g_config_collection.find_one(update_query)
+        # ErrorName_doc = g_config_collection.find_one(update_query)
+        ErrorName_doc = g_test.find_one(update_query)
     except errors.ConnectionFailure as e:
         return jsonify(message = e) ,420
-    if ErrorName_doc.count() == 0 or ErrorName_doc == None:
+    if ErrorName_doc == None:
         return jsonify(message = "ErrorName Not Found") ,420
     AddAction = result['Action']
     Action_list = ErrorName_doc.get("Actions", [])
