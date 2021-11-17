@@ -6,6 +6,7 @@ from flask import render_template, make_response
 from flask import session
 from flask import flash
 from flask import jsonify
+from flask import send_from_directory
 import json
 import os
 import time
@@ -19,6 +20,7 @@ import base64
 import math
 
 from werkzeug.exceptions import HTTPException
+from werkzeug.utils import secure_filename
 
 from pymongo import MongoClient
 from pymongo import errors
@@ -33,7 +35,9 @@ from NiFi_mongo_settings import mongo_repair_setting, mongo_user_setting
 from FactoryRepair_authentication import func_Check_MemberData
 
 # global variables
-PDF_FOLDER = os.path.join('static', 'download')
+UPLOAD_FOLDER = os.path.join('static', 'download')
+ALLOWED_EXTENSIONS = set(['pdf', 'mp4']) #限制上傳文件格式
+
 mongo_db_repair = None
 
 g_config = None
@@ -133,7 +137,11 @@ def func_Get_RepairSolution(mongo_Repair_Config_collection):
     	g_solution_heading_dict = g_DocContent['Solution']
     	g_solution_heading_list = list(g_DocContent['Solution'].keys())
 
-
+def allowed_file(filename):
+    if '.' in filename and filename.rsplit('.', 1)[1].lower() == "pdf":
+        return ".pdf"
+    if '.' in filename and filename.rsplit('.', 1)[1].lower() == "mp4":
+        return ".mp4"
 
 app=Flask(
     __name__,
@@ -145,13 +153,14 @@ app=Flask(
 #app.secret_key = '12345'
 app.secret_key = os.urandom(24)
 
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # for flash 
 #SECRET_KEY = '12345'
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port=1234, debug=False)
 
-@app.route("/GetXML",methods=['POST']) # get fake data
+@app.route("/GetXML",methods=['POST']) # test get fake data
 def func_Get_XML_And_Return_String():
     #return json.dumps({key_field:g_mongo_DailyRepairConfig_collection.distinct(key_field)}),550
     str='<BIF VERSION="0.3">\n<NETWORK>\n<NAME>New Network</NAME>\n<VARIABLE TYPE="nature">\n<NAME>Factory2</NAME>\n<OUTCOME>No</OUTCOME>\n<OUTCOME>Yes</OUTCOME>\n</VARIABLE>\n<VARIABLE TYPE="nature">\n<NAME>FixPosition</NAME>\n<OUTCOME>No</OUTCOME>\n<OUTCOME>Yes</OUTCOME>\n</VARIABLE>\n<VARIABLE TYPE="nature">\n<NAME>B0B1</NAME>\n<OUTCOME>No</OUTCOME>\n<OUTCOME>Yes</OUTCOME>\n</VARIABLE>\n<VARIABLE TYPE="nature">\n<NAME>Route</NAME>\n<OUTCOME>No</OUTCOME>\n<OUTCOME>Yes</OUTCOME>\n</VARIABLE>\n<VARIABLE TYPE="nature">\n<NAME>M0M1</NAME>\n<OUTCOME>No</OUTCOME>\n<OUTCOME>Yes</OUTCOME>\n</VARIABLE>\n<VARIABLE TYPE="nature">\n<NAME>New1</NAME>\n<OUTCOME>No</OUTCOME>\n<OUTCOME>Yes</OUTCOME>\n</VARIABLE>\n<VARIABLE TYPE="nature">\n<NAME>Solved\n</NAME>\n<OUTCOME>No</OUTCOME>\n<OUTCOME>Yes</OUTCOME>\n</VARIABLE>\n<DEFINITION>\n<FOR>Factory2</FOR>\n<TABLE>\n0.48717948717949 0.51282051282051\n</TABLE>\n</DEFINITION>\n<DEFINITION>\n<FOR>FixPosition</FOR>\n<GIVEN>Factory2</GIVEN>\n<TABLE>\n0.47368421052632 0.52631578947368\n0.9 0.1\n</TABLE>\n</DEFINITION>\n<DEFINITION>\n<FOR>B0B1</FOR>\n<GIVEN>Factory2</GIVEN>\n<TABLE>\n0.71052631578947 0.28947368421053\n0.675 0.325\n</TABLE>\n</DEFINITION>\n<DEFINITION>\n<FOR>Route</FOR>\n<GIVEN>Factory2</GIVEN>\n<TABLE>\n0.78947368421053 0.21052631578947\n0.76666666666667 0.23333333333333\n</TABLE>\n</DEFINITION>\n<DEFINITION>\n<FOR>M0M1</FOR>\n<GIVEN>Factory2</GIVEN>\n<TABLE>\n0.82894736842105 0.17105263157895\n0.8125 0.1875\n</TABLE>\n</DEFINITION>\n<DEFINITION>\n<FOR>New1</FOR>\n<GIVEN>Factory2</GIVEN>\n<TABLE>\n0.83157894736842 0.16842105263158\n0.85 0.15\n</TABLE>\n</DEFINITION>\n<DEFINITION>\n<FOR>Solved\n</FOR>\n<GIVEN>FixPosition</GIVEN>\n<GIVEN>B0B1</GIVEN>\n<GIVEN>Route</GIVEN>\n<GIVEN>M0M1</GIVEN>\n<GIVEN>New1</GIVEN>\n<TABLE>\n1 0\n0 1\n0 1\n0 0\n0 1\n0 0\n0 0\n0 0\n0 1\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 1\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n</TABLE>\n</DEFINITION>\n</NETWORK>\n</BIF>'
@@ -205,42 +214,6 @@ def main():
     # print("finial_solution : ", g_solution)
     return render_template("index.html")  
 
-@app.route("/getPDF",methods=['GET'])
-def getPDF():
-    pdf_filename = request.args.get('pdf_name') + '.pdf'
-    pdf_file = os.path.join(PDF_FOLDER, pdf_filename)
-    with open(pdf_file, 'r') as f: 
-        pdf_base64 = base64.b64encode(f.read()).decode("utf-8")
-    return jsonify(result=pdf_base64),200
-
-@app.route("/upload")
-def upload():
-    global g_date
-    global g_factory
-    global g_project
-    global g_isn
-    global g_solution
-
-    # g_solution = request.args.get("finial_solution","")
-    # if g_solution != "None":
-    #     g_solved = 1
-
-    print("------ upload -----")
-    print(g_date)
-    print(g_factory)
-    print(g_project)
-    print(g_isn)
-    print("finial_solution : ", g_solution)
-    print("------ ---- -----")
-    # render_template("upload_3.html", Date=g_date, Project=g_project, Factory=g_factory, ISN=g_isn, Solution=g_solution)
-    return jsonify(message="upload_success"),200
-    # return render_template("IT_result.html", Date=g_date, Project=g_project, Factory=g_factory, ISN=g_isn, Solution=g_solution)
-
-@app.route("/test")
-def test():
-    name = request.args.get('name')
-    return 'My name is {}'.format(name)
-
 @app.route("/InsertRecord",methods=['POST'])
 def func_Insert_Record_MongoDocument():
     func_load_mongo_settings()
@@ -253,32 +226,43 @@ def func_Insert_Record_MongoDocument():
     g_test.insert(doc)
     return jsonify(message="Insert"),200
 
-@app.route("/GetCSV",methods=['POST'])
+@app.route("/RetrunXML", methods=['POST'])
 def func_Return_XML_From_MongoDocument():
     func_load_mongo_settings()
     query_condition1 = request.form.get('condition1')
     query_condition2 = request.form.get('condition2')
+
     if query_condition1 == None or query_condition1 == "":
         query_condition1 = "F1"
     if query_condition2 == None or query_condition2 == "":
-        query_condition2 = "Cisco"
+        query_condition2 = "AC"    
+    try:
+        result_config = g_config_collection.find_one({"ErrorName":query_condition2})
+    except errors.ConnectionFailure as e:
+        return jsonify(message = e),420
     f_Combinations = open('Combinations.txt', 'w')
-    result = g_test.find({"ErrorName":query_condition2})
-    #result = g_mongo_DailyRepairConfig_collection_test.find()
-    #Filter by ErrorName Config
-    ###
-    if result.count() == 0 or result == None :
-        f_Combinations.write('ResultOfRecord = None')
+    if result_config == None :
+        f_Combinations.write('ResultOfConfig = None')
         f_Combinations.close()
-        return
+        return jsonify(message = "ErrorName Not Found") ,420
+    result_record = g_test.find({"ErrorName":query_condition2})
     Action_list = []
-    for doc in result:
-        dict = doc["Solution"]
-        if doc['Factory'] == query_condition1:
-            dict[query_condition1] = 1
-        else:
-            dict[query_condition1] = 0
-        Action_list.append(dict)
+    tmp_dict = {}
+    if result_record.count() == 0 or result_record == None :
+        f_Combinations.write('ResultOfRecord = None')
+        tmp_dict[query_condition1] = 0
+        tmp_dict["Solved"] = 0
+        for Action in result_config.get("Actions", []):
+            tmp_dict[Action] = 0
+        Action_list.append(tmp_dict)
+    else:
+        for doc in result_record:
+            dict = doc["Solution"]
+            if doc['Factory'] == query_condition1:
+                dict[query_condition1] = 1
+            else:
+                dict[query_condition1] = 0
+            Action_list.append(dict)
     ###
     df = pd.DataFrame(Action_list)
     df = df.fillna(0)
@@ -286,6 +270,29 @@ def func_Return_XML_From_MongoDocument():
     cols.insert(0,cols.pop(cols.index(query_condition1)))
     cols.insert(len(cols)-1,cols.pop(cols.index("Solved")))
     df.to_csv("QueryResult.csv")
+    config_list = result_config.get("Actions", [])
+    filter_col = set(cols) ^ set(config_list)
+    ###
+    filter_str = ""
+    f_Combinations.write('filter_str = \n')
+    for remove_col in filter_col:
+        if remove_col != query_condition1 and remove_col != 'Solved':
+            filter_str+= "| `" + remove_col + "` > 0"
+
+    filter_str = filter_str.replace("|", "", 1)
+    f_Combinations.write(filter_str)
+    f_Combinations.write('\n')
+    f_Combinations.write('done =============================== \n')
+    if filter_str != "":
+        if len(df.query(filter_str)) > 0:
+            df.drop(df.query(filter_str).index, inplace=True)
+    for remove_col in filter_col:
+        if remove_col != query_condition1 and remove_col != 'Solved':    
+            df = df.drop(remove_col , axis=1)
+    cols = df.columns.tolist()
+    cols.insert(0,cols.pop(cols.index(query_condition1)))
+    cols.insert(len(cols)-1,cols.pop(cols.index("Solved")))
+    df.to_csv("FilterQueryResult.csv")
     # build second layer 真值表
     NumberofAction = len(cols)-2
     f_Combinations.write('NumberofAction = ')
@@ -299,6 +306,7 @@ def func_Return_XML_From_MongoDocument():
     length_str = '{:0' + str(NumberofAction) + 'b}'
     f_Combinations.write('Start Combinations\n')
     Combinations_list = []
+    Zero_list = []
     for i in range(Combinations):
         b = length_str.format(i)
         f_Combinations.write(str(b))
@@ -325,11 +333,15 @@ def func_Return_XML_From_MongoDocument():
             f_Combinations.write('\n')
             temp_dict = Convert(One_condition.split(','))
             temp_dict['Solved'] = 0
-            Action_list.append(temp_dict)
-    
-    df_FF = pd.DataFrame(Action_list)
+            Zero_list.append(temp_dict)
+    df_zero = pd.DataFrame(Zero_list)
+    df.to_csv("df.csv")
+    df_zero.to_csv("df_zero.csv")
+    df_FF = pd.concat([df,df_zero],axis=0)
+    df_FF = df_FF.reset_index(drop=True)
     df_FF = df_FF[cols]
     df_FF = df_FF.drop([query_condition1], axis=1)
+    df_FF.to_csv("df_FF.csv")
     FF_cols = df_FF.columns.tolist()
     df_FF = df_FF[FF_cols].fillna(0).apply(pd.to_numeric)
     #df_FF = df_FF.to_numeric(downcast='float')
@@ -339,12 +351,9 @@ def func_Return_XML_From_MongoDocument():
     #df_final=df[cols]
     df_final=df_FF[FF_cols]
     df_final= df_final.sort_values(by=FF_cols[1:], ascending=True)
-    df_final['All'] = df_final['Solved']
-    df_final['solution_count'] =  df_final.groupby(FF_cols[:-1])["All"].transform('count')
-    df_final['All_Count'] =  df_final.groupby(FF_cols)["All"].transform('count')
     df_final.to_csv("Result.csv", index=False)
     #
-    RowsCount = len(df_final.index)
+    RowsCount = len(df.index)
     xml_str = ""
     Header = '<BIF VERSION="0.3">\n<NETWORK>\n<NAME>New Network</NAME>\n'
     End = '</NETWORK>\n</BIF>'
@@ -363,6 +372,10 @@ def func_Return_XML_From_MongoDocument():
     First_Layer_P1_Count = RowsCount-First_Layer_P0_Count
     P0 = First_Layer_P0_Count/RowsCount
     P1 = 1-P0
+    # test record not exist
+    if result_record.count() == 0 or result_record == None:
+        P0 = 0
+        P1 = 0
     First_Layer_Body += str(P0) + ' ' + str(P1) + '\n'
     First_Layer_Body += '</TABLE></DEFINITION>\n'
     xml_str+=First_Layer_Body
@@ -407,12 +420,6 @@ def func_Return_XML_From_MongoDocument():
             Third_Layer_Body +=str(1-P001) + ' ' + str(P001) + '\n'
         else:
             Third_Layer_Body +=str(0) + ' ' + str(0) + '\n'
-    #for index, row in df_final.iterrows():
-    #    if row['Solved'] == 1:
-    #        P000 = row['solution_count'] / row['All_Count']
-    #        Third_Layer_Body +=str(1-P000) + ' ' + str(P000) + '\n'
-    #    else:
-    #        Third_Layer_Body +=str(0) + ' ' + str(0) + '\n'
     Third_Layer_Body +='</TABLE></DEFINITION>'
     #for row in df_final.rows:
     xml_str+=Third_Layer_Body
@@ -423,102 +430,7 @@ def func_Return_XML_From_MongoDocument():
     f.close()
     f_Combinations.close()
     #
-    #return json.dumps({key_field:g_mongo_DailyRepairConfig_collection.distinct(key_field)}),550
     return jsonify(data=xml_str),200
-
-# @app.route("/GetCSV",methods=['POST']) # bac
-# def func_Get_CSV_From_MongoDocument():
-#     func_load_mongo_settings()
-#     query_condition1 = request.form.get('condition1')
-#     query_condition2 = request.form.get('condition2')
-#     if query_condition1 == None or query_condition1 == "":
-#         query_condition1 = "F1"
-#     if query_condition2 == None or query_condition2 == "":
-#         query_condition2 = "Cisco"
-#     result = g_test.find({"ErrorName":query_condition2})
-#     # result = g_test.find()
-#     Action_list = []
-#     for doc in result:
-#         dict = doc["Solution"]
-#         if doc['Factory'] == query_condition1:
-#             dict[query_condition1] = 1
-#         else:
-#             dict[query_condition1] = 0
-#         Action_list.append(dict)
-#     df = pd.DataFrame(Action_list)
-#     df = df.fillna(0)
-#     cols = df.columns.tolist()
-#     cols.insert(0,cols.pop(cols.index(query_condition1)))
-#     cols.insert(len(cols)-1,cols.pop(cols.index("Solved")))
-#     df_final=df[cols]
-#     df_final= df_final.sort_values(by=cols[1:], ascending=True)
-#     df_final['All'] = df_final['Solved']
-#     df_final['solution_count'] =  df_final.groupby(cols)["All"].transform('count')
-#     df_final['All_Count'] =  df_final.groupby(cols[:-2])["All"].transform('count')
-#     df_final.to_csv("Result.csv", index=False)
-#     #
-#     RowsCount = len(df_final.index)
-#     xml_str = ""
-#     Header = '<BIF VERSION="0.3">\n<NETWORK>\n<NAME>New Network</NAME>\n'
-#     End = '</NETWORK>\n</BIF>'
-#     xml_str+=Header
-#     for field in cols:
-#         Field_Body ='<VARIABLE TYPE="nature"><NAME>' + field + '</NAME><OUTCOME>No</OUTCOME> <OUTCOME>Yes</OUTCOME></VARIABLE>\n'
-#         xml_str+=Field_Body
-#     First_Layer_list =cols[0]
-#     Second_Layer_list =cols[1:-1]
-#     Third_Layer_list =cols[-1]
-#     #First Layer 
-#     First_Layer_Body = '<DEFINITION><FOR>' + query_condition1 + '</FOR><TABLE>\n'
-#     mask1 = df_final[query_condition1] == 0
-#     mask2 = df_final[query_condition1] == 1
-#     First_Layer_P0_Count = len(df_final[(mask1)])
-#     First_Layer_P1_Count = RowsCount-First_Layer_P0_Count
-#     P0 = First_Layer_P0_Count/RowsCount
-#     P1 = 1-P0
-#     First_Layer_Body += str(P0) + ' ' + str(P1) + '\n'
-#     First_Layer_Body += '</TABLE></DEFINITION>\n'
-#     xml_str+=First_Layer_Body
-#     Second_Layer_Body = ""
-#     #Second Layer
-    
-#     for field2 in Second_Layer_list:
-#         Second_Layer_Body +='<DEFINITION><FOR>' + field2 + '</FOR>\n'
-#         Second_Layer_Body +='<GIVEN>' + query_condition1 + '</GIVEN>'
-#         Second_Layer_Body +='<TABLE>\n'
-#         mask3 = df_final[field2] == 0
-#         if len(df_final[(mask1 & mask3)]) >0:
-#             P00= len(df_final[(mask1 & mask3)])/ len(df_final[(mask1)])
-#         else:
-#             P00 = 0
-#         if len(df_final[(mask2 & mask3)]) >0:
-#             P10= len(df_final[(mask2 & mask3)])/ len(df_final[(mask2)])
-#         else:
-#             P10 = 0
-#         Second_Layer_Body +=str(P00) + ' ' +str(1-P00) + '\n'
-#         Second_Layer_Body+=str(P10) + ' ' +str(1-P10) + '\n'
-#         Second_Layer_Body +='</TABLE></DEFINITION>'
-#     xml_str+=Second_Layer_Body
-#     #Third Layer    
-#     Third_Layer_Body = ""
-#     Third_Layer_Body +='<DEFINITION><FOR>' + str(cols[-1]) + '</FOR>\n'
-#     for field2 in Second_Layer_list:
-#         Third_Layer_Body +='<GIVEN>' + field2 + '</GIVEN>\n'
-#     Third_Layer_Body +='<TABLE>\n'
-#     for index, row in df_final.iterrows():
-#         P000 = row['solution_count'] / row['All_Count']
-#         Third_Layer_Body +=str(P000) + ' ' + str(1-P000) + '\n'
-#     Third_Layer_Body +='</TABLE></DEFINITION>'
-#     #for row in df_final.rows:
-#     xml_str+=Third_Layer_Body
-#     #
-#     xml_str+=End
-#     f = open('output.xml', 'w')
-#     f.write(xml_str)
-#     f.close()
-#     #
-#     #return json.dumps({key_field:g_mongo_DailyRepairConfig_collection.distinct(key_field)}),550
-#     return jsonify(data=xml_str),200
 
 @app.route("/GetErrorName", methods=['POST'])
 def func_Get_Distinct_Of_ErrorName_MongoDocument():
@@ -526,8 +438,8 @@ def func_Get_Distinct_Of_ErrorName_MongoDocument():
     func_load_mongo_settings()
     ErrorName_list = []
     try:
-        result = g_test.distinct('ErrorName')
-        # result = g_config_collection.distinct('ErrorName')
+        # result = g_test.distinct('ErrorName')
+        result = g_config_collection.distinct('ErrorName')
     except errors.ConnectionFailure as e:
         return jsonify(message = e),420
     if result == None:
@@ -549,85 +461,6 @@ def func_Get_Distinct_Of_Key_MongoDocument():
     # print("--------------//------------ 4 ", file=sys.stderr) # test
     # print(key_field, file=sys.stderr) # test
     return jsonify(message="hi"),200
-
-@app.route("/FactoryRepair")
-def show():
-    global g_date
-    global g_factory
-    global g_project
-    global g_isn
-    global g_solution
-    global g_solved
-    
-    # g_date = request.args.get("d","")
-    # g_date = datetime.datetime.today().strftime("%Y-%m-%d")
-    # g_project = request.args.get("p","")
-    # g_factory = request.args.get("f","")
-    # g_isn = request.args.get("i","")
-    # g_solution = request.args.get("s","")
-    # g_solution = request.args.get("finial_solution","")
-    # if g_solution != None:
-    #     g_solved = 1
-
-    print("------ FactoryRepair -----")
-    print(g_date)
-    print(g_factory)
-    print(g_project)
-    print(g_isn)
-    print("finial_solution : ", g_solution)
-    print(g_solved)
-    print("------ ---- -----")
-
-    #global mongo_db_repair 
-    func_load_mongo_settings()
-    #g_mongo_DailyRepairConfig_collection = mongo_db_repair['DailyRepairContent']
-
-    global g_mongo_DailyRepairConfig_collection
-    global g_mongo_Repair_Config_collection  
-
-    # connect to Server 
-    func_load_mongo_settings()
-
-    # get the current solution list & dict from DB 
-    func_Get_RepairSolution(g_mongo_Repair_Config_collection)
-
-    # check if the new solution exists in currently DB solution; if the solution is new, update the heading list/dict 
-    if g_solution not in g_solution_heading_list:
-        if g_solution != "None":
-            print("[New Solution]:proceeding new solution...")
-            func_Update_DailyRepair_Solution(g_solution, g_mongo_DailyRepairConfig_collection, g_mongo_Repair_Config_collection)
-            func_Get_RepairSolution(g_mongo_Repair_Config_collection)
-        
-    #print(g_solution_heading_dict)
-    #print(g_solution_heading_list)
-
-    # initialize the solution dict for new sample 
-    length_of_solution = len(g_solution_heading_dict)
-
-    for count in range(length_of_solution):
-        key = g_solution_heading_list[count]
-        g_solution_heading_dict[key] = 0
-
-    if g_solution != "None":
-        g_solution_heading_dict[g_solution] = 1
-
-    g_new_sample = {"Date":g_date, "Project":g_project, "Factory":g_factory, "Data":[{"ISN":g_isn, "Solution":g_solution_heading_dict,"Solved":g_solved}]}
-    
-    print(g_new_sample)         
-
-    # update new sample into DB           
-    func_Update_DailyRepair_MongoDocument(g_mongo_DailyRepairConfig_collection, g_new_sample, g_date, g_factory, g_project)     
-    '''
-
-    global g_mongo_DailyRepairConfig_collection
-    
-    #g_new_sample = {"Date":g_date, "Project":g_project, "Factory":g_factory, "Data":[{"ISN":g_isn, "Solution":g_solution,"Solved":g_solved}]}
-    
-    if g_mongo_DailyRepairConfig_collection != None:
-        func_Update_DailyRepair_MongoDocument(g_mongo_DailyRepairConfig_collection, g_new_sample)
-'''
-    # return render_template("IT_result.html", Date=g_date, Project=g_project, Factory=g_factory, ISN=g_isn, Solution=g_solution)
-    return redirect(url_for('entry'))
 
 @app.route("/Result")
 def result():
@@ -681,64 +514,31 @@ def func_Update_ErrorName_And_Actions():
     # input ErrorName , Actions  <-- list
     # return except: e or "Success"
     func_load_mongo_settings()
-    result = request.get_json()
-    update_query={"ErrorName": result['ErrorName']}
-    document={"Actions":result['Actions']}
+    fa = request.form.get('Factory')
+    inputt = request.form.get('Actions')
+    actions = inputt.split(",")
+    errorName = request.form.get('ErrorName')
+    uploaded_files = request.files.getlist("files[]")
+    i = 0
+    # print(actions[i], file=sys.stderr) # test
+    for file in uploaded_files:
+        file_ext = allowed_file(file.filename)
+        file_name = fa + "_" + errorName + "_" + actions[i] + file_ext
+        try:
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], file_name))
+        except errors.ConnectionFailure as e:
+            return jsonify(message = e),420
+        i = i + 1
+
+    update_query={"ErrorName": errorName}
+    document={"Actions":actions}
     try:
         g_config_collection.find_one_and_update(update_query, {"$set":document},  upsert=True)
     except errors.ConnectionFailure as e:
         return jsonify(message = e),420
     return jsonify(message = "Success"),200
 
-@app.route("/GetErrorNameConfig", methods=['POST'])
-def func_Get_ErrorName_Config():
-    # input ErrorName
-    # return except e or "ErrorName Not Found or doc
-    func_load_mongo_settings()
-    result = request.get_json()
-    update_query={"ErrorName": result['ErrorName']}
-    try:
-        ErrorName_doc = g_config_collection.find_one(update_query)
-    except errors.ConnectionFailure as e:
-        return jsonify(message = e),420
-    if ErrorName_doc == None:
-        return jsonify(message = "ErrorName Not Found"),420
-    Action_list = ErrorName_doc.get("Actions", [])
-    # doc = {"ErrorName": result['ErrorName'],"Actions":Action_list}
-    doc = Action_list
-    return jsonify(message = doc) ,200
-
-@app.route("/DeleteAction", methods=['POST'])
-def func_Delete_Action():
-    # input ErrorName , Action
-    # return except: e or "ErrorName Not Found" or "Success"
-    # Base on ErrorName to delete one Action
-    func_load_mongo_settings()
-    result = request.get_json()
-    update_query={"ErrorName": result['ErrorName']}
-    #ErrorName_doc = g_config_collection.find_one(update_query)
-    try:
-        # ErrorName_doc = g_config_collection.find_one(update_query)
-        ErrorName_doc = g_test.find_one(update_query)
-    except errors.ConnectionFailure as e:
-        return jsonify(message = e) ,420
-    if ErrorName_doc == None:
-        return jsonify(message = "ErrorName Not Found") ,420
-    RemoveAction = result['Action']
-    Action_list = ErrorName_doc.get("Actions", [])
-    New_Action_list = []
-    for Action in Action_list:
-        if Action != RemoveAction:
-            New_Action_list.append(Action)
-    document={"Actions":New_Action_list}
-    #g_config_collection.find_one_and_update(update_query, {"$set":document},  upsert=True)
-    try:
-        result = g_config_collection.find_one_and_update(update_query, {"$set":document},  upsert=True)
-    except errors.ConnectionFailure as e:
-        return jsonify(message = e) ,420
-    return jsonify(message = "Success") ,200
-
-@app.route("/AddAction" , methods=['POST']) #無解 欲新增Action時
+@app.route("/AddAction" , methods=['POST']) #欲新增Action時
 def func_Add_Action():
     # input ErrorName , Action
     # return except: e or "ErrorName Not Found" or "Success"
@@ -764,3 +564,51 @@ def func_Add_Action():
     except errors.ConnectionFailure as e:
         return jsonify(message = e),420
     return jsonify(message = "Success"),200
+
+@app.route("/GetErrorNameConfig", methods=['POST'])
+def func_Get_ErrorName_Config():
+    # input ErrorName
+    # return except e or "ErrorName Not Found or doc
+    func_load_mongo_settings()
+    result = request.form.get('ErrorName')
+    update_query={"ErrorName": result}
+    try:
+        ErrorName_doc = g_config_collection.find_one(update_query)
+    except errors.ConnectionFailure as e:
+        return jsonify(message = e),420
+    if ErrorName_doc == None:
+        return jsonify(message = "ErrorName Not Found"),420
+    Action_list = ErrorName_doc.get("Actions", [])
+    # doc = {"ErrorName": result['ErrorName'],"Actions":Action_list}
+    doc = Action_list
+    return jsonify(message = doc) ,200
+
+@app.route("/DeleteAction", methods=['POST'])
+def func_Delete_Action():
+    # input ErrorName , Action
+    # return except: e or "ErrorName Not Found" or "Success"
+    # Base on ErrorName to delete one Action
+    func_load_mongo_settings()
+    result = request.get_json()
+    update_query={"ErrorName": result['ErrorName']}
+    #ErrorName_doc = g_config_collection.find_one(update_query)
+    try:
+        ErrorName_doc = g_config_collection.find_one(update_query)
+        # ErrorName_doc = g_test.find_one(update_query)
+    except errors.ConnectionFailure as e:
+        return jsonify(message = e) ,420
+    if ErrorName_doc == None:
+        return jsonify(message = "ErrorName Not Found") ,420
+    RemoveAction = result['Action']
+    Action_list = ErrorName_doc.get("Actions", [])
+    New_Action_list = []
+    for Action in Action_list:
+        if Action != RemoveAction:
+            New_Action_list.append(Action)
+    document={"Actions":New_Action_list}
+    #g_config_collection.find_one_and_update(update_query, {"$set":document},  upsert=True)
+    try:
+        result = g_config_collection.find_one_and_update(update_query, {"$set":document},  upsert=True)
+    except errors.ConnectionFailure as e:
+        return jsonify(message = e) ,420
+    return jsonify(message = "Success") ,200

@@ -21,7 +21,7 @@ var _combine_input_copy = function () {
     // ��ƳB�z�]�w
     //_download_dynamic_classification_file();
     //_download_bayes_net_xml_file();
-    var _xml =  JSON.parse(sessionStorage.getItem('changed_xml'));
+    var _xml = JSON.parse(sessionStorage.getItem('changed_xml'));
     console.log(123);
     //console.log(_xml);
     //var _csv = $("#input_data").val();
@@ -58,11 +58,10 @@ if (typeof (tinyMCE) === "object") {
         setup: function (ed) {
             ed.on('change', function (e) {
                 //console.log('the content ', ed.getContent());
-                if(sessionStorage.getItem("change_probability_filename") != null) {
+                if (sessionStorage.getItem("change_probability_filename") != null) {
                     _combine_input_copy();
                 }
-                else
-                {
+                else {
                     _combine_input();
                 }
 
@@ -343,7 +342,7 @@ var _change_tirgger_input = function () {
 //         error: function (jqXHR, textStatus, errorThrown) {
 //             console.warn(jqXHR.responseText);
 //             alert(errorThrown);
-            
+
 //             return false;
 //         } // error
 //     }); // end of ajax
@@ -392,28 +391,30 @@ $(function () {
     // var $condition1 = "F1"; // test
     // var $condition2 = "CC"; // test
     $.ajax({                 // for test
-        url: "/GetCSV",
+        url: "/RetrunXML",
         method: 'POST',
         data: { condition1: $condition1, condition2: $condition2 },
         dataType: "json",
         error: function (request) {
-            // remember to filter out size 0 array
-            console.log(request);
+            if (request.status == 420) {
+                alert(request.responseJSON.message);
+            } // if
+            else {
+                console.log(request);
+            } // else
         },
         success: function (response) {
             // console.log(response.data); // test
             $("#input_data").val(response.data);
             $("#change_data").val(response.data);
             $("#input_data").trigger("change");
-            if (sessionStorage.getItem("changed_xml") == null) 
-            {
+            if (sessionStorage.getItem("changed_xml") == null) {
                 var data = $("#input_data").val();
                 // console.log(data); // test
                 sessionStorage.setItem('changed_xml', JSON.stringify(data));
                 console.log('copy success');
             }
-            else
-            {
+            else {
                 console.log('already exist');
             }
         }

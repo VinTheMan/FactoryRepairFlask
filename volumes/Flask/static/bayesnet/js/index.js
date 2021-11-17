@@ -493,4 +493,8 @@ $(window).on('load', function () {
     // PAGE IS FULLY LOADED  
     // CheckFactory();
     // $("#toggleGraphs").click();
+
+    // PAGE IS FULLY LOADED
+    // FADE OUT YOUR OVERLAYING DIV
+    $('body').loadingModal('hide');
 });

@@ -9,7 +9,10 @@
 /volumes/Flask/src/QueryResult.csv
 /volumes/Flask/src/Result.csv
 /volumes/Flask/src/output.xml
+/volumes/Flask/src/df_zero.csv
+/volumes/Flask/src/df.csv
 /volumes/Flask/src/Combinations.txt
+/volumes/Flask/src/FilterQueryResult.csv
 /volumes/Flask/static/download/*
 ./volumes/mongodb/*
 .env.backup

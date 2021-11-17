@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/style.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/notyf.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/jquery.loadingModal.min.css')}}">
     <title>FactroyRapair Question</title>
 </head>
 
@@ -16,6 +17,15 @@
     <script src="{{url_for('static', filename='/bayesnet/js/bootstrap.bundle.min.js')}}"></script>
     <script src="{{url_for('static', filename='/bayesnet/vendors/jquery/jquery.min.js')}}"></script>
 
+    <script src="{{url_for('static', filename='/bayesnet/js/jquery.loadingModal.min.js')}}"></script>
+    <script>
+        //place your code to be executed early here
+        $('body').loadingModal({
+            text: 'Loading...',
+            animation: 'circle'
+        });
+    </script>
+    
     <div class="head">FactoryRepair New</div>
     <br />
     <div class="col col-auto">
@@ -61,16 +71,31 @@
                     </div>
                 </div>
                 <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
-                <div id="insertB4" class="col-auto">
-                    <button id="moreAction" class="form-control btn btn-secondary" type="button">More Action</button>
-                </div>
-                <!-- <div class="col-auto">
-                    <input class="form-control" type="file" accept=".mp4" id="uploadfile" name="NewVideoUpload"
+                <div class="col-auto">
+                    <input class="form-control uploadfile" type="file" accept=".mp4,.pdf" id="uploadfile" name="NewVideoUpload"
                         required>
                     <div class="invalid-feedback">
-                        Please upload a MP4 video.
+                        Please upload a MP4 video or a PDF file.
                     </div>
-                </div> -->
+                </div>
+                <div id="insertB4" class="col-auto">
+                    <div class="btn-group">
+                        <button id="lessAction" class="form-control btn btn-outline-danger" type="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-dash" viewBox="0 0 16 16">
+                                <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"></path>
+                            </svg>
+                        </button>
+                        <button id="moreAction" class="form-control btn btn-outline-success" type="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z">
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
                 <div class="w-100" style="height: 5ch;"></div><!-- </div>breaks cols to a new line-->
                 <div class="col-auto">
                     <button id="submitBtn" class="form-control btn btn-primary" type="submit">Submit</button>
@@ -87,7 +112,7 @@
                 <div class="col-5">
                     <input id="exit_issue_input" class="form-control text-center" type="text"
                         placeholder="Existing Issue" autocomplete="off" required>
-                    <div id="feedBackforQ" class="invalid-feedback">
+                    <div id="feedBackforexit_issue" class="invalid-feedback">
                         Please choose an issue.
                     </div>
                     <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
@@ -105,21 +130,24 @@
                     <div class="invalid-feedback">
                         Please input a action.
                     </div>
+                    <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
+                    <ul id="actionMenu" class="list-group list-group-flush" style="display: none;">
+                    </ul>
                 </div>
                 <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
                 <!-- <div id="insertB4" class="col-auto">
                     <button id="moreAction" class="form-control btn btn-secondary" type="button">More Action</button>
                 </div> -->
-                <!-- <div class="col-auto">
-                    <input class="form-control" type="file" accept=".mp4" id="uploadfile" name="NewVideoUpload"
-                        required>
+                <div class="col-auto">
+                    <input class="form-control uploadfile2" type="file" accept=".mp4,.pdf" name="NewVideoUpload"
+                        required multiple>
                     <div class="invalid-feedback">
-                        Please upload a MP4 video.
+                        Please upload a MP4 video or a PDF file.
                     </div>
-                </div> -->
+                </div>
                 <div class="w-100" style="height: 5ch;"></div><!-- </div>breaks cols to a new line-->
                 <div class="col-auto">
-                    <button id="submitBtn" class="form-control btn btn-primary" type="submit">Submit</button>
+                    <button id="submitBtn2" class="form-control btn btn-primary" type="submit">Submit</button>
                 </div>
             </form>
         </div>
