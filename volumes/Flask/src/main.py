@@ -544,8 +544,22 @@ def func_Add_Action():
     # return except: e or "ErrorName Not Found" or "Success"
     # Base on ErrorName to Add one Action
     func_load_mongo_settings()
-    result = request.get_json()
-    update_query={"ErrorName": result['ErrorName']}
+    # result = request.get_json()
+    faNme = request.form.get('Factory')
+    erName = request.form.get('ErrorName')
+    AddAction = request.form.get('Action')
+    uploaded_files2 = request.files.getlist("files[]")
+    i = 0
+    for file in uploaded_files2:
+        file_ext = allowed_file(file.filename)
+        file_name = faNme + "_" + erName + "_" + AddAction + file_ext
+        try:
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], file_name))
+        except errors.ConnectionFailure as e:
+            return jsonify(message = e),420
+        i = i + 1
+
+    update_query={"ErrorName": erName}
     try:
         # ErrorName_doc = g_config_collection.find_one(update_query)
         ErrorName_doc = g_test.find_one(update_query)
@@ -553,7 +567,7 @@ def func_Add_Action():
         return jsonify(message = e) ,420
     if ErrorName_doc == None:
         return jsonify(message = "ErrorName Not Found") ,420
-    AddAction = result['Action']
+    # AddAction = result['Action']
     Action_list = ErrorName_doc.get("Actions", [])
     if AddAction not in Action_list:
         Action_list.append(AddAction)
@@ -612,3 +626,25 @@ def func_Delete_Action():
     except errors.ConnectionFailure as e:
         return jsonify(message = e) ,420
     return jsonify(message = "Success") ,200
+
+@app.route("/Check_mp4_or_pdf", methods=['POST'])
+def check_mp4_or_pdf():
+    # input ErrorName , Action, Factory
+    # return except: e or "PDF" or "MP4" or "BOTH"
+    # Base on ErrorName to delete one Action
+    func_load_mongo_settings()
+    faNme = request.form.get('Factory')
+    erName = request.form.get('ErrorName')
+    AddAction = request.form.get('ActionName')
+    file_name = faNme + "_" + erName + "_" + AddAction + ".pdf"
+    file_name2 = faNme + "_" + erName + "_" + AddAction + ".mp4"
+    fname = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
+    fname2 = os.path.join(app.config['UPLOAD_FOLDER'], file_name2)
+    if os.path.isfile(fname) and os.path.isfile(fname2):
+        return jsonify(message = "BOTH") ,200
+    elif os.path.isfile(fname) and not os.path.isfile(fname2):
+        return jsonify(message = "PDF") ,200
+    elif not os.path.isfile(fname) and os.path.isfile(fname2):
+        return jsonify(message = "MP4") ,200
+    else :
+        return jsonify(message = "NONE") ,200

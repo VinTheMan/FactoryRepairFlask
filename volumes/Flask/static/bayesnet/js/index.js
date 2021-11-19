@@ -59,37 +59,115 @@ function FindNextSol() {
         $("video").removeAttr('data-src');
         $("video").removeAttr('src');
 
+        var Factory = JSON.parse(sessionStorage.getItem('factoryy'));
+        var ErrorName = JSON.parse(sessionStorage.getItem('questionn'));
+        $.ajax({
+            url: "/Check_mp4_or_pdf",
+            method: 'POST',
+            dataType: 'json', // what to expect back from server
+            data: { Factory: Factory, ActionName: nodeNames[indexXL], ErrorName: ErrorName },
+            beforeSend: function () {
+                // console.log('sup, loading modal triggered !'); // test
+                $('body').loadingModal({
+                    text: 'Loading...',
+                    animation: 'circle'
+                });
+            },
+            complete: function () {
+                $('body').loadingModal('hide');
+                $('body').loadingModal('destroy');
+            },
+            error: function (request) {
+                // remember to filter out size 0 array
+                if (request.status == 420) {
+                    console.log(request.responseJSON.message);
+                } // if
+                else {
+                    console.log(request);
+                } // else
+            },
+            success: function (data) {
+                console.log(data.message); // test
+                if (data.message === "PDF") {
+                    $("#show-pdf-button").show();
+                    $("#toggleVideo").hide();
+                    // ------------  embedded PDF --------
+                    pdf = './download/' + Factory + '_' + ErrorName + '_' + nodeNames[indexXL] + '.pdf';
+                    var bayesnet_solution = $(".bayesnet-solution > table > tbody").empty();
+                    bayesnet_solution.append('<tr>' +
+                        '<td class="w-50"><strong class="fs-1">' + nodeNames[indexXL] + '</strong></td>' +
+                        '<td class="w-50"><strong class="fs-1">' + '<a href="./download/' +
+                        Factory + '_' + ErrorName + '_' + nodeNames[indexXL] + '.pdf" target="_blank">Open PDF in new window</a>' +
+                        '</strong></td>' +
+                        '</tr>'
+                    );
+                    //-------------------------------------
+                } // if
+                else if (data.message === "MP4") {
+                    $("#show-pdf-button").hide();
+                    $("#toggleVideo").show();
+                    // ------------  embedded Video --------
+                    var bayesnet_solution = $(".bayesnet-solution > table > tbody").empty();
+                    bayesnet_solution.append('<tr>' +
+                        '<td class="w-50"><strong class="fs-1">' + nodeNames[indexXL] + '</strong></td>' +
+                        '<td class="w-50"><strong class="fs-1">' + '<a href="./download/' +
+                        Factory + '_' + ErrorName + '_' + nodeNames[indexXL] + '.mp4" target="_blank">Open MP4 in new window</a>' +
+                        '</strong></td>' +
+                        '</tr>'
+                    );
 
-        var bayesnet_solution = $(".bayesnet-solution > table > tbody").empty();
-        bayesnet_solution.append('<tr>' +
-            '<td class="w-50"><strong class="fs-1">' + nodeNames[indexXL] + '</strong></td>' +
-            '<td class="w-50"><strong class="fs-1">' + '<a href="./download/' + nodeNames[indexXL] + '.mp4" target="_blank">Open in new window</a>' + '</strong></td>' +
-            '</tr>'
-        );
+                    var video = document.getElementById('solutionVideo');
+                    var source = document.createElement('source');
 
-        // ------------  embedded Video --------
-        var video = document.getElementById('solutionVideo');
-        var source = document.createElement('source');
+                    source.setAttribute('src', './download/' + Factory + '_' + ErrorName + '_' + nodeNames[indexXL] + '.mp4');
+                    source.setAttribute('type', 'video/mp4');
 
-        source.setAttribute('src', './download/' + nodeNames[indexXL] + '.mp4');
-        source.setAttribute('type', 'video/mp4');
+                    video.innerHTML = '';
+                    video.appendChild(source);
+                    video.pause();
+                    video.load();
+                    //------------------------------------------
+                } // else if
+                else if (data.message === "BOTH") {
+                    $("#show-pdf-button").show();
+                    $("#toggleVideo").show();
+                    // ------------  embedded Video --------
+                    var video = document.getElementById('solutionVideo');
+                    var source = document.createElement('source');
 
-        video.innerHTML = '';
-        video.appendChild(source);
-        video.pause();
-        video.load();
-        //------------------------------------------
+                    source.setAttribute('src', './download/' + Factory + '_' + ErrorName + '_' + nodeNames[indexXL] + '.mp4');
+                    source.setAttribute('type', 'video/mp4');
 
-        // ------------  embedded PDF --------
-        // pdf = './download/' + nodeNames[indexXL] + '.pdf';
-        // var bayesnet_solution = $(".bayesnet-solution > table > tbody").empty();
-        // bayesnet_solution.append('<tr>' +
-        //     '<td class="w-50"><strong class="fs-1">' + nodeNames[indexXL] + '</strong></td>' +
-        //     '<td class="w-50"><strong class="fs-1">' + '<a href="./download/' + nodeNames[indexXL] + '.pdf" target="_blank">Open in new window</a>' + '</strong></td>' +
-        //     '</tr>'
-        // );
-        //-------------------------------------
-
+                    video.innerHTML = '';
+                    video.appendChild(source);
+                    video.pause();
+                    video.load();
+                    //------------------------------------------
+                    // ------------  embedded PDF --------
+                    pdf = './download/' + Factory + '_' + ErrorName + '_' + nodeNames[indexXL] + '.pdf';
+                    var bayesnet_solution = $(".bayesnet-solution > table > tbody").empty();
+                    bayesnet_solution.append('<tr>' +
+                        '<td class="w-50"><strong class="fs-1">' + nodeNames[indexXL] + '</strong></td>' +
+                        '<td class="w-50"><strong class="fs-5">' + '<a href="./download/' +
+                        Factory + '_' + ErrorName + '_' + nodeNames[indexXL] + '.pdf" target="_blank">Open PDF in new window</a>' +
+                        '<div class="w-100" style="height: 1ch;"></div>' +
+                        '<a href="./download/' +
+                        Factory + '_' + ErrorName + '_' + nodeNames[indexXL] + '.mp4" target="_blank">Open MP4 in new window</a>' +
+                        '</strong></td>' +
+                        '</tr>'
+                    );
+                    //-------------------------------------
+                } // else if
+                else { // NO FILES FOUND!
+                    var bayesnet_solution = $(".bayesnet-solution > table > tbody").empty();
+                    bayesnet_solution.append('<tr>' +
+                        '<td class="w-50"><strong class="fs-1">' + nodeNames[indexXL] + '</strong></td>' +
+                        '<td class="w-50"><strong class="fs-1">' + 'No Solution Files Found!' + '</strong></td>' +
+                        '</tr>'
+                    );
+                } // else
+            } // success
+        });
     } // else
 
 } // FindNextSol
@@ -497,4 +575,5 @@ $(window).on('load', function () {
     // PAGE IS FULLY LOADED
     // FADE OUT YOUR OVERLAYING DIV
     $('body').loadingModal('hide');
+    $('body').loadingModal('destroy');
 });

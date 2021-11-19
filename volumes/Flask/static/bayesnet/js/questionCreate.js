@@ -70,6 +70,21 @@ function appenEvent2() {
     }); // on list btn click
 } // appenEvent
 
+function cleanUp() {
+    $("#input_issue").val("");
+    $("#input_action").val("");
+    $("#uploadfile").val("");
+    $('hr').prev().remove();
+    $('hr').next().remove();
+    $('hr').next().remove();
+    $('hr').next().remove();
+    $('hr').remove();
+
+    $("#exit_issue_input").val("");
+    $("#add_action").val("");
+    $("#uploadfile2").val("");
+} // cleanUp
+
 $(document).ready(function () {
     sessionStorage.removeItem('questionn');
 
@@ -144,6 +159,14 @@ $(document).ready(function () {
                 alert("Issue already exist ! Please go to 「 Add Solution 」 tab");
             } // if
             else {
+
+                $('body').loadingModal({
+                    text: 'Uploading...',
+                    animation: 'circle'
+                });
+
+                console.log("test loading modal trigger");
+
                 var formData = new FormData();
                 $('.uploadfile').each(function (i, obj) {
                     let fileObj = obj.files[0];
@@ -176,15 +199,11 @@ $(document).ready(function () {
                     processData: false,
                     dataType: "json",
                     beforeSend: function () {
-                        // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
-                        $('body').loadingModal({
-                            text: 'Uploading...',
-                            animation: 'circle'
-                        });
+                        // console.log('sup, loading modal triggered !'); // test
                     },
                     complete: function () {
                         $('body').loadingModal('hide');
-
+                        $('body').loadingModal('destroy');
                         $.ajax({
                             url: "/GetErrorName",
                             method: 'POST',
@@ -232,6 +251,7 @@ $(document).ready(function () {
                         });
                     },
                     success: function (data) {
+                        cleanUp();
                         console.log(data.message);
                         notyf.success({
                             message: "Update Successful !",
@@ -328,6 +348,11 @@ $(document).ready(function () {
         if (!$("#exit_issue_input").val() || !$("#add_action").val() || !$(".uploadfile2").val()) {
             // validation failed
         } else {
+
+            $('body').loadingModal({
+                text: 'Uploading...',
+                animation: 'circle'
+            });
             // console.log($("#input_issue").val()); // test
             var exit_issue_input = $("#exit_issue_input").val();
             var add_action = $("#add_action").val();
@@ -336,13 +361,33 @@ $(document).ready(function () {
             // for (let a = 0; a < add_actionObjs.length; {
             //     add_action.push($(add_actionObjs[a]).val());
             // } // for
+            var form_data2 = new FormData();
+            var ins = document.getElementById('uploadfile2').files.length;
+            for (var x = 0; x < ins; x++) {
+                form_data2.append("files[]", document.getElementById('uploadfile2').files[x]);
+            } // for
+
+            var factoryy = JSON.parse(sessionStorage.getItem('factoryy'));
+            form_data2.append("Factory", factoryy);
+            form_data2.append('ErrorName', exit_issue_input);
+            form_data2.append('Action', add_action);
+
             console.log(add_action); // test
             $.ajax({
                 url: "/AddAction",
                 method: 'POST',
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify({ ErrorName: exit_issue_input, Action: add_action }),
-                dataType: "json",
+                dataType: 'json', // what to expect back from server
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: form_data2,
+                beforeSend: function () {
+                    // console.log('sup, loading modal triggered !'); // test
+                },
+                complete: function () {
+                    $('body').loadingModal('hide');
+                    $('body').loadingModal('destroy');
+                },
                 error: function (request) {
                     // remember to filter out size 0 array
                     if (request.status == 420) {
@@ -364,6 +409,7 @@ $(document).ready(function () {
                     });
                 },
                 success: function (data) {
+                    cleanUp();
                     console.log(data.message);
                     notyf.success({
                         message: "Update Successful !",
@@ -435,7 +481,7 @@ $(document).ready(function () {
         $.ajax({
             url: "/GetErrorNameConfig",
             method: 'POST',
-            data: {ErrorName: $("#exit_issue_input").val()},
+            data: { ErrorName: $("#exit_issue_input").val() },
             dataType: "json",
             error: function (request) {
                 // remember to filter out size 0 array
@@ -447,9 +493,10 @@ $(document).ready(function () {
                 } // else
             },
             success: function (response) {
-                var  $action_names = response.message;
+                var $action_names = response.message;
                 console.log($action_names); // test
                 $("#actionMenu").empty();
+                $("#actionMenu").append('<span>Existing Actions:</span>');
                 for (let a = 0; a < $action_names.length; a++) {
                     $("#actionMenu").append('<a class="listBtn2 list-group-item list-group-item-action list-group-item-secondary text-center" href="#">' +
                         $action_names[a] + '</a>');
@@ -524,4 +571,5 @@ $(window).on('load', function () {
     // PAGE IS FULLY LOADED
     // FADE OUT YOUR OVERLAYING DIV
     $('body').loadingModal('hide');
+    $('body').loadingModal('destroy');
 });
