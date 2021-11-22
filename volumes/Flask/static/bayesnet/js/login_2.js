@@ -1,3 +1,5 @@
+var notyf = new Notyf();
+
 $(document).ready(function () {
     (function () {
         'use strict'
@@ -42,22 +44,57 @@ $(document).ready(function () {
             sessionStorage.setItem('factoryy', JSON.stringify($("#input_factory").val()));
         } // if
 
+        var formData = new FormData();
         var $username = $("#input_username").val();
         var $passwd = $("#input_passwd").val();
         var $f = $("#input_factory").val();
+        formData.append("username", $username);
+        formData.append("passwd", $passwd);
+        formData.append("f", $f);
+
         $.ajax({
             url: "/RepairMember",
             method: 'POST',
-            data: { username: $username, passwd: $passwd, f: $f },
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
             dataType: "json",
+            beforeSend: function () {
+                // console.log('sup, loading modal triggered !'); // test
+                $('body').loadingModal({
+                    text: 'Loading...',
+                    animation: 'circle'
+                });
+            },
+            complete: function () {
+                $('body').loadingModal('hide');
+                $('body').loadingModal('destroy');
+            },
             error: function (request) {
                 // remember to filter out size 0 array
-                alert(request.responseJSON.message);
+                if (request.status == 420) {
+                    console.log(request.responseJSON.message);
+                } // if
+                else {
+                    console.log(request);
+                } // else
+
+                notyf.error({
+                    message: "Login failed !",
+                    duration: 1500,   //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom"
+                    }
+                });
             },
-            success: function () {
+            success: function (data) {
                 self.location.href = '/question';
             }
-        });
+        }); // ajax
     });
 
 

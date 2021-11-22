@@ -495,36 +495,31 @@ def questioncreatpage():
 
 @app.route("/RepairMember", methods=['POST'])
 def member():
-    g_username = request.form.get("username","")
-    g_passwd = request.form.get("passwd","")
-    g_factory = request.form.get('f')
-    # check member data in DB
-    #global mongo_db_repair 
-    
-    #g_mongo_DailyRepairMember_collection = mongo_db_repair['DailyRepairMember']
-    global g_mongo_DailyRepairConfig_collection
-    global g_mongo_Repair_Config_collection
-    global g_mongo_DailyRepairMember_collection
-    global g_authentication
-
     # connect to Server 
     func_load_mongo_settings()
+
+    g_username = request.form.get('username')
+    g_passwd = request.form.get('passwd')
+    g_factory = request.form.get('f')
     
     if g_mongo_DailyRepairMember_collection != None:
-        g_authentication = func_Check_MemberData(g_mongo_DailyRepairMember_collection, g_username, g_passwd)
+        try:
+            g_authentication = func_Check_MemberData(g_mongo_DailyRepairMember_collection, g_username, g_passwd)
+        except errors.ConnectionFailure as e:
+            return jsonify(message = e),420
 
-    # if g_authentication == True:
-    #     return jsonify(message='Success !'),200
-    # else:
-    #     # flash('Authenticate Fail!!')
-    #     func_Get_Distinct_Of_Key_MongoDocument()
-    #     return jsonify(message='login Failed w/ user: Jonathan !'),420
-
-    if (g_username == "Jonathan") and (g_passwd == "123"):
-        return jsonify(message='success!'),200
-
+    if g_authentication == True:
+        return jsonify(message='Success !'),200
     else:
-        return jsonify(message='login Failed w/ user: Jonathan !'),420
+        # flash('Authenticate Fail!!')
+        # func_Get_Distinct_Of_Key_MongoDocument()
+        return jsonify(message='Login Failed !'),420
+
+    # if (g_username == "Jonathan") and (g_passwd == "123"):
+    #     return jsonify(message='success!'),200
+
+    # else:
+    #     return jsonify(message='login Failed w/ user: Jonathan !'),420
 
 @app.route("/UpdateErrorNameAndActions", methods=['POST']) # 新增erro name時
 def func_Update_ErrorName_And_Actions():

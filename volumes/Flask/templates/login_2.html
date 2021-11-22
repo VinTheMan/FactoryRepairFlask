@@ -11,27 +11,25 @@
     <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/style.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='/css/loginstyle.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/bootstrap.min.css')}}">
-
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/notyf.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/jquery.loadingModal.min.css')}}">
     <title>FactroyRapair Login</title>
 </head>
 
 <body>
     <script src="{{url_for('static', filename='/bayesnet/js/bootstrap.bundle.min.js')}}"></script>
     <script src="{{url_for('static', filename='/bayesnet/vendors/jquery/jquery.min.js')}}"></script>
+    <script src="{{url_for('static', filename='/bayesnet/js/jquery.loadingModal.min.js')}}"></script>
 
     <div class="head">FactoryRepair Login</div>
     <br />
     <form id="loginForm" class="login needs-validation" novalidate>
         <h1> Login </h1>
-        <input id="input_username" list="username" type="text" class="form-control" placeholder="Username" name="username" required/>
+        <input id="input_username" list="username" type="text" class="form-control" placeholder="Username" required />
         <div class="invalid-feedback">
             Missing username.
         </div>
-        <datalist id="username">
-            <option value="Jonathan">
-            <option value="Jonathan0314">
-        </datalist>
-        <input id="input_passwd" type="password" class="form-control" placeholder="Password" name="passwd" required/>
+        <input id="input_passwd" type="password" class="form-control" placeholder="Password" required />
         <div class="invalid-feedback">
             Missing password.
         </div>
@@ -51,10 +49,10 @@
 
         <input id="submitBtn" type="submit" value="Submit">
         <button id="submitBtnHidden" class="d-none" type="submit">Submit form</button>
-
     </form>
     <br />
 
+    <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/js/notyf.min.js')}}"></script>
     <script src="{{url_for('static', filename='/bayesnet/js/login_2.js')}}"></script>
 </body>
 
