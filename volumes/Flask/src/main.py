@@ -224,7 +224,7 @@ def func_Insert_Record_MongoDocument():
     Solution['Solved'] = result['Solved']
     doc = {"Date":datetime.datetime.today().strftime("%Y-%m-%d"), "Factory":result['Factory'],"ErrorName":result['ErrorName'],"Solution": Solution}
     g_test.insert(doc)
-    return jsonify(message="Insert"),200
+    return jsonify(message="Inserted"),200
 
 @app.route("/ReturnXML", methods=['POST'])
 def func_Return_XML_From_MongoDocument():
@@ -573,8 +573,8 @@ def func_Add_Action():
 
     update_query={"ErrorName": erName}
     try:
-        # ErrorName_doc = g_config_collection.find_one(update_query)
-        ErrorName_doc = g_test.find_one(update_query)
+        ErrorName_doc = g_config_collection.find_one(update_query)
+        # ErrorName_doc = g_test.find_one(update_query)
     except errors.ConnectionFailure as e:
         return jsonify(message = e) ,420
     if ErrorName_doc == None:
