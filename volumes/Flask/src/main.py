@@ -226,34 +226,38 @@ def func_Insert_Record_MongoDocument():
     g_test.insert(doc)
     return jsonify(message="Insert"),200
 
-@app.route("/RetrunXML", methods=['POST'])
+@app.route("/ReturnXML", methods=['POST'])
 def func_Return_XML_From_MongoDocument():
     func_load_mongo_settings()
     query_condition1 = request.form.get('condition1')
     query_condition2 = request.form.get('condition2')
-
     if query_condition1 == None or query_condition1 == "":
         query_condition1 = "F1"
     if query_condition2 == None or query_condition2 == "":
-        query_condition2 = "AC"    
+        query_condition2 = "CC"
     try:
         result_config = g_config_collection.find_one({"ErrorName":query_condition2})
     except errors.ConnectionFailure as e:
         return jsonify(message = e),420
     f_Combinations = open('Combinations.txt', 'w')
     if result_config == None :
-        f_Combinations.write('ResultOfConfig = None')
+        f_Combinations.write('ResultOfConfig = None\n')
         f_Combinations.close()
         return jsonify(message = "ErrorName Not Found") ,420
+    Config_Action_list = result_config.get("Actions", [])
+    if not Config_Action_list:
+        f_Combinations.write('This Config Action is empty \n')
+        f_Combinations.close()
+        return jsonify(message = "This Action list is empty") ,420
     result_record = g_test.find({"ErrorName":query_condition2})
     Action_list = []
     tmp_dict = {}
+    tmp_dict[query_condition1] = 0
+    tmp_dict["Solved"] = 0
+    for Action in Config_Action_list:
+        tmp_dict[Action] = 0
     if result_record.count() == 0 or result_record == None :
-        f_Combinations.write('ResultOfRecord = None')
-        tmp_dict[query_condition1] = 0
-        tmp_dict["Solved"] = 0
-        for Action in result_config.get("Actions", []):
-            tmp_dict[Action] = 0
+        f_Combinations.write('ResultOfRecord = None\n')
         Action_list.append(tmp_dict)
     else:
         for doc in result_record:
@@ -263,36 +267,49 @@ def func_Return_XML_From_MongoDocument():
             else:
                 dict[query_condition1] = 0
             Action_list.append(dict)
-    ###
+
     df = pd.DataFrame(Action_list)
     df = df.fillna(0)
-    cols = df.columns.tolist()
-    cols.insert(0,cols.pop(cols.index(query_condition1)))
-    cols.insert(len(cols)-1,cols.pop(cols.index("Solved")))
+    record_cols = df.columns.tolist()
+    #record_cols.insert(0,cols.pop(cols.index(query_condition1)))
+    #record_cols.insert(len(record_cols)-1,record_cols.pop(record_cols.index("Solved")))
     df.to_csv("QueryResult.csv")
-    config_list = result_config.get("Actions", [])
-    filter_col = set(cols) ^ set(config_list)
-    ###
-    filter_str = ""
-    f_Combinations.write('filter_str = \n')
-    for remove_col in filter_col:
-        if remove_col != query_condition1 and remove_col != 'Solved':
-            filter_str+= "| `" + remove_col + "` > 0"
-
-    filter_str = filter_str.replace("|", "", 1)
-    f_Combinations.write(filter_str)
+    f_Combinations.write('QueryResult df = \n')
+    f_Combinations.write(df.to_string())
     f_Combinations.write('\n')
-    f_Combinations.write('done =============================== \n')
-    if filter_str != "":
-        if len(df.query(filter_str)) > 0:
-            df.drop(df.query(filter_str).index, inplace=True)
-    for remove_col in filter_col:
-        if remove_col != query_condition1 and remove_col != 'Solved':    
-            df = df.drop(remove_col , axis=1)
+    ### config and record 沒交集
+    if not list(set(Config_Action_list).intersection(set(record_cols))):
+        Action_list.clear()
+        Action_list.append(tmp_dict)
+        df = pd.DataFrame(Action_list)
+        df = df.fillna(0)
+    else: # filter
+        distinct_all_columns = list(set(record_cols+Config_Action_list))    
+        f_Combinations.write('filter_str = \n')
+        filter_str = ""
+        for current_col in distinct_all_columns:
+            if current_col != query_condition1 and current_col != 'Solved' and current_col not in Config_Action_list:  
+                filter_str+= "| `" + current_col + "` > 0"
+        filter_str = filter_str.replace("|", "", 1)
+        f_Combinations.write(filter_str)
+        f_Combinations.write('\n')
+        f_Combinations.write('done =============================== \n')
+        Action_list.append(tmp_dict)
+        df = pd.DataFrame(Action_list)
+        df = df.fillna(0)
+        if filter_str != "":
+            if len(df.query(filter_str)) > 0:
+                df.drop(df.query(filter_str).index , inplace=True)
+        for current_col in distinct_all_columns:
+            if current_col != query_condition1 and current_col != 'Solved' and current_col not in Config_Action_list:    
+                df = df.drop(current_col , axis=1)
     cols = df.columns.tolist()
     cols.insert(0,cols.pop(cols.index(query_condition1)))
     cols.insert(len(cols)-1,cols.pop(cols.index("Solved")))
     df.to_csv("FilterQueryResult.csv")
+    f_Combinations.write('FilterQueryResult df = \n')
+    f_Combinations.write(df.to_string())
+    f_Combinations.write('\n')
     # build second layer 真值表
     NumberofAction = len(cols)-2
     f_Combinations.write('NumberofAction = ')

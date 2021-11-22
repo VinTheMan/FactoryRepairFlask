@@ -391,7 +391,7 @@ $(function () {
     // var $condition1 = "F1"; // test
     // var $condition2 = "CC"; // test
     $.ajax({                 // for test
-        url: "/RetrunXML",
+        url: "/ReturnXML",
         method: 'POST',
         data: { condition1: $condition1, condition2: $condition2 },
         dataType: "json",
