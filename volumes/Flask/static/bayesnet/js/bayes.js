@@ -31,7 +31,7 @@ var Bayes={};
     
     if (this.value!==-1) {
       fa*=dh[this.value];
-    }
+    } // if
     else {
       var fv=Math.random();
       
@@ -40,8 +40,8 @@ var Bayes={};
       for (var h=0;h<dh.length;h++) {
         fv-=dh[h];
         if (fv<0) { this.value=h;break; }
-      }
-    }
+      } // for
+    } // else
     
     return fa;
   }

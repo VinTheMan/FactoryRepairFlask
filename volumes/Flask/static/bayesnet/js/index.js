@@ -87,7 +87,7 @@ function FindNextSol() {
                 } // else
             },
             success: function (data) {
-                console.log(data.message); // test
+                // console.log(data.message); // test
                 if (data.message === "PDF") {
                     $("#show-pdf-button").show();
                     $("#toggleVideo").hide();
@@ -197,16 +197,20 @@ function CheckFactory() {
 } // CheckFactory
 
 function reDrawGraph(fileName) {
+    $('body').loadingModal({
+        text: 'Loading...',
+        animation: 'circle'
+    });
+
     $("#theGraphs").show(); // show the graph
     // $("#theGraphs").hide(); // hide the graph
     //_draw_result_table(JSON.parse(sessionStorage.getItem('changed_xml')));
-    if (fileName == "new") {
+    if (fileName === "new") {
         _combine_input();
-    }
-    else if (fileName == "copy") {
+    } // if
+    else if (fileName === "copy") {
         _combine_input_copy();
-    }
-    var factoryy = JSON.parse(sessionStorage.getItem('factoryy'));
+    } // else if
 
     CleanUpAllClicked();
     $('#f2').click();
@@ -217,6 +221,9 @@ function reDrawGraph(fileName) {
     else {
         $("#changeXMLBtn").text("Use Edited");
     } // else
+
+    $('body').loadingModal('hide');
+    $('body').loadingModal('destroy');
 } // reDrawGraph
 
 /*var copyfunction = function () {
@@ -419,10 +426,30 @@ $(document).ready(function () {
 
     $("#copyfromdatabase").on('click', function (e) {
         e.preventDefault();
-        var test = $("#change_data").val();
-        sessionStorage.setItem('changed_xml', JSON.stringify(test));
-        reDrawGraph("copy");
-        console.log("database to copy");
+        var test = $("#input_data").val();
+        var $condition1 = JSON.parse(sessionStorage.getItem('factoryy'));
+        var $condition2 = JSON.parse(sessionStorage.getItem('questionn'));
+        $.ajax({
+            url: "/writeToEditedProb",
+            method: 'POST',
+            data: { Factory: $condition1, ErrorName: $condition2, XMLDATA: test },
+            dataType: "json",
+            error: function (request) {
+                if (request.status == 420) {
+                    alert(request.responseJSON.message);
+                } // if
+                else {
+                    console.log(request);
+                } // else
+            },
+            success: function (response) {
+                var data = $("#input_data").val();
+                // console.log(data); // test
+                sessionStorage.setItem('changed_xml', JSON.stringify(data));
+                console.log('write database to copy success at copyfromdatabase');
+                reDrawGraph("copy");
+            } // success
+        }); // ajax
     });
 
     (function () {

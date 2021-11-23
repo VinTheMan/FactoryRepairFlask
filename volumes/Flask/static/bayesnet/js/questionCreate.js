@@ -447,6 +447,26 @@ $(document).ready(function () {
                             appenEvent();
                         }
                     });
+
+                    var fa = JSON.parse(sessionStorage.getItem('factoryy'));
+                    $.ajax({
+                        url: "/RemoveEditedProb",
+                        method: 'POST',
+                        dataType: 'json', // what to expect back from server
+                        data: { Factory: fa, ErrorName: exit_issue_input},
+                        error: function (request) {
+                            // remember to filter out size 0 array
+                            if (request.status == 420) {
+                                console.log(request.responseJSON.message);
+                            } // if
+                            else {
+                                console.log(request);
+                            } // else
+                        },
+                        success: function (data) {
+                            console.log(data.message); // test
+                        } // success
+                    });
                 }
             });
         } // if

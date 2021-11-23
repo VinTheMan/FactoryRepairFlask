@@ -660,3 +660,73 @@ def check_mp4_or_pdf():
         return jsonify(message = "MP4") ,200
     else :
         return jsonify(message = "NONE") ,200
+
+@app.route("/check_edited_txt_exist", methods=['POST'])
+def check_edited_txt_exist():
+    # input ErrorName, Factory
+    # return "Existed" or "Not"
+    func_load_mongo_settings()
+    faNme = request.form.get('Factory')
+    erName = request.form.get('ErrorName')
+    file_name = faNme + "_" + erName + ".txt"
+    fname = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
+    if os.path.isfile(fname):
+        return jsonify(message = "Existed") ,200
+    else :
+        return jsonify(message = "Not") ,200
+
+@app.route("/writeToEditedProb", methods=['POST'])
+def write_to_edited_txt():
+    # input ErrorName, Factory, XML data
+    # return except: e or "DONE"
+    # Base on ErrorName and Factory to modifiy probability changed files
+    faNme = request.form.get('Factory')
+    erName = request.form.get('ErrorName')
+    xmlData = request.form.get('XMLDATA')
+    file_name = faNme + "_" + erName + ".txt"
+    fname = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
+    try:
+        with open(fname, "w") as fo:
+            fo.write(xmlData)
+    except errors as e:
+        return jsonify(message = e) ,420
+    if os.path.isfile(fname):
+        return jsonify(message = "writeToEditedProb success!") ,200
+    else :
+        return jsonify(message = "Failed !") ,420
+
+@app.route("/GetFromEditedProb", methods=['POST'])
+def get_from_edited_txt():
+    # input ErrorName, Factory, XML data
+    # return except: e or "DONE"
+    # Base on ErrorName and Factory to modifiy probability changed files
+    faNme = request.form.get('Factory')
+    erName = request.form.get('ErrorName')
+    file_name = faNme + "_" + erName + ".txt"
+    fname = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
+    xmlDataResult = ""
+    try:
+        with open(fname, "r") as fo:
+            xmlDataResult = fo.read()
+    except errors as e:
+        return jsonify(message = e) ,420
+    
+    if xmlDataResult == "":
+        return jsonify(message = "Got Nothing!") ,420
+    else :
+        return jsonify(message = xmlDataResult) ,200
+
+@app.route("/RemoveEditedProb", methods=['POST'])
+def remove_edited_txt():
+    # input ErrorName, Factory, XML data
+    # return except: e or "DONE"
+    # Base on ErrorName and Factory to modifiy probability changed files
+    faNme = request.form.get('Factory')
+    erName = request.form.get('ErrorName')
+    file_name = faNme + "_" + erName + ".txt"
+    fname = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
+    try:
+        os.remove(fname)
+    except errors as e:
+        return jsonify(message = e) ,420
+    return jsonify(message ="Delete success !") ,200

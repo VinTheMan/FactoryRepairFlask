@@ -324,11 +324,11 @@ var _draw_cpt_window = function (_name, _c, _name_given, _name_outcome, _name_cp
                 //var test =  $('#p'+_name+_i+_j).val();
                 //$('<td align="left">' + _p + '</td>').appendTo(_tr);
 
-            }
+            } // for
 
-        }
+        } // for
 
-    }
+    } // if
     else {
         document.querySelector("#save-button").style.display = 'block';
         for (var _i = 0; _i < _c.length; _i++) {
@@ -414,13 +414,13 @@ var myFunction = function () {
                 $("#" + tablename + _i + _j).css('border-color', '');
                 replace = replace + ($("#" + tablename + _i + _j).val()) + ' ';
             }
-        }
+        } // for
         replace = replace + '\n';
-    }
+    } // for
     //get input xml (string type)
     var test = JSON.parse(sessionStorage.getItem("changed_xml"));
     var testold = JSON.parse(sessionStorage.getItem("changed_xml"));
-    console.log(test); // test
+    // console.log(test); // test
     //get which table change
     tablename = '<FOR>' + tablename + '</FOR>';
 
@@ -431,30 +431,62 @@ var myFunction = function () {
     index = test.search(tablename);
     indexbegin = test.indexOf(str, index);
     indexend = test.indexOf(str1, index);
-    console.log(index);
-    console.log(indexbegin);
-    console.log(indexend);
+    // console.log(index);  // test
+    // console.log(indexbegin); // test
+    // console.log(indexend); // test
     //replaced string
     for (let i = indexbegin + 8; i < indexend; i++) {
         out = out + test[i];
-    }
+    } // for
 
 
     test = test.slice(index);
 
-    console.log(test);
-    console.log(out);
-    console.log(replace);
-    console.log(test);
+    // console.log(test); // test
+    // console.log(out); // test
+    // console.log(replace); // test
+    // console.log(test); // test
     //replace by change input
     change = test.replace(out, replace);
-    console.log(change);
+    // console.log(change); // test
     testold = testold.replace(test, change);
 
     console.log(testold); // test
 
     //sessionStorage.setItem('changed_xml', test);
-    sessionStorage.setItem('changed_xml', JSON.stringify(testold)); // test
+    sessionStorage.setItem('changed_xml', JSON.stringify(testold));
+
+    var fa = JSON.parse(sessionStorage.getItem('factoryy'));
+    var erNme = JSON.parse(sessionStorage.getItem('questionn'));
+    $.ajax({
+        url: "/writeToEditedProb",
+        method: 'POST',
+        dataType: 'json', // what to expect back from server
+        data: { Factory: fa, ErrorName: erNme, XMLDATA: testold },
+        beforeSend: function () {
+            // console.log('sup, loading modal triggered !'); // test
+            $('body').loadingModal({
+                text: 'Loading...',
+                animation: 'circle'
+            });
+        },
+        complete: function () {
+            $('body').loadingModal('hide');
+            $('body').loadingModal('destroy');
+        },
+        error: function (request) {
+            // remember to filter out size 0 array
+            if (request.status == 420) {
+                console.log(request.responseJSON.message);
+            } // if
+            else {
+                console.log(request);
+            } // else
+        },
+        success: function (data) {
+            console.log(data.message); // test
+        } // success
+    });
 
     reDrawGraph("copy");
     //send to php 

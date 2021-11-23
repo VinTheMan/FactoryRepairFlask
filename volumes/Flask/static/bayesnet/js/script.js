@@ -21,13 +21,33 @@ var _combine_input_copy = function () {
     // ��ƳB�z�]�w
     //_download_dynamic_classification_file();
     //_download_bayes_net_xml_file();
-    var _xml = JSON.parse(sessionStorage.getItem('changed_xml'));
-    console.log(123);
-    //console.log(_xml);
-    //var _csv = $("#input_data").val();
-    //_load_csv_to_ct_json(_csv);
-    _draw_result_table(_xml);
-
+    var faa = JSON.parse(sessionStorage.getItem('factoryy'));
+    var errName = JSON.parse(sessionStorage.getItem('questionn'));
+    var reult = "";
+    $.ajax({
+        url: "/GetFromEditedProb",
+        method: 'POST',
+        data: { Factory: faa, ErrorName: errName },
+        dataType: "json",
+        error: function (request) {
+            if (request.status == 420) {
+                alert(request.responseJSON.message);
+            } // if
+            else {
+                console.log(request);
+            } // else
+        },
+        success: function (response) {
+            var data = response.message;
+            // console.log(data); // test
+            $("#change_data").val(response.message);
+            sessionStorage.setItem('changed_xml', JSON.stringify(data));
+            console.log('get copy success at _combine_input_copy');
+            var _xml = data;
+            console.log(123);
+            _draw_result_table(_xml);
+        } // success
+    }); // ajax
 };		// var _combine_input = function () {
 
 // ---------------------------------------
@@ -390,11 +410,22 @@ $(function () {
     var $condition2 = JSON.parse(sessionStorage.getItem('questionn'));
     // var $condition1 = "F1"; // test
     // var $condition2 = "CC"; // test
-    $.ajax({                 // for test
+    $.ajax({
         url: "/ReturnXML",
         method: 'POST',
         data: { condition1: $condition1, condition2: $condition2 },
         dataType: "json",
+        beforeSend: function () {
+            // console.log('sup, loading modal triggered !'); // test
+            $('body').loadingModal({
+                text: 'Loading...',
+                animation: 'circle'
+            });
+        },
+        complete: function () {
+            $('body').loadingModal('hide');
+            $('body').loadingModal('destroy');
+        },
         error: function (request) {
             if (request.status == 420) {
                 alert(request.responseJSON.message);
@@ -406,18 +437,70 @@ $(function () {
         success: function (response) {
             // console.log(response.data); // test
             $("#input_data").val(response.data);
-            $("#change_data").val(response.data);
             $("#input_data").trigger("change");
-            if (sessionStorage.getItem("changed_xml") == null) {
-                var data = $("#input_data").val();
-                // console.log(data); // test
-                sessionStorage.setItem('changed_xml', JSON.stringify(data));
-                console.log('copy success');
-            }
-            else {
-                console.log('already exist');
-            }
-        }
+            $.ajax({
+                url: "/check_edited_txt_exist",
+                method: 'POST',
+                data: { Factory: $condition1, ErrorName: $condition2 },
+                dataType: "json",
+                error: function (request) {
+                    if (request.status == 420) {
+                        alert(request.responseJSON.message);
+                    } // if
+                    else {
+                        console.log(request);
+                    } // else
+                },
+                success: function (response) {
+                    if (response.message === "Existed") {
+                        $.ajax({
+                            url: "/GetFromEditedProb",
+                            method: 'POST',
+                            data: { Factory: $condition1, ErrorName: $condition2 },
+                            dataType: "json",
+                            error: function (request) {
+                                if (request.status == 420) {
+                                    alert(request.responseJSON.message);
+                                } // if
+                                else {
+                                    console.log(request);
+                                } // else
+                            },
+                            success: function (response) {
+                                var data = response.message;
+                                // console.log(data); // test
+                                $("#change_data").val(response.message);
+                                sessionStorage.setItem('changed_xml', JSON.stringify(data));
+                                console.log('get copy success');
+                            } // success
+                        }); // ajax
+                    } // if
+                    else { // make a new copy in server
+                        var xmlData = $("#input_data").val();
+                        $.ajax({
+                            url: "/writeToEditedProb",
+                            method: 'POST',
+                            data: { Factory: $condition1, ErrorName: $condition2, XMLDATA: xmlData },
+                            dataType: "json",
+                            error: function (request) {
+                                if (request.status == 420) {
+                                    alert(request.responseJSON.message);
+                                } // if
+                                else {
+                                    console.log(request);
+                                } // else
+                            },
+                            success: function (response) {
+                                var data = $("#input_data").val();
+                                // console.log(data); // test
+                                sessionStorage.setItem('changed_xml', JSON.stringify(data));
+                                console.log('write new copy success');
+                            } // success
+                        }); // ajax
+                    } // else
+                } // success
+            });
+        } // success
     });
     /*
     $('#copy_source_code').click(function () {
