@@ -134,16 +134,17 @@
                             </tbody>
                         </table>
                     </div>
-
-
                 </div>
             </div>
-
-            <input class="btn btn-outline-secondary btn-lg" onclick="self.location.href='/question'" type="button"
-                value="Back to Issue Selection" />
-
         </div>
     </form>
+
+    <div class="w-100" style="height: 4ch;"></div><!-- </div>breaks cols to a new line-->
+    <div class="row w-100 justify-content-center">
+        <button class="col col-auto btn btn-success btn-lg" onclick="self.location.href='/question'" type="button"
+            value="Back to Issue Selection"><strong>Back to Issue Selection</strong></button>
+    </div>
+    <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
 
     <!--modal-->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -203,8 +204,8 @@
     </div>
 
     <div class="row w-100 gy-0 justify-content-center">
-        <button class="col col-auto btn btn-secondary btn-sm" style="display: none;" id="toggleVideo" data-bs-toggle="collapse"
-            data-bs-target="#VideoDiv">Show/Close Video</button>
+        <button class="col col-auto btn btn-secondary btn-sm" style="display: none;" id="toggleVideo"
+            data-bs-toggle="collapse" data-bs-target="#VideoDiv">Show/Close Video</button>
     </div>
     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
     <div id="VideoDiv" class="row w-100 gy-0 justify-content-center collapse">
@@ -214,10 +215,12 @@
     </div>
 
     <div class="row w-100 gy-0 justify-content-center">
-        <button class="col col-auto btn btn-secondary btn-sm" style="display: none;" id="show-pdf-button">Show PDF</button>
+        <button class="col col-auto btn btn-secondary btn-sm" style="display: none;" id="show-pdf-button">Show
+            PDF</button>
     </div>
     <div class="row w-100 gy-0 justify-content-center">
-        <button class="col col-auto btn btn-secondary btn-sm" style="display: none;" id="close-pdf-button">Close PDF</button>
+        <button class="col col-auto btn btn-secondary btn-sm" style="display: none;" id="close-pdf-button">Close
+            PDF</button>
     </div>
 
     <div class="row w-100 gy-0 gx-0 justify-content-center overflow-scroll">

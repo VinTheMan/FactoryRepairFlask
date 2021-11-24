@@ -92,12 +92,12 @@ function FindNextSol() {
                     $("#show-pdf-button").show();
                     $("#toggleVideo").hide();
                     // ------------  embedded PDF --------
-                    pdf = './download/' + Factory + '_' + ErrorName + '_' + nodeNames[indexXL] + '.pdf';
+                    pdf = './download/' + ErrorName + '_' + nodeNames[indexXL] + '.pdf';
                     var bayesnet_solution = $(".bayesnet-solution > table > tbody").empty();
                     bayesnet_solution.append('<tr>' +
                         '<td class="w-50"><strong class="fs-1">' + nodeNames[indexXL] + '</strong></td>' +
                         '<td class="w-50"><strong class="fs-1">' + '<a href="./download/' +
-                        Factory + '_' + ErrorName + '_' + nodeNames[indexXL] + '.pdf" target="_blank">Open PDF in new window</a>' +
+                        ErrorName + '_' + nodeNames[indexXL] + '.pdf" target="_blank">Open PDF in new window</a>' +
                         '</strong></td>' +
                         '</tr>'
                     );
@@ -111,7 +111,7 @@ function FindNextSol() {
                     bayesnet_solution.append('<tr>' +
                         '<td class="w-50"><strong class="fs-1">' + nodeNames[indexXL] + '</strong></td>' +
                         '<td class="w-50"><strong class="fs-1">' + '<a href="./download/' +
-                        Factory + '_' + ErrorName + '_' + nodeNames[indexXL] + '.mp4" target="_blank">Open MP4 in new window</a>' +
+                        ErrorName + '_' + nodeNames[indexXL] + '.mp4" target="_blank">Open MP4 in new window</a>' +
                         '</strong></td>' +
                         '</tr>'
                     );
@@ -119,7 +119,7 @@ function FindNextSol() {
                     var video = document.getElementById('solutionVideo');
                     var source = document.createElement('source');
 
-                    source.setAttribute('src', './download/' + Factory + '_' + ErrorName + '_' + nodeNames[indexXL] + '.mp4');
+                    source.setAttribute('src', './download/' + ErrorName + '_' + nodeNames[indexXL] + '.mp4');
                     source.setAttribute('type', 'video/mp4');
 
                     video.innerHTML = '';
@@ -135,7 +135,7 @@ function FindNextSol() {
                     var video = document.getElementById('solutionVideo');
                     var source = document.createElement('source');
 
-                    source.setAttribute('src', './download/' + Factory + '_' + ErrorName + '_' + nodeNames[indexXL] + '.mp4');
+                    source.setAttribute('src', './download/' + ErrorName + '_' + nodeNames[indexXL] + '.mp4');
                     source.setAttribute('type', 'video/mp4');
 
                     video.innerHTML = '';
@@ -144,15 +144,15 @@ function FindNextSol() {
                     video.load();
                     //------------------------------------------
                     // ------------  embedded PDF --------
-                    pdf = './download/' + Factory + '_' + ErrorName + '_' + nodeNames[indexXL] + '.pdf';
+                    pdf = './download/' + ErrorName + '_' + nodeNames[indexXL] + '.pdf';
                     var bayesnet_solution = $(".bayesnet-solution > table > tbody").empty();
                     bayesnet_solution.append('<tr>' +
                         '<td class="w-50"><strong class="fs-1">' + nodeNames[indexXL] + '</strong></td>' +
                         '<td class="w-50"><strong class="fs-5">' + '<a href="./download/' +
-                        Factory + '_' + ErrorName + '_' + nodeNames[indexXL] + '.pdf" target="_blank">Open PDF in new window</a>' +
+                        ErrorName + '_' + nodeNames[indexXL] + '.pdf" target="_blank">Open PDF in new window</a>' +
                         '<div class="w-100" style="height: 1ch;"></div>' +
                         '<a href="./download/' +
-                        Factory + '_' + ErrorName + '_' + nodeNames[indexXL] + '.mp4" target="_blank">Open MP4 in new window</a>' +
+                        ErrorName + '_' + nodeNames[indexXL] + '.mp4" target="_blank">Open MP4 in new window</a>' +
                         '</strong></td>' +
                         '</tr>'
                     );
