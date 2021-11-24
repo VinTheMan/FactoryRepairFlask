@@ -32,8 +32,7 @@ function FindNextSol() {
     } // for
 
     if (indexXL === -1) { // if no more solutions are found
-        console.log('report new solution or no solution');
-
+        // console.log('report new solution or no solution'); // test
         $('tr[node_id="Solved"]').find('li[value_index="0"]').find('input').click();
         sessionStorage.setItem('is_there_solutionn', JSON.stringify('no'));
         sessionStorage.removeItem('solutionn');
@@ -180,50 +179,18 @@ function CleanUpAllClicked() {
     });
 } // CleanUpAllClicked()
 
-function CheckFactory() {
-    // sessionStorage.setItem('factoryy', JSON.stringify('F2')); // test
-    // var factoryy = JSON.parse(sessionStorage.getItem('factoryy'));
-    CleanUpAllClicked();
-    $('#f2').click();
-
-    if (sessionStorage.getItem("change_probability_filename") != null) {
-        $("#changeXMLBtn").text("Use Database");
-    } // if
-    else {
-        $("#changeXMLBtn").text("Use Edited");
-    } // else
-
-    console.log("CheckFactory ran!"); // test
-} // CheckFactory
-
 function reDrawGraph(fileName) {
-    $('body').loadingModal({
-        text: 'Loading...',
-        animation: 'circle'
-    });
-
     $("#theGraphs").show(); // show the graph
     // $("#theGraphs").hide(); // hide the graph
-    //_draw_result_table(JSON.parse(sessionStorage.getItem('changed_xml')));
-    if (fileName === "new") {
+    if (fileName == "new") {
         _combine_input();
     } // if
-    else if (fileName === "copy") {
+    else if (fileName == "copy") {
         _combine_input_copy();
     } // else if
 
     CleanUpAllClicked();
     $('#f2').click();
-
-    if (sessionStorage.getItem("change_probability_filename") != null) {
-        $("#changeXMLBtn").text("Use Database");
-    } // if
-    else {
-        $("#changeXMLBtn").text("Use Edited");
-    } // else
-
-    $('body').loadingModal('hide');
-    $('body').loadingModal('destroy');
 } // reDrawGraph
 
 /*var copyfunction = function () {
@@ -268,7 +235,10 @@ $(document).ready(function () {
 
     sessionStorage.removeItem('is_there_solutionn');  // initialize
     sessionStorage.removeItem('changed_xml');
-
+    sessionStorage.removeItem('change_probability_filename');
+    $("#changeXMLBtn").text("Use Edited");
+    $("#copyfromdatabase").hide();
+    reDrawGraph("new");
     CleanUpAllClicked();
     $('#f2').click();
 
@@ -412,27 +382,53 @@ $(document).ready(function () {
             sessionStorage.setItem('change_probability_filename', JSON.stringify(fileName));
             $("#changeXMLBtn").text("Use Database");
             $("#copyfromdatabase").show();
+            var faa = JSON.parse(sessionStorage.getItem('factoryy'));
+            var errName = JSON.parse(sessionStorage.getItem('questionn'));
+            $.ajax({
+                url: "/GetFromEditedProb",
+                method: 'POST',
+                data: { Factory: faa, ErrorName: errName },
+                dataType: "json",
+                error: function (request) {
+                    if (request.status == 420) {
+                        alert(request.responseJSON.message);
+                    } // if
+                    else {
+                        console.log(request);
+                    } // else
+                },
+                success: function (response) {
+                    var data = response.message;
+                    // console.log(data); // test
+                    $("#change_data").val(response.message);
+                    sessionStorage.setItem('changed_xml', JSON.stringify(data));
+                    console.log('get copy success at changeXMLBtn');
+                    CleanUpAllClicked();
+                    reDrawGraph(fileName);
+                } // success
+            }); // ajax
         } // if
         else {
             fileName = "new";
             sessionStorage.removeItem('change_probability_filename');
             $("#changeXMLBtn").text("Use Edited");
             $("#copyfromdatabase").hide();
+            CleanUpAllClicked();
+            reDrawGraph(fileName);
         } // else
-
-        CleanUpAllClicked();
-        reDrawGraph(fileName);
     });
 
     $("#copyfromdatabase").on('click', function (e) {
         e.preventDefault();
-        var test = $("#input_data").val();
+        var XMLDATA = $("#input_data").val();
+        $("#change_data").val(XMLDATA);
+
         var $condition1 = JSON.parse(sessionStorage.getItem('factoryy'));
         var $condition2 = JSON.parse(sessionStorage.getItem('questionn'));
         $.ajax({
             url: "/writeToEditedProb",
             method: 'POST',
-            data: { Factory: $condition1, ErrorName: $condition2, XMLDATA: test },
+            data: { Factory: $condition1, ErrorName: $condition2, XMLDATA: XMLDATA },
             dataType: "json",
             error: function (request) {
                 if (request.status == 420) {
@@ -443,10 +439,9 @@ $(document).ready(function () {
                 } // else
             },
             success: function (response) {
-                var data = $("#input_data").val();
                 // console.log(data); // test
-                sessionStorage.setItem('changed_xml', JSON.stringify(data));
                 console.log('write database to copy success at copyfromdatabase');
+                CleanUpAllClicked();
                 reDrawGraph("copy");
             } // success
         }); // ajax
@@ -595,10 +590,6 @@ $(document).ready(function () {
 }); // on document ready
 
 $(window).on('load', function () {
-    // PAGE IS FULLY LOADED  
-    // CheckFactory();
-    // $("#toggleGraphs").click();
-
     // PAGE IS FULLY LOADED
     // FADE OUT YOUR OVERLAYING DIV
     $('body').loadingModal('hide');

@@ -11,7 +11,7 @@ var Bayes={};
     this.parents=[];
   }
   Bayes.Node.prototype.initSampleLw=function() {
-    //alert('initSampleLw '+this.name);
+    // alert('initSampleLw '+this.name); // test
     this.sampledLw=undefined;
   }
   Bayes.Node.prototype.sampleLw=function() {
@@ -51,6 +51,7 @@ var Bayes={};
       for (var h=this.values.length-1;h>=0;h--) this.sampledLw[h]=0;
     }
     this.sampledLw[this.value]+=f;
+    // alert('saveSampleLw '+this.name + "__" + this.sampledLw[this.value] ); // test
   }
   
   Bayes.sample=function(samples) {

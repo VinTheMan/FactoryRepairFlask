@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="-1" /> -->
+    <meta http-equiv="Expires" content="-1" />
 
     <link rel="stylesheet" href="{{url_for('static', filename='/css/style.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/style.css')}}">
@@ -87,15 +87,7 @@
             <!-- change data -->
             <div class="d-none">
                 <label for="change_data"></label>
-                <textarea class="change-trigger focus_select" id="change_data"></textarea>
-                <input type="file" id="change_data" class="file-change-trigger" data-file-to-textarea="#change_data" />
-            </div>
-            <!-- copy original data-->
-            <div class="d-none">
-                <label for="original_data"></label>
-                <textarea class="change-trigger focus_select" id="original_data"></textarea>
-                <input type="file" id="original_data" class="file-change-trigger"
-                    data-file-to-textarea="#original_data" />
+                <textarea class="focus_select" id="change_data"></textarea>
             </div>
 
             <div class="ui bottom attached active tab segment" data-tab="mode_file" style="display: none;">
@@ -103,17 +95,6 @@
                     <input type="file" id="input_file" class="file-change-trigger"
                         data-file-to-textarea="#input_data" />
                 </div>
-            </div>
-            <div class="d-none">
-                <label for="change_data"></label>
-                <textarea class="change-trigger focus_select" id="change_data"></textarea>
-                <input type="file" id="change_data" class="file-change-trigger" data-file-to-textarea="#change_data" />
-            </div>
-            <div class="d-none">
-                <label for="original_data"></label>
-                <textarea class="change-trigger focus_select" id="original_data"></textarea>
-                <input type="file" id="original_data" class="file-change-trigger"
-                    data-file-to-textarea="#original_data" />
             </div>
             <br>
             <div id="theGraphs" class="column">

@@ -48,7 +48,7 @@ var div_graph = function (_selector) {
         }
         else if (_rect_y + _rect_height > (_container_height - _m)) {
             // 過長的時候，修正位置
-            console.log(["修正y", _rect_y, (_container_height - _m - _rect_height)]);
+            // console.log(["修正y", _rect_y, (_container_height - _m - _rect_height)]);
             //_rect_y = _rect_y * 0.5;
             //while (_rect_y + _rect_height > (_container_height - _m)) {
             //    _rect_y = _rect_y * 0.75;
@@ -172,12 +172,12 @@ var div_graph = function (_selector) {
     //container.show();
     var _layouter = new Graph.Layout.Spring(_g);
     _layouter.layout();
-    console.log("排版之後");
+    // console.log("排版之後");
     for (var _i = 0; _i < _g.nodelist.length; _i++) {
         var _n = _g.nodelist[_i];
-        console.log([_n.layoutPosX, _n.layoutPosY]);
+        // console.log([_n.layoutPosX, _n.layoutPosY]);
     }
-    console.log(_g);
+    // console.log(_g);
     /*
     console.log(_g);
     //return;

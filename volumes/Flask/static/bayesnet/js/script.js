@@ -21,34 +21,10 @@ var _combine_input_copy = function () {
     // ��ƳB�z�]�w
     //_download_dynamic_classification_file();
     //_download_bayes_net_xml_file();
-    var faa = JSON.parse(sessionStorage.getItem('factoryy'));
-    var errName = JSON.parse(sessionStorage.getItem('questionn'));
-    var reult = "";
-    $.ajax({
-        url: "/GetFromEditedProb",
-        method: 'POST',
-        data: { Factory: faa, ErrorName: errName },
-        dataType: "json",
-        error: function (request) {
-            if (request.status == 420) {
-                alert(request.responseJSON.message);
-            } // if
-            else {
-                console.log(request);
-            } // else
-        },
-        success: function (response) {
-            var data = response.message;
-            // console.log(data); // test
-            $("#change_data").val(response.message);
-            sessionStorage.setItem('changed_xml', JSON.stringify(data));
-            console.log('get copy success at _combine_input_copy');
-            var _xml = data;
-            console.log(123);
-            _draw_result_table(_xml);
-        } // success
-    }); // ajax
-};		// var _combine_input = function () {
+    var _xml2 = $("#change_data").val();
+    // console.log(_xml2); // test
+    _draw_result_table(_xml2);
+};
 
 // ---------------------------------------
 
@@ -78,13 +54,7 @@ if (typeof (tinyMCE) === "object") {
         setup: function (ed) {
             ed.on('change', function (e) {
                 //console.log('the content ', ed.getContent());
-                if (sessionStorage.getItem("change_probability_filename") != null) {
-                    _combine_input_copy();
-                }
-                else {
-                    _combine_input();
-                }
-
+                _combine_input();
             });
         }
     });
@@ -437,7 +407,8 @@ $(function () {
         success: function (response) {
             // console.log(response.data); // test
             $("#input_data").val(response.data);
-            $("#input_data").trigger("change");
+            _combine_input();
+            // $("#input_data").trigger("change");
             $.ajax({
                 url: "/check_edited_txt_exist",
                 method: 'POST',

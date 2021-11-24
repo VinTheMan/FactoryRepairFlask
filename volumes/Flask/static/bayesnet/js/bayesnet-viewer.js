@@ -7,7 +7,7 @@ var copy_c = ""; //input data
 
 var _draw_result_table = function (_xml_text) {
     var _container = $("#preview_html");
-
+    // console.log(_xml_text); // test
 
     if ($("#preview_html_wrapper").hasClass("wrapper")) {
         _container.css({
@@ -24,8 +24,8 @@ var _draw_result_table = function (_xml_text) {
 
 
     var _xml = $($.parseXML(_xml_text));
-    //console.log(_xml.find('VARIABLE[TYPE="nature"]').length);
-
+    // console.log(_xml.find('VARIABLE[TYPE="nature"]').length); // test
+    // console.log(_xml); // test
 
     // ----------------------------------------
     var _given = {};
@@ -35,7 +35,7 @@ var _draw_result_table = function (_xml_text) {
     _parse_xml_definition(_xml, _given, _lines_cpt);
 
 
-    //console.log(_cpt);
+    // console.log(_lines_cpt); // test
 
     // ------------------------------------
 
@@ -150,6 +150,7 @@ var _draw_result_table = function (_xml_text) {
         for (var _v = 0; _v < _variables.length; _v++) {
             var _name = _variables[_v];
             var _bn = new Bayes.Node(_name, _outcome[_name]);
+            // console.log(_name); // test
             _bn.cpt = _object_cpt[_name];
             _bayes_nodes[_name] = _bn;
             //Bayes.nodes.push(_bn);
@@ -176,8 +177,10 @@ var _draw_result_table = function (_xml_text) {
         if (DEBUG.enable_bayes === true) {
             Bayes.sample(10000);
         }
+        // console.log(Bayes.sample(10000)); // test
         for (var _name in _bayes_nodes) {
             var _probs = _display_prob_dis(_bayes_nodes[_name].sampledLw);
+            console.log(_bayes_nodes[_name].sampledLw + "__" + _probs); // test
             for (var _i = 0; _i < _probs.length; _i++) {
                 var _p = _probs[_i];
                 _container.find('div[node_id="' + _name + '"] li[value_index="' + _i + '"] .prob').text(_p);
@@ -218,15 +221,16 @@ var _draw_result_table = function (_xml_text) {
 };
 
 var _display_prob_dis = function (_ary) {
-    //console.log(_ary);
+    // console.log(_ary); // test
     var _sum = _ary.reduce(function (a, b) { return a + b; }, 0);
+    // console.log(_sum); // test
     var _ary2 = [];
     for (var _i = 0; _i < _ary.length; _i++) {
         var _p = _ary[_i] / _sum;
         _p = Math.round(_p * 10000) / 100;
         if (isNaN(_p)) {
-            console.log("NaN");
-        }
+            // console.log("NaN");
+        } // if
         _ary2.push(_p);
     }
     return _ary2;
@@ -451,10 +455,11 @@ var myFunction = function () {
     // console.log(change); // test
     testold = testold.replace(test, change);
 
-    console.log(testold); // test
+    // console.log(testold); // test
 
     //sessionStorage.setItem('changed_xml', test);
     sessionStorage.setItem('changed_xml', JSON.stringify(testold));
+    $("#change_data").val(testold);
 
     var fa = JSON.parse(sessionStorage.getItem('factoryy'));
     var erNme = JSON.parse(sessionStorage.getItem('questionn'));
@@ -485,10 +490,11 @@ var myFunction = function () {
         },
         success: function (data) {
             console.log(data.message); // test
+            CleanUpAllClicked();
+            reDrawGraph("copy");
         } // success
     });
 
-    reDrawGraph("copy");
     //send to php 
     /*$.ajax({
         type: "post",
@@ -688,7 +694,7 @@ var _outcome_set_handler = function (_d_li, _bayes_nodes) {
     // 先確定他的名稱啦
     var _div = _d_li.parents("[node_id]:first");
     var _name = _div.attr("node_id");
-    console.log('checkbox triggered'); // test
+    // console.log('checkbox triggered'); // test
     var _value_index = parseInt(_d_li.attr("value_index"), 10);
     var _outcome = _d_li.attr("outcome");
     var _checked = _d_li.find("input").prop("checked");

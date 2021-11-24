@@ -99,7 +99,7 @@ $(document).ready(function () {
 
         if (!$("#input_question").val()) {
             // validation failed
-            $("#feedBackforQ").text("Please input a question.");
+            $("#feedBackforQ").text("Please input an issue.");
         } else {
             console.log($("#input_question").val()); // test
             var indexx = -1;
@@ -115,7 +115,7 @@ $(document).ready(function () {
             } // if
             else {
                 $("#input_question").addClass("is-invalid");
-                $("#feedBackforQ").text("No such question!");
+                $("#feedBackforQ").text("No such issue!");
             } // else 
         } // if
     });
