@@ -535,7 +535,7 @@ def func_Update_ErrorName_And_Actions():
     # print(actions[i], file=sys.stderr) # test
     for file in uploaded_files:
         file_ext = allowed_file(file.filename)
-        file_name = fa + "_" + errorName + "_" + actions[i] + file_ext
+        file_name = errorName + "_" + actions[i] + file_ext
         try:
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], file_name))
         except errors.ConnectionFailure as e:
@@ -564,7 +564,7 @@ def func_Add_Action():
     i = 0
     for file in uploaded_files2:
         file_ext = allowed_file(file.filename)
-        file_name = faNme + "_" + erName + "_" + AddAction + file_ext
+        file_name = erName + "_" + AddAction + file_ext
         try:
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], file_name))
         except errors.ConnectionFailure as e:
@@ -648,8 +648,8 @@ def check_mp4_or_pdf():
     faNme = request.form.get('Factory')
     erName = request.form.get('ErrorName')
     AddAction = request.form.get('ActionName')
-    file_name = faNme + "_" + erName + "_" + AddAction + ".pdf"
-    file_name2 = faNme + "_" + erName + "_" + AddAction + ".mp4"
+    file_name = erName + "_" + AddAction + ".pdf"
+    file_name2 = erName + "_" + AddAction + ".mp4"
     fname = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
     fname2 = os.path.join(app.config['UPLOAD_FOLDER'], file_name2)
     if os.path.isfile(fname) and os.path.isfile(fname2):
