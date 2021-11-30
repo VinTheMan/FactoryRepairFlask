@@ -189,47 +189,11 @@ function reDrawGraph(fileName) {
         _combine_input_copy();
     } // else if
 
-    CleanUpAllClicked();
-    $('#f2').click();
+    setTimeout(CleanUpAllClicked(), 0.1 * 1000);
+    setTimeout(function(){$('#f2').click()}, 0.3 * 1000);
+    // CleanUpAllClicked();
+    // $('#f2').click();
 } // reDrawGraph
-
-/*var copyfunction = function () {
-    
-    var test = $("#original_data").val();
-    //send to php 
-    $.ajax({
-        type: "post",
-        url: "download.php",
-        data: { test: test},
-        dataType:'json',
-        success: function(data) {
-            console.log('ok');
-            //console.log(data);
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.warn(jqXHR.responseText);
-                alert(errorThrown);
-            }
-    });
-};
-*/
-/*function FileExist() 
-{
-    if (sessionStorage.getItem("changed_xml") === null) 
-    {
-        var data = $("#input_data").val();
-
-        console.log(data);
-        sessionStorage.setItem('changed_xml', JSON.stringify(data));
-        console.log('copy success');
-    }
-    else
-    {
-        console.log('already exist');
-    }
-
-}*/
-
 
 $(document).ready(function () {
 
@@ -238,8 +202,7 @@ $(document).ready(function () {
     sessionStorage.removeItem('change_probability_filename');
     $("#changeXMLBtn").text("Use Edited");
     $("#copyfromdatabase").hide();
-    reDrawGraph("new");
-    CleanUpAllClicked();
+
     $('#f2').click();
 
     $('#f2').on('click', function (e) {
@@ -376,7 +339,6 @@ $(document).ready(function () {
     $("#changeXMLBtn").on('click', function (e) {
         e.preventDefault();
         var fileName = "";
-        CleanUpAllClicked();
         if ($("#changeXMLBtn").text() === "Use Edited") {
             fileName = "copy";
             sessionStorage.setItem('change_probability_filename', JSON.stringify(fileName));
@@ -384,8 +346,9 @@ $(document).ready(function () {
             $("#copyfromdatabase").show();
             var faa = JSON.parse(sessionStorage.getItem('factoryy'));
             var errName = JSON.parse(sessionStorage.getItem('questionn'));
+
             $.ajax({
-                url: "/GetFromEditedProb",
+                url: "/check_edited_txt_exist",
                 method: 'POST',
                 data: { Factory: faa, ErrorName: errName },
                 dataType: "json",
@@ -398,24 +361,66 @@ $(document).ready(function () {
                     } // else
                 },
                 success: function (response) {
-                    var data = response.message;
-                    // console.log(data); // test
-                    $("#change_data").val(response.message);
-                    sessionStorage.setItem('changed_xml', JSON.stringify(data));
-                    console.log('get copy success at changeXMLBtn');
-                    CleanUpAllClicked();
-                    reDrawGraph(fileName);
+                    if (response.message === "Existed") {
+                        $.ajax({
+                            url: "/GetFromEditedProb",
+                            method: 'POST',
+                            data: { Factory: faa, ErrorName: errName },
+                            dataType: "json",
+                            error: function (request) {
+                                if (request.status == 420) {
+                                    alert(request.responseJSON.message);
+                                } // if
+                                else {
+                                    console.log(request);
+                                } // else
+                            },
+                            success: function (response) {
+                                var data = response.message;
+                                // console.log(data); // test
+                                $("#change_data").val(response.message);
+                                sessionStorage.setItem('changed_xml', JSON.stringify(data));
+                                console.log('get copy success');
+
+                                reDrawGraph(fileName);
+                            } // success
+                        }); // ajax
+                    } // if
+                    else { // make a new copy in server
+                        var xmlData = $("#input_data").val();
+                        $.ajax({
+                            url: "/writeToEditedProb",
+                            method: 'POST',
+                            data: { Factory: faa, ErrorName: errName, XMLDATA: xmlData },
+                            dataType: "json",
+                            error: function (request) {
+                                if (request.status == 420) {
+                                    alert(request.responseJSON.message);
+                                } // if
+                                else {
+                                    console.log(request);
+                                } // else
+                            },
+                            success: function (response) {
+                                var data = $("#input_data").val();
+                                // console.log(data); // test
+                                sessionStorage.setItem('changed_xml', JSON.stringify(data));
+                                console.log('write new copy success');
+                            } // success
+                        }); // ajax
+                    } // else
                 } // success
-            }); // ajax
+            });
         } // if
         else {
             fileName = "new";
             sessionStorage.removeItem('change_probability_filename');
             $("#changeXMLBtn").text("Use Edited");
             $("#copyfromdatabase").hide();
-            CleanUpAllClicked();
             reDrawGraph(fileName);
         } // else
+
+        console.log("change xml click"); // test
     });
 
     $("#copyfromdatabase").on('click', function (e) {
@@ -441,7 +446,6 @@ $(document).ready(function () {
             success: function (response) {
                 // console.log(data); // test
                 console.log('write database to copy success at copyfromdatabase');
-                CleanUpAllClicked();
                 reDrawGraph("copy");
             } // success
         }); // ajax

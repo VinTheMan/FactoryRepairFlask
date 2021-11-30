@@ -89,6 +89,11 @@ $(document).ready(function () {
         self.location.href = '/create_question';
     });
 
+    $("#newQuestion").on("click", function (e) {
+        e.preventDefault();
+        self.location.href = '/create_question';
+    });
+
     $("#submitBtn").on("click", function (e) {
         e.preventDefault();
         $("#submitBtnHidden").click();
@@ -111,6 +116,7 @@ $(document).ready(function () {
 
             if (indexx !== -1) {
                 sessionStorage.setItem('questionn', JSON.stringify($("#input_question").val()));
+                console.log("hiii") ; // test
                 self.location.href = '/main';
             } // if
             else {
@@ -134,5 +140,10 @@ $(document).ready(function () {
         $("#myMenu").hide();
     });
 
+    $("#scrollToIssueSel").on("click", function (e) {
+        e.preventDefault();
+        // console.log("clicked !") ; // test
+        $('html, body').animate({ scrollTop: $('#IssueDiv').offset().top - 60 }, 'fast');
+    });
 
 }); // on document ready

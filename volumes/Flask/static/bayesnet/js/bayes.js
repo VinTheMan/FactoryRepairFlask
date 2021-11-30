@@ -11,7 +11,7 @@ var Bayes={};
     this.parents=[];
   }
   Bayes.Node.prototype.initSampleLw=function() {
-    // alert('initSampleLw '+this.name); // test
+    // console.log('initSampleLw '+this.name); // test
     this.sampledLw=undefined;
   }
   Bayes.Node.prototype.sampleLw=function() {
@@ -48,15 +48,21 @@ var Bayes={};
   Bayes.Node.prototype.saveSampleLw=function(f) {
     if (!this.sampledLw) {
       this.sampledLw=new Array(this.values.length);
-      for (var h=this.values.length-1;h>=0;h--) this.sampledLw[h]=0;
+      // console.log(this.value); // test
+      for (var h=this.values.length-1;h>=0;h--) {
+        this.sampledLw[h]=0;
+      } // for
     }
     this.sampledLw[this.value]+=f;
-    // alert('saveSampleLw '+this.name + "__" + this.sampledLw[this.value] ); // test
+    // console.log(this.name + "     " + f + "      " + this.sampledLw ) ; // test
   }
   
   Bayes.sample=function(samples) {
-    //alert('bayes.sample '+samples);
-    for (var h=Bayes.nodes.length-1;h>=0;h--) Bayes.nodes[h].initSampleLw();
+    // alert('bayes.sample '+samples); // test
+    for (var h=Bayes.nodes.length-1;h>=0;h--) {
+      Bayes.nodes[h].initSampleLw();
+      // console.log('initSampleLw'); // test
+    } // for
     
     var lwSum=0;
     for (var count=0;count<samples;count++) {

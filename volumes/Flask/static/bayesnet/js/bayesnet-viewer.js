@@ -188,6 +188,8 @@ var _draw_result_table = function (_xml_text) {
             }
         }
 
+        // console.log(_bayes_nodes); // test
+
         $('#isDone').click();
         // sessionStorage.setItem('factoryy', JSON.stringify('F2')); // test
         $('#f2').click();
@@ -215,8 +217,6 @@ var _draw_result_table = function (_xml_text) {
     //}, 0);
     //$("body").dragScroller();
     //console.log(Bayes);
-
-
 
 };
 
@@ -430,7 +430,7 @@ var myFunction = function () {
 
     str = '<TABLE>';
     str1 = '</TABLE>';
-    console.log(tablename);
+    // console.log(tablename);
     //find index
     index = test.search(tablename);
     indexbegin = test.indexOf(str, index);

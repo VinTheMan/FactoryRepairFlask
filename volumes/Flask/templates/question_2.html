@@ -1,45 +1,396 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
-    </meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="{{url_for('static', filename='/css/style.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/style.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='/css/questionstyle.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/bootstrap.min.css')}}">
+    <!-- OG Meta Tags to improve the way the post looks when you share the page on Facebook, Twitter, LinkedIn -->
+    <meta property="og:site_name" content="" /> <!-- website name -->
+    <meta property="og:site" content="" /> <!-- website link -->
+    <meta property="og:title" content="" /> <!-- title shown in the actual shared post -->
+    <meta property="og:description" content="" /> <!-- description shown in the actual shared post -->
+    <meta property="og:image" content="" /> <!-- image link, make sure it's jpg -->
+    <meta property="og:url" content="" /> <!-- where do you want your post to link to -->
+    <meta name="twitter:card" content="summary_large_image"> <!-- to have large image post format in Twitter -->
+
+    <!-- Webpage Title -->
     <title>FactroyRapair Question</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/notyf.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/jquery.loadingModal.min.css')}}">
+
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/fontawesome-all.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/template_styles.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/swiper.css')}}">
+    <!-- Favicon  -->
+    <link rel="icon" href="{{url_for('static', filename='/bayesnet/images/favicon.png')}}">
 </head>
 
 <body>
+
     <script src="{{url_for('static', filename='/bayesnet/js/bootstrap.bundle.min.js')}}"></script>
     <script src="{{url_for('static', filename='/bayesnet/vendors/jquery/jquery.min.js')}}"></script>
+    <script src="{{url_for('static', filename='/bayesnet/js/jquery.loadingModal.min.js')}}"></script>
 
-    <div class="head">FactoryRepair Issue</div>
-    <br />
-    <form id="questionForm" class="question needs-validation" novalidate>
-        <h1> Issue </h1>
-        <input id="input_question" class="form-control mb-2" type="text" placeholder="Issue" autocomplete="off" required>
-        <div id="feedBackforQ" class="invalid-feedback">
-            Please input an issue.
-        </div>
-        <ul id="myMenu" class="list-group list-group-flush" style="display: none;">
-        </ul>
+    <!-- Navigation -->
+    <nav id="navbar" class="navbar navbar-expand-lg fixed-top navbar-dark" aria-label="Main navigation">
+        <div class="container">
 
-        <input id="submitBtn" type="submit" value="Submit">
-        <button id="submitBtnHidden" class="d-none" type="submit">Submit form</button>
-    </form>
+            <!-- Image Logo -->
+            <!-- <a class="navbar-brand logo-image" href="index.html"><img src="images/logo.svg" alt="alternative"></a> -->
 
-    <div class="w-100" style="height: 5ch;"></div><!-- </div>breaks cols to a new line-->
+            <!-- Text Logo - Use this if you don't have a graphic logo -->
+            <a id="toHome" class="navbar-brand logo-text" href="/">Factory Repair</a>
 
-    <div class="row w-100 gy-0 gx-0 justify-content-center">
-        <button id="newQuestion" class="col col-auto btn btn-outline-secondary">
-            Create New Issue
-        </button>
-    </div>
+            <button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-    <script src="{{url_for('static', filename='/bayesnet/js/question_2.js')}}"></script>
+            <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav ms-auto navbar-nav-scroll">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/">Home</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="#projects">Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown"
+                            aria-expanded="false">Drop</a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdown01">
+                            <li><a class="dropdown-item" href="article.html">Article Details</a></li>
+                            <li>
+                                <div class="dropdown-divider"></div>
+                            </li>
+                            <li><a class="dropdown-item" href="terms.html">Terms Conditions</a></li>
+                            <li>
+                                <div class="dropdown-divider"></div>
+                            </li>
+                            <li><a class="dropdown-item" href="privacy.html">Privacy Policy</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li> -->
+                </ul>
+                <!-- <span class="nav-item social-icons">
+                    <span class="fa-stack">
+                        <a href="#your-link">
+                            <i class="fas fa-circle fa-stack-2x"></i>
+                            <i class="fab fa-facebook-f fa-stack-1x"></i>
+                        </a>
+                    </span>
+                    <span class="fa-stack">
+                        <a href="#your-link">
+                            <i class="fas fa-circle fa-stack-2x"></i>
+                            <i class="fab fa-twitter fa-stack-1x"></i>
+                        </a>
+                    </span>
+                </span> -->
+            </div> <!-- end of navbar-collapse -->
+        </div> <!-- end of container -->
+    </nav> <!-- end of navbar -->
+    <!-- end of navigation -->
+
+
+    <!-- Header -->
+    <header class="ex-header">
+        <div class="container">
+            <div class="row">
+                <h1 class="col col-auto m-0 p-0">Issue Selection</h1>
+                <div class="col col-6">
+                    <div class="button-container row justify-content-end">
+                        <button id="scrollToIssueSel" class="btn-solid-lg page-scroll col col-auto">
+                            <strong>GO</strong>
+                        </button>
+                        <!-- <a class="btn-outline-lg page-scroll" href="#contact">Contact</a> -->
+                    </div> <!-- end of button-container -->
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </header> <!-- end of ex-header -->
+    <!-- end of header -->
+
+    <!-- Process -->
+    <div class="basic-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="h2-heading">Process</h2>
+                    <hr class="hr-heading">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="step-container">
+                        <div class="step" style="color: rgb(241, 201, 148);"><strong>Issue</strong></div>
+                        <i class="fas fa-chevron-right"></i>
+                        <div class="step" style="color: rgb(92, 91, 94);">BayesNet</div>
+                        <i class="fas fa-chevron-right" style="color: rgb(92, 91, 94);"></i>
+                        <div class="step" style="color: rgb(92, 91, 94);">Solution</div>
+                        <br>
+                        <i class="fas fa-chevron-right" style="color: rgb(92, 91, 94);"></i>
+                        <div class="step" style="color: rgb(92, 91, 94);">Optimize</div>
+                        <i class="fas fa-chevron-right" style="color: rgb(92, 91, 94);"></i>
+                        <div class="step" style="color: rgb(92, 91, 94);">New Cycle</div>
+                    </div> <!-- end of step-container -->
+                    <p>First Step : An Issue Occurs.</p>
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of basic-5 -->
+    <!-- end of process -->
+
+    <!-- Basic -->
+    <div class="ex-basic-1 pt-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-10 offset-xl-1">
+                    <p>Consulted he eagerness unfeeling deficient existence of. Calling nothing end fertile for venture
+                        way boy. Esteem spirit temper too say adieus who direct esteem. It esteems luckily mr or picture
+                        placing drawing no. Apartments frequently or motionless on reasonable projecting expression.
+                        Last sentence of words thus better.</p>
+                    <p class="mb-5">Ye on properly handsome returned throwing am no whatever. In without wishing he of
+                        picture no exposed talking minutes. Curiosity continual belonging offending so explained it
+                        exquisite. Do remember to followed yourself material mr recurred carriage. Way mrs end gave fat
+                        skin brown yesterday tall walk fact bed.</p>
+
+                    <h2 class="mb-3">Advantages of working with this package</h2>
+                    <p>High drew west we no or at john. About or given on witty event. Or sociable up material bachelor
+                        bringing landlord confined. Busy so many in hung easy find well up. So of exquisite my an
+                        explained remainder. Dashwood denoting securing be on perceive my laughing so. Ye on properly
+                        handsome returned throwing am no whatever.</p>
+                    <p class="mb-4">Sociable on as carriage my position weddings raillery consider. Peculiar trifling
+                        absolute and wandered vicinity property yet. The and collecting motionless difficulty son. His
+                        hearing staying ten colonel met. Word drew six easy four dear cold deny. Fulfilled direction use
+                        continual set him propriety continued. Saw met applauded favourite deficient.</p>
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of ex-basic-1 -->
+    <!-- end of basic -->
+
+
+    <!-- Cards -->
+    <div class="ex-cards-1 pt-3 pb-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <!-- Card -->
+                    <div class="card">
+                        <ul class="list-unstyled">
+                            <li class="d-flex">
+                                <span class="fa-stack">
+                                    <span class="fas fa-circle fa-stack-2x"></span>
+                                    <span class="fa-stack-1x">1</span>
+                                </span>
+                                <div class="flex-grow-1">
+                                    <h5>High Quality Service</h5>
+                                    <p>Features include an eye catching morphtext in the header, details lightbox for
+                                        more details information</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div> <!-- end of card -->
+                    <!-- end of card -->
+
+                    <!-- Card -->
+                    <div class="card">
+                        <ul class="list-unstyled">
+                            <li class="d-flex">
+                                <span class="fa-stack">
+                                    <span class="fas fa-circle fa-stack-2x"></span>
+                                    <span class="fa-stack-1x">2</span>
+                                </span>
+                                <div class="flex-grow-1">
+                                    <h5>Prompt Timely Delivery</h5>
+                                    <p>Statistics numbers for important values, card slider for testimonials, image
+                                        slider for customer logos</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div> <!-- end of card -->
+                    <!-- end of card -->
+
+                    <!-- Card -->
+                    <div class="card">
+                        <ul class="list-unstyled">
+                            <li class="d-flex">
+                                <span class="fa-stack">
+                                    <span class="fas fa-circle fa-stack-2x"></span>
+                                    <span class="fa-stack-1x">2</span>
+                                </span>
+                                <div class="flex-grow-1">
+                                    <h5>Skilled Team Involved</h5>
+                                    <p>Some useful extra pages are bundled with the template lik article details, terms
+                                        conditions and privacy policy</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div> <!-- end of card -->
+                    <!-- end of card -->
+
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of ex-cards-1 -->
+    <!-- end of cards -->
+
+
+    <!-- Basic -->
+    <div id="IssueDiv" class="ex-basic-1 pt-3 pb-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-10 offset-xl-1">
+                    <h1 class="mb-4"> Issue </h1>
+                    <p>
+                    <form id="questionForm" class="question needs-validation" novalidate>
+                        <div class="">
+                            <input id="input_question" class="form-control" type="text" placeholder="Issue"
+                                autocomplete="off" style="text-align:center;" required>
+                            <div id="feedBackforQ" class="invalid-feedback">
+                                Please input an issue.
+                            </div>
+                        </div>
+
+                        <!-- <input type="submit" value="Submit" />
+                            {% for message in get_flashed_messages() %}
+                            <p>{{ message }}</p>
+                            {% endfor %} -->
+
+                        <button id="submitBtnHidden" class="d-none" type="submit">Actual Submit form</button>
+                    </form>
+                    </p>
+                    <div class="text-box mb-5">
+                        <ul id="myMenu" class="list-group list-group-flush" style="display: none;">
+                        </ul>
+                    </div> <!-- end of text-box -->
+                    <div class="row justify-content-center">
+                        <a id="submitBtn" class="btn-outline-reg col col-auto" href="#">Submit</a>
+                    </div>
+
+                    <!-- <ul class="list-unstyled li-space-lg mb-5">
+                        <li class="d-flex">
+                            <i class="fas fa-square"></i>
+                            <div class="flex-grow-1"><strong>Card slider</strong> for testimonials, statistics numbers
+                                for important values image slider for logos</div>
+                        </li>
+                        <li class="d-flex">
+                            <i class="fas fa-square"></i>
+                            <div class="flex-grow-1"><strong>Dropdown navigation</strong> and useful extra pages for
+                                article details, terms conditions and privacy policy</div>
+                        </li>
+                        <li class="d-flex">
+                            <i class="fas fa-square"></i>
+                            <div class="flex-grow-1"><strong>Clean light design</strong> mixing purple, orange and gray
+                                hues with one color backgrounds to maximize</div>
+                        </li>
+                        <li class="d-flex">
+                            <i class="fas fa-square"></i>
+                            <div class="flex-grow-1"><strong>Together with</strong> touches of call to action green, the
+                                overall landing page design will showcase your app</div>
+                        </li>
+                        <li class="d-flex">
+                            <i class="fas fa-square"></i>
+                            <div class="flex-grow-1"><strong>This template</strong> is built with HTML, CSS and
+                                Bootstrap to ensure the highest flexibility for all users</div>
+                        </li>
+                    </ul> -->
+
+                    <!-- <a class="btn-solid-reg mb-5" href="index.html#contact">Contact Us</a> -->
+                    
+                    
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of ex-basic-1 -->
+    <!-- end of basic -->
+
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="container">
+            <div class="row justify-content-center">
+                <button id="newQuestion" class="col col-auto btn btn-outline-light">
+                    Create New Issue
+                </button>
+                <div class="col-lg-12">
+                    <div class="footer-col first">
+                        <!-- <h6>About Elma</h6>
+                        <p class="p-small">He oppose at thrown desire of no. Announcing impression unaffected day his
+                            are unreserved indulgence. Him hard find read are you</p> -->
+                    </div>
+                    <div class="footer-col second">
+                        <!-- <h6>Links</h6>
+                        <ul class="list-unstyled li-space-lg p-small">
+                            <li>Important: <a href="terms.html">Terms & Conditions</a>, <a href="privacy.html">Privacy
+                                    Policy</a></li>
+                            <li>Useful: <a href="#">Colorpicker</a>, <a href="#">Icon Library</a>, <a
+                                    href="#">Illustrations</a></li>
+                            <li>Menu: <a class="page-scroll" href="#header">Home</a>, <a class="page-scroll"
+                                    href="#projects">Projects</a>, <a class="page-scroll" href="#services">Services</a>,
+                                <a class="page-scroll" href="#contact">Contact</a>
+                            </li>
+                        </ul> -->
+
+                    </div>
+                    <div class="footer-col third">
+                        <!-- <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-facebook-f fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-twitter fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-pinterest-p fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-instagram fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <p class="p-small">We would love to hear from you <a
+                                href="mailto:contact@site.com"><strong>contact@site.com</strong></a></p> -->
+                    </div>
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of footer -->
+    <!-- end of footer -->
+
+    <!-- Back To Top Button -->
+    <button onclick="topFunction()" id="myBtn">
+        <img src="{{url_for('static', filename='/bayesnet/images/up-arrow.png')}}" alt="alternative">
+    </button>
+    <!-- end of back to top button -->
+
+    <!-- Scripts -->
+    <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/js/purecounter.min.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/js/swiper.min.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/js/template_scripts.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/js/notyf.min.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/js/question_2.js')}}"></script>
 </body>
 
 </html>
