@@ -36,7 +36,20 @@ function appenEvent() {
 
 $(document).ready(function () {
     sessionStorage.removeItem('questionn');
-
+    if (sessionStorage.getItem("factoryy") === null) {
+        notyf.error({
+            message: "Please Log In !",
+            duration: 1500,   //miliseconds, use 0 for infinite duration
+            ripple: true,
+            dismissible: true,
+            position: {
+                x: "center",
+                y: "center"
+            }
+        });
+        window.location.href = '/';
+    } // if
+    
     var $error_names;
     $.ajax({
         url: "/GetErrorName",
@@ -56,7 +69,7 @@ $(document).ready(function () {
             console.log($error_names); // test
             $("#myMenu").empty();
             for (let a = 0; a < $error_names.length; a++) {
-                $("#myMenu").append('<a class="listBtn list-group-item list-group-item-action list-group-item-warning" href="#">' +
+                $("#myMenu").append('<a class="listBtn list-group-item list-group-item-action list-group-item-secondary" style="text-align:center;" href="#">' +
                     $error_names[a] + '</a>');
             } // for
 
@@ -116,7 +129,7 @@ $(document).ready(function () {
 
             if (indexx !== -1) {
                 sessionStorage.setItem('questionn', JSON.stringify($("#input_question").val()));
-                console.log("hiii") ; // test
+                console.log("hiii"); // test
                 self.location.href = '/main';
             } // if
             else {

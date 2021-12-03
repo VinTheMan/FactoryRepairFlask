@@ -1,0 +1,269 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    </meta>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- OG Meta Tags to improve the way the post looks when you share the page on Facebook, Twitter, LinkedIn -->
+    <meta property="og:site_name" content="" /> <!-- website name -->
+    <meta property="og:site" content="" /> <!-- website link -->
+    <meta property="og:title" content="" /> <!-- title shown in the actual shared post -->
+    <meta property="og:description" content="" /> <!-- description shown in the actual shared post -->
+    <meta property="og:image" content="" /> <!-- image link, make sure it's jpg -->
+    <meta property="og:url" content="" /> <!-- where do you want your post to link to -->
+    <meta name="twitter:card" content="summary_large_image"> <!-- to have large image post format in Twitter -->
+
+    <!-- Webpage Title -->
+    <title>FactroyRapair Add</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/notyf.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/jquery.loadingModal.min.css')}}">
+
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/fontawesome-all.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/template_styles.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/swiper.css')}}">
+    <!-- Favicon  -->
+    <link rel="icon" href="{{url_for('static', filename='/bayesnet/images/favicon.png')}}">
+</head>
+
+<body>
+    <script src="{{url_for('static', filename='/bayesnet/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{url_for('static', filename='/bayesnet/vendors/jquery/jquery.min.js')}}"></script>
+    <script src="{{url_for('static', filename='/bayesnet/js/jquery.loadingModal.min.js')}}"></script>
+    <script>
+        //place your code to be executed early here
+        $('body').loadingModal({
+            text: 'Loading...',
+            animation: 'circle'
+        });
+    </script>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="navbar navbar-expand-lg fixed-top navbar-dark" aria-label="Main navigation">
+        <div class="container">
+            <!-- Image Logo -->
+            <!-- <a class="navbar-brand logo-image" href="index.html"><img src="images/logo.svg" alt="alternative"></a> -->
+
+            <!-- Text Logo - Use this if you don't have a graphic logo -->
+            <a id="toHome" class="navbar-brand logo-text" href="/">Factory Repair</a>
+
+            <button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav ms-auto navbar-nav-scroll">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/question">Issue Selection</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="#services">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown"
+                            aria-expanded="false">Drop</a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdown01">
+                            <li><a class="dropdown-item" href="article.html">Article Details</a></li>
+                            <li>
+                                <div class="dropdown-divider"></div>
+                            </li>
+                            <li><a class="dropdown-item" href="terms.html">Terms Conditions</a></li>
+                            <li>
+                                <div class="dropdown-divider"></div>
+                            </li>
+                            <li><a class="dropdown-item" href="privacy.html">Privacy Policy</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li> -->
+                </ul>
+                <!-- <span class="nav-item social-icons">
+                    <span class="fa-stack">
+                        <a href="#your-link">
+                            <i class="fas fa-circle fa-stack-2x"></i>
+                            <i class="fab fa-facebook-f fa-stack-1x"></i>
+                        </a>
+                    </span>
+                    <span class="fa-stack">
+                        <a href="#your-link">
+                            <i class="fas fa-circle fa-stack-2x"></i>
+                            <i class="fab fa-twitter fa-stack-1x"></i>
+                        </a>
+                    </span>
+                </span> -->
+            </div> <!-- end of navbar-collapse -->
+        </div> <!-- end of container -->
+    </nav> <!-- end of navbar -->
+    <!-- end of navigation -->
+
+    <!-- Header -->
+    <header class="ex-header">
+        <div class="container">
+            <div class="row justify-content-between">
+                <h1 class="col col-auto m-0 p-0">Add Issue / Solution</h1>
+                <div class="col col-6 m-0 p-0">
+                    <div class="button-container row justify-content-end align-items-center">
+                        <button class="btn btn-lg btn-outline-light col col-auto me-5"
+                            onclick="self.location.href='/question'">
+                            <strong>Back</strong>
+                        </button>
+
+                        <button id="scrollToNewIssue" class="btn btn-lg btn-success page-scroll col col-auto me-5">
+                            <strong>New Issue</strong>
+                        </button>
+
+                        <button id="scrollToAddSolution" class="btn btn-lg btn-success page-scroll col col-auto me-5">
+                            <strong>Add Solution</strong>
+                        </button>
+                    </div> <!-- end of button-container -->
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </header> <!-- end of ex-header -->
+    <!-- end of header -->
+
+    <ul class="nav nav-tabs row justify-content-center" id="myTab" role="tablist">
+        <li class="nav-item col col-auto" role="presentation">
+            <button class="nav-link active" id="new_issue_tab" data-bs-toggle="tab" data-bs-target="#issue"
+                type="button" role="tab" aria-controls="issue" aria-selected="true">New Issue</button>
+        </li>
+        <li class="nav-item col col-auto" role="presentation">
+            <button class="nav-link" id="add_solution_tab" data-bs-toggle="tab" data-bs-target="#solutions"
+                type="button" role="tab" aria-controls="solutions" aria-selected="false">Add Solution</button>
+        </li>
+    </ul>
+    <div class="w-100" style="height: 5ch;"></div><!-- </div>breaks cols to a new line-->
+    <div class="tab-content" id="TabContent">
+        <div class="tab-pane fade show active row justify-content-center" id="issue" role="tabpanel"
+            aria-labelledby="home-tab">
+            <form id="issueForm" class="row justify-content-center needs-validation" novalidate>
+                <div class="col-auto">
+                    <label for="input_issue" class="form-label">New Issue</label>
+                </div>
+                <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
+                <div class="col-5">
+                    <input id="input_issue" class="form-control text-center" type="text" placeholder="Issue"
+                        autocomplete="off" required>
+                    <div id="feedBackforQ" class="invalid-feedback">
+                        Please input an issue.
+                    </div>
+                </div>
+                <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
+                <div class="col-auto">
+                    <label for="input_action" class="form-label">Corresponding Action</label>
+                </div>
+                <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
+                <div class="col-5">
+                    <input id="input_action" class="input_action form-control text-center" type="text"
+                        placeholder="Action" autocomplete="off" required>
+                    <div class="invalid-feedback">
+                        Please input a action.
+                    </div>
+                </div>
+                <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
+                <div class="col-auto">
+                    <input class="form-control uploadfile" type="file" accept=".mp4,.pdf" id="uploadfile"
+                        name="NewVideoUpload" required>
+                    <div class="invalid-feedback">
+                        Please upload a MP4 video or a PDF file.
+                    </div>
+                </div>
+                <div id="insertB4" class="col-auto">
+                    <div class="btn-group">
+                        <button id="lessAction" class="form-control btn btn-outline-danger" type="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-dash" viewBox="0 0 16 16">
+                                <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"></path>
+                            </svg>
+                        </button>
+                        <button id="moreAction" class="form-control btn btn-outline-success" type="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z">
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="w-100" style="height: 5ch;"></div><!-- </div>breaks cols to a new line-->
+                <div class="col-auto">
+                    <button id="submitBtn" class="form-control btn btn-primary" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+        <div class="tab-pane fade row justify-content-center" id="solutions" role="tabpanel"
+            aria-labelledby="add_solution_tab">
+            <form id="addActionForm" class="row justify-content-center needs-validation" novalidate>
+                <div class="col-auto">
+                    <label for="exit_issue_input" class="form-label">Existing Issue</label>
+                </div>
+                <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
+                <div class="col-5">
+                    <input id="exit_issue_input" class="form-control text-center" type="text"
+                        placeholder="Existing Issue" autocomplete="off" required>
+                    <div id="feedBackforexit_issue" class="invalid-feedback">
+                        Please choose an issue.
+                    </div>
+                    <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
+                    <ul id="myMenu" class="list-group list-group-flush" style="display: none;">
+                    </ul>
+                </div>
+                <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
+                <div class="col-auto">
+                    <label for="add_action" class="form-label">Add Action</label>
+                </div>
+                <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
+                <div class="col-5">
+                    <input id="add_action" class="add_action form-control text-center" type="text" placeholder="Action"
+                        autocomplete="off" required>
+                    <div class="invalid-feedback">
+                        Please input a action.
+                    </div>
+                    <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
+                    <ul id="actionMenu" class="list-group list-group-flush" style="display: none;">
+
+                    </ul>
+                </div>
+                <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
+                <!-- <div id="insertB4" class="col-auto">
+                    <button id="moreAction" class="form-control btn btn-secondary" type="button">More Action</button>
+                </div> -->
+                <div class="col-auto">
+                    <input class="form-control uploadfile2" id="uploadfile2" type="file" name="files" accept=".mp4,.pdf"
+                        required multiple>
+                    <div class="invalid-feedback">
+                        Please upload a MP4 video or a PDF file.
+                    </div>
+                </div>
+                <div class="w-100" style="height: 5ch;"></div><!-- </div>breaks cols to a new line-->
+                <div class="col-auto">
+                    <button id="submitBtn2" class="form-control btn btn-primary" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/js/purecounter.min.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/js/swiper.min.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/js/template_scripts.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/js/notyf.min.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/js/questionCreate.js')}}"></script>
+</body>
+
+</html>

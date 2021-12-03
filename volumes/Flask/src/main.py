@@ -688,8 +688,8 @@ def write_to_edited_txt():
     try:
         with open(fname, "w") as fo:
             fo.write(xmlData)
-    except errors as e:
-        return jsonify(message = e) ,420
+    except BaseException as e: # is usually file not found error
+        return jsonify(message = str(e)) ,420
     if os.path.isfile(fname):
         return jsonify(message = "writeToEditedProb success!") ,200
     else :
@@ -708,8 +708,8 @@ def get_from_edited_txt():
     try:
         with open(fname, "r") as fo:
             xmlDataResult = fo.read()
-    except errors as e:
-        return jsonify(message = e) ,420
+    except BaseException as e:  # is usually file not found error
+        return jsonify(message = str(e)) ,420
     
     if xmlDataResult == "":
         return jsonify(message = "Got Nothing!") ,420
@@ -727,6 +727,6 @@ def remove_edited_txt():
     fname = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
     try:
         os.remove(fname)
-    except errors as e:
-        return jsonify(message = e) ,420
+    except BaseException as e: # is usually file not found error
+        return jsonify(message = str(e)) ,420
     return jsonify(message ="Delete success !") ,200

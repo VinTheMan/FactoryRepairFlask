@@ -21,6 +21,24 @@ $(document).ready(function () {
             })
     })();
 
+    if (sessionStorage.getItem("factoryy") === null) {
+        notyf.error({
+            message: "Please Log In !",
+            duration: 1500,   //miliseconds, use 0 for infinite duration
+            ripple: true,
+            dismissible: true,
+            position: {
+                x: "center",
+                y: "center"
+            }
+        });
+        window.location.href = '/';
+    } // if
+    else if (sessionStorage.getItem("questionn") === null || sessionStorage.getItem("actionArray") === null ||
+        sessionStorage.getItem("solved") === null) {
+            window.location.href = '/main';
+    } // else if
+
     var d = new Date();
 
     var month = d.getMonth() + 1;
@@ -37,8 +55,8 @@ $(document).ready(function () {
     $("#factoryHere").val(factoryy);
     $("#questionHere").val(questionn);
     if (sessionStorage.getItem('solutionn') != null) {
-        for( let a = 0 ; a < actionArray.length - 1 ; a++ ) {
-            $("#solutionHere").before( '<input type="text" class="form-control mt-0" style="color: black;" placeholder="Solution" value="' + actionArray[a] + '"disabled/>' );
+        for (let a = 0; a < actionArray.length - 1; a++) {
+            $("#solutionHere").before('<input type="text" class="form-control mt-0" style="color: black;" placeholder="Solution" value="' + actionArray[a] + '"disabled/>');
         } // for
 
         $("#solutionHere").val(JSON.parse(sessionStorage.getItem('solutionn')));

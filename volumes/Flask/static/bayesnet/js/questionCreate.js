@@ -70,15 +70,23 @@ function appenEvent2() {
     }); // on list btn click
 } // appenEvent
 
+function appenEventForFileChangeValidate() {
+    $("#insertB4").prev().find('input').on("change", function (e) {
+        e.preventDefault();
+        $(this).removeClass('is-valid is-invalid')
+            .addClass(this.checkValidity() ? 'is-valid' : 'is-invalid');
+    });
+} // appenEventForFileChangeValidate
+
 function cleanUp() {
     $("#input_issue").val("");
     $("#input_action").val("");
+    $("#input_action").next().text("Please input a action.");
     $("#uploadfile").val("");
-    $('hr').prev().remove();
-    $('hr').next().remove();
-    $('hr').next().remove();
-    $('hr').next().remove();
-    $('hr').remove();
+    $('.removeLine').next().remove();
+    $('.removeLine').next().remove();
+    $('.removeLine').next().remove();
+    $('.removeLine').remove();
 
     $("#exit_issue_input").val("");
     $("#add_action").val("");
@@ -87,6 +95,19 @@ function cleanUp() {
 
 $(document).ready(function () {
     sessionStorage.removeItem('questionn');
+    if (sessionStorage.getItem("factoryy") === null) {
+        notyf.error({
+            message: "Please Log In !",
+            duration: 1500,   //miliseconds, use 0 for infinite duration
+            ripple: true,
+            dismissible: true,
+            position: {
+                x: "center",
+                y: "center"
+            }
+        });
+        window.location.href = '/';
+    } // if
 
     var $error_names;
     $.ajax({
@@ -107,9 +128,10 @@ $(document).ready(function () {
             console.log($error_names); // test
             $("#myMenu").empty();
             for (let a = 0; a < $error_names.length; a++) {
-                $("#myMenu").append('<a class="listBtn list-group-item list-group-item-action list-group-item-secondary text-center" href="#">' +
+                $("#myMenu").append('<a class="listBtn list-group-item list-group-item-action list-group-item-dark text-center" href="#">' +
                     $error_names[a] + '</a>');
             } // for
+
 
             appenEvent();
         }
@@ -139,11 +161,66 @@ $(document).ready(function () {
         e.preventDefault();
         e.stopPropagation();
 
-        $(".uploadfile").blur();
+        $(".uploadfile").removeClass('is-valid is-invalid');
+        var temmp = document.querySelectorAll('.uploadfile');
+        temmp.forEach(function (uploadForm) {
+            $(uploadForm).addClass(uploadForm.checkValidity() ? 'is-valid' : 'is-invalid');
+        });
         $(".input_action").blur();
-        $("#input_issue").blur()
+        $("#input_issue").blur();
+        let strArray = [];
+        $('.input_action').each(function (i, obj) {
+            strArray.push(String($(this).val()));
+        });
 
-        if (!$("#input_issue").val() || !$(".input_action").val() || !$(".uploadfile").val()) {
+        let duplicateIndex1 = -1;
+        let duplicateIndex2 = -1;
+        for (let i = 0; i < strArray.length; i++) { // nested for loop
+            for (let j = 0; j < strArray.length; j++) {
+                // prevents the element from comparing with itself
+                if (i !== j) {
+                    // check if elements' values are equal
+                    if (strArray[i] === strArray[j] && strArray[i] !== "" && strArray[j] !== "") {
+                        // duplicate element present                                
+                        duplicateIndex1 = i;
+                        duplicateIndex2 = j;
+                        // terminate inner loop
+                        break;
+                    } // if
+                } // if
+            } // for
+            // terminate outer loop                                                                      
+            if (duplicateIndex1 !== -1) {
+                break;
+            } // if
+        } // for
+
+        $('.input_action').each(function (i, obj) {
+            if (i === duplicateIndex1 || i === duplicateIndex2) {
+                $(this).removeClass('is-valid is-invalid');
+                $(this).addClass('is-invalid');
+                $(this).next().text("Same Action Names Found !");
+            } // if
+        });
+
+
+        let fileInvalid = false;
+        $('.uploadfile').each(function (i, obj) {
+            if ($(this).hasClass("is-invalid")) {
+                fileInvalid = true;
+                return false; // break out the loop
+            } // if
+        });
+
+        let inputActionInvalid = false;
+        $('.input_action').each(function (i, obj) {
+            if ($(this).hasClass("is-invalid")) {
+                inputActionInvalid = true;
+                return false; // break out the loop
+            } // if
+        });
+
+        if (!$("#input_issue").val() || inputActionInvalid || fileInvalid) {
             // validation failed
         } else {
             // console.log($("#input_issue").val()); // test
@@ -271,16 +348,15 @@ $(document).ready(function () {
 
     $("#moreAction").on('click', function (e) {
         e.preventDefault();
-        $("#insertB4").before('<div class="w-100" style="height: 2ch;"></div>');
-        $("#insertB4").before('<hr class="divider">' +
-            '<div class="col-5">' +
+        $("#insertB4").before('<hr class="removeLine" style="border-top: 3px dashed rgb(250, 250, 250);"/>' +
+            '<div class="form-group">' +
             '<input class="input_action form-control text-center" type="text" placeholder="Action" autocomplete="off" required>' +
             '<div class="invalid-feedback">' +
             'Please input a action.' +
             '</div>' +
             '</div>' +
             '<div class="w-100" style="height: 2ch;"></div>' +
-            '<div class="col-auto">' +
+            '<div class="form-group">' +
             '<input class="form-control uploadfile" type="file" accept=".mp4,.pdf" name="NewVideoUpload" required>' +
             '<div class="invalid-feedback">' +
             'Please upload a MP4 video or a PDF file.' +
@@ -315,12 +391,17 @@ $(document).ready(function () {
                         $("#input_issue").addClass('is-valid');
                     } // else
                 } // if
+                else if ($(this).attr('type') === 'file') {
+                    // dont validate on blur
+                } // else if
                 else {
                     $(this).removeClass('is-valid is-invalid')
                         .addClass(this.checkValidity() ? 'is-valid' : 'is-invalid');
                 } // else
             });
         });
+
+        appenEventForFileChangeValidate();
     });
 
     $("#lessAction").on('click', function (e) {
@@ -333,7 +414,6 @@ $(document).ready(function () {
             $('#insertB4').prev().remove();
             $('#insertB4').prev().remove();
             $('#insertB4').prev().remove();
-            $('#insertB4').prev().remove();
         } // else 
     });
 
@@ -342,7 +422,8 @@ $(document).ready(function () {
     $("#addActionForm").on("submit", function (e) {
         e.preventDefault();
 
-        $(".uploadfile2").blur();
+        $(".uploadfile2").removeClass('is-valid is-invalid')
+            .addClass(document.querySelector('#uploadfile2').checkValidity() ? 'is-valid' : 'is-invalid');
         $("#add_action").blur();
         $("#exit_issue_input").blur()
         if (!$("#exit_issue_input").val() || !$("#add_action").val() || !$(".uploadfile2").val()) {
@@ -453,7 +534,7 @@ $(document).ready(function () {
                         url: "/RemoveEditedProb",
                         method: 'POST',
                         dataType: 'json', // what to expect back from server
-                        data: { Factory: fa, ErrorName: exit_issue_input},
+                        data: { Factory: fa, ErrorName: exit_issue_input },
                         error: function (request) {
                             // remember to filter out size 0 array
                             if (request.status == 420) {
@@ -498,33 +579,36 @@ $(document).ready(function () {
 
     $("#exit_issue_input").on("blur", function () {
         $("#myMenu").hide();
-        $.ajax({
-            url: "/GetErrorNameConfig",
-            method: 'POST',
-            data: { ErrorName: $("#exit_issue_input").val() },
-            dataType: "json",
-            error: function (request) {
-                // remember to filter out size 0 array
-                if (request.status == 420) {
-                    console.log(request.responseJSON.message);
-                } // if
-                else {
-                    console.log(request);
-                } // else
-            },
-            success: function (response) {
-                var $action_names = response.message;
-                console.log($action_names); // test
-                $("#actionMenu").empty();
-                $("#actionMenu").append('<span>Existing Actions:</span>');
-                for (let a = 0; a < $action_names.length; a++) {
-                    $("#actionMenu").append('<a class="listBtn2 list-group-item list-group-item-action list-group-item-secondary text-center" href="#">' +
-                        $action_names[a] + '</a>');
-                } // for
+        if ($("#exit_issue_input").val() !== "") {
+            $.ajax({
+                url: "/GetErrorNameConfig",
+                method: 'POST',
+                data: { ErrorName: $("#exit_issue_input").val() },
+                dataType: "json",
+                error: function (request) {
+                    // remember to filter out size 0 array
+                    if (request.status == 420) {
+                        console.log(request.responseJSON.message);
+                    } // if
+                    else {
+                        console.log(request);
+                    } // else
+                },
+                success: function (response) {
+                    var $action_names = response.message;
+                    console.log($action_names); // test
+                    $("#actionMenu").empty();
+                    $("#actionMenu").append('<span style="color: white;">Existing Actions:</span>');
+                    for (let a = 0; a < $action_names.length; a++) {
+                        $("#actionMenu").append('<a class="listBtn2 list-group-item list-group-item-action list-group-item-dark text-center" href="#">' +
+                            $action_names[a] + '</a>');
+                    } // for
 
-                appenEvent2();
-            }
-        });
+                    appenEvent2();
+                }
+            });
+        } // if
+
     });
 
     $(function () { // jQuery ready
@@ -578,6 +662,9 @@ $(document).ready(function () {
                     $("#exit_issue_input").addClass('is-valid');
                 } // else
             } // else
+            else if ($(this).attr('type') === 'file') {
+                // dont validate on blur
+            } // else if
             else {
                 $(this).removeClass('is-valid is-invalid')
                     .addClass(this.checkValidity() ? 'is-valid' : 'is-invalid');
@@ -585,6 +672,29 @@ $(document).ready(function () {
         });
     });
 
+    $("#scrollToNewIssue").on("click", function (e) {
+        e.preventDefault();
+        // console.log("clicked !") ; // test
+        $('html, body').animate({ scrollTop: $('#newIssueDiv').offset().top - 10 }, 'fast');
+    });
+
+    $("#scrollToAddSolution").on("click", function (e) {
+        e.preventDefault();
+        // console.log("clicked !") ; // test
+        $('html, body').animate({ scrollTop: $('#addSolDiv').offset().top - 10 }, 'fast');
+    });
+
+    $("#uploadfile2").on("change", function (e) {
+        e.preventDefault();
+        $("#uploadfile2").removeClass('is-valid is-invalid')
+            .addClass(document.querySelector('#uploadfile2').checkValidity() ? 'is-valid' : 'is-invalid');
+    });
+
+    $("#uploadfile").on("change", function (e) {
+        e.preventDefault();
+        $("#uploadfile").removeClass('is-valid is-invalid')
+            .addClass(document.querySelector('#uploadfile').checkValidity() ? 'is-valid' : 'is-invalid');
+    });
 }); // on document ready
 
 $(window).on('load', function () {

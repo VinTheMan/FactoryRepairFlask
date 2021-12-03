@@ -190,12 +190,38 @@ function reDrawGraph(fileName) {
     } // else if
 
     setTimeout(CleanUpAllClicked(), 0.1 * 1000);
-    setTimeout(function(){$('#f2').click()}, 0.3 * 1000);
+    setTimeout(function () { $('#f2').click() }, 0.3 * 1000);
     // CleanUpAllClicked();
     // $('#f2').click();
 } // reDrawGraph
 
 $(document).ready(function () {
+    if (sessionStorage.getItem("factoryy") === null) {
+        notyf.error({
+            message: "Please Log In !",
+            duration: 1500,   //miliseconds, use 0 for infinite duration
+            ripple: true,
+            dismissible: true,
+            position: {
+                x: "center",
+                y: "center"
+            }
+        });
+        window.location.href = '/';
+    } // if
+    else if( sessionStorage.getItem("questionn") === null ) {
+        notyf.error({
+            message: "Please Select An Issue !",
+            duration: 1500,   //miliseconds, use 0 for infinite duration
+            ripple: true,
+            dismissible: true,
+            position: {
+                x: "center",
+                y: "center"
+            }
+        });
+        window.location.href = '/question';
+    } // else if
 
     sessionStorage.removeItem('is_there_solutionn');  // initialize
     sessionStorage.removeItem('changed_xml');
@@ -404,8 +430,11 @@ $(document).ready(function () {
                             success: function (response) {
                                 var data = $("#input_data").val();
                                 // console.log(data); // test
+                                $("#change_data").val(data);
                                 sessionStorage.setItem('changed_xml', JSON.stringify(data));
                                 console.log('write new copy success');
+
+                                reDrawGraph(fileName);
                             } // success
                         }); // ajax
                     } // else
