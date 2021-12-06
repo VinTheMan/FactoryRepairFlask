@@ -672,16 +672,16 @@ $(document).ready(function () {
         });
     });
 
-    $("#scrollToNewIssue").on("click", function (e) {
+    $(".scrollToNewIssue").on("click", function (e) {
         e.preventDefault();
         // console.log("clicked !") ; // test
-        $('html, body').animate({ scrollTop: $('#newIssueDiv').offset().top - 10 }, 'fast');
+        $('html, body').animate({ scrollTop: $('#newIssueDiv').offset().top - 50 }, 'fast');
     });
 
-    $("#scrollToAddSolution").on("click", function (e) {
+    $(".scrollToAddSolution").on("click", function (e) {
         e.preventDefault();
         // console.log("clicked !") ; // test
-        $('html, body').animate({ scrollTop: $('#addSolDiv').offset().top - 10 }, 'fast');
+        $('html, body').animate({ scrollTop: $('#addSolDiv').offset().top - 50 }, 'fast');
     });
 
     $("#uploadfile2").on("change", function (e) {
@@ -694,6 +694,12 @@ $(document).ready(function () {
         e.preventDefault();
         $("#uploadfile").removeClass('is-valid is-invalid')
             .addClass(document.querySelector('#uploadfile').checkValidity() ? 'is-valid' : 'is-invalid');
+    });
+
+    $("#BacktoQuestionSel").on("click", function (e) {
+        e.preventDefault();
+        // console.log("clicked !") ; // test
+        window.location.href="/question#IssueDiv";
     });
 }); // on document ready
 

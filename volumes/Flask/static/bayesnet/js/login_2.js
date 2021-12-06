@@ -100,6 +100,6 @@ $(document).ready(function () {
     $("#scrollToLogin").on("click", function (e) {
         e.preventDefault();
         // console.log("clicked !") ; // test
-        $('html, body').animate({ scrollTop: $('#looogin').offset().top - 10 }, 'fast');
+        $('html, body').animate({ scrollTop: $('#looogin').offset().top - 50 }, 'fast');
     });
 }); // on document ready

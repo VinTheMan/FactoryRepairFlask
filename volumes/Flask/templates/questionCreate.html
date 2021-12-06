@@ -59,10 +59,10 @@
                         <a class="nav-link" href="/question">Issue Selection</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#newIssueDiv">New Issue</a>
+                        <a class="scrollToNewIssue nav-link" href="#">New Issue</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#addSolDiv">Add Solution</a>
+                        <a class="scrollToAddSolution nav-link" href="#">Add Solution</a>
                     </li>
                     <!--<li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown"
@@ -110,10 +110,10 @@
                 <h1 class="col col-auto m-0 p-0">Add Issue / Solution</h1>
                 <div class="col col-6">
                     <div class="button-container row justify-content-end align-items-center">
-                        <button id="scrollToNewIssue" class="btn-solid-lg page-scroll col col-auto me-5">
+                        <button id="scrollToNewIssue" class="scrollToNewIssue btn-solid-lg page-scroll col col-auto me-5">
                             <strong>New Issue</strong>
                         </button>
-                        <button id="scrollToAddSolution" class="btn-solid-lg page-scroll col col-auto me-5">
+                        <button id="scrollToAddSolution" class="scrollToAddSolution btn-solid-lg page-scroll col col-auto me-5">
                             <strong>Add Solution</strong>
                         </button>
                         <!-- <a class="btn-outline-lg page-scroll" href="#contact">Contact</a> -->
@@ -125,8 +125,8 @@
     <!-- end of header -->
 
     <!-- Project 1 -->
-    <div id="newIssueDiv" class="basic-3 bg-gray">
-        <div class="container">
+    <div class="basic-3 bg-gray">
+        <div id="newIssueDiv" class="container">
             <div class="row justify-content-center">
                 <!-- <div class="col-lg-6 col-xl-7">
                     <div class="image-container">
@@ -202,8 +202,8 @@
 
 
     <!-- Project 2 -->
-    <div id="addSolDiv" class="form-1">
-        <div class="container">
+    <div class="form-1">
+        <div id="addSolDiv" class="container pt-5">
             <div class="row">
                 <div class="col-lg-12">
                     <h2 class="h2-heading">Add solution to an issue</h2>
@@ -282,7 +282,7 @@
     <div class="footer">
         <div class="container">
             <div class="row justify-content-center">
-                <button id="newQuestion" class="col col-auto btn btn-outline-light">
+                <button id="BacktoQuestionSel" class="col col-auto btn btn-outline-light">
                     Back to Issue Selection
                 </button>
                 <div class="col-lg-12">
