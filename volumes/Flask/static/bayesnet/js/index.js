@@ -94,9 +94,9 @@ function FindNextSol() {
                     pdf = './download/' + ErrorName + '_' + nodeNames[indexXL] + '.pdf';
                     var bayesnet_solution = $(".bayesnet-solution > table > tbody").empty();
                     bayesnet_solution.append('<tr>' +
-                        '<td class="w-50"><strong class="fs-1">' + nodeNames[indexXL] + '</strong></td>' +
-                        '<td class="w-50"><strong class="fs-1">' + '<a href="./download/' +
-                        ErrorName + '_' + nodeNames[indexXL] + '.pdf" target="_blank">Open PDF in new window</a>' +
+                        '<td class="w-50 align-items-center"><strong class="fs-1 col col-auto">' + nodeNames[indexXL] + '</strong></td>' +
+                        '<td class="w-50 align-items-center"><strong class="fs-1 col col-auto">' + '<a href="./download/' +
+                        ErrorName + '_' + nodeNames[indexXL] + '.pdf" target="_blank">Open PDF in new window <span class="fas fa-long-arrow-alt-right"></span></a>' +
                         '</strong></td>' +
                         '</tr>'
                     );
@@ -108,9 +108,9 @@ function FindNextSol() {
                     // ------------  embedded Video --------
                     var bayesnet_solution = $(".bayesnet-solution > table > tbody").empty();
                     bayesnet_solution.append('<tr>' +
-                        '<td class="w-50"><strong class="fs-1">' + nodeNames[indexXL] + '</strong></td>' +
-                        '<td class="w-50"><strong class="fs-1">' + '<a href="./download/' +
-                        ErrorName + '_' + nodeNames[indexXL] + '.mp4" target="_blank">Open MP4 in new window</a>' +
+                        '<td class="w-50 align-items-center"><strong class="fs-1 col col-auto">' + nodeNames[indexXL] + '</strong></td>' +
+                        '<td class="w-50 align-items-center"><strong class="fs-1 col col-auto">' + '<a href="./download/' +
+                        ErrorName + '_' + nodeNames[indexXL] + '.mp4" target="_blank">Open MP4 in new window <span class="fas fa-long-arrow-alt-right"></span></a>' +
                         '</strong></td>' +
                         '</tr>'
                     );
@@ -146,12 +146,12 @@ function FindNextSol() {
                     pdf = './download/' + ErrorName + '_' + nodeNames[indexXL] + '.pdf';
                     var bayesnet_solution = $(".bayesnet-solution > table > tbody").empty();
                     bayesnet_solution.append('<tr>' +
-                        '<td class="w-50"><strong class="fs-1">' + nodeNames[indexXL] + '</strong></td>' +
-                        '<td class="w-50"><strong class="fs-5">' + '<a href="./download/' +
-                        ErrorName + '_' + nodeNames[indexXL] + '.pdf" target="_blank">Open PDF in new window</a>' +
+                        '<td class="w-50 align-middle"><strong class="fs-1 col col-auto">' + nodeNames[indexXL] + '</strong></td>' +
+                        '<td class="w-50 align-middle"><strong class="fs-5 col col-auto">' + '<a href="./download/' +
+                        ErrorName + '_' + nodeNames[indexXL] + '.pdf" target="_blank">Open PDF in new window <span class="fas fa-long-arrow-alt-right"></span></a>' +
                         '<div class="w-100" style="height: 1ch;"></div>' +
                         '<a href="./download/' +
-                        ErrorName + '_' + nodeNames[indexXL] + '.mp4" target="_blank">Open MP4 in new window</a>' +
+                        ErrorName + '_' + nodeNames[indexXL] + '.mp4" target="_blank">Open MP4 in new window <span class="fas fa-long-arrow-alt-right"></span></a>' +
                         '</strong></td>' +
                         '</tr>'
                     );
@@ -160,8 +160,8 @@ function FindNextSol() {
                 else { // NO FILES FOUND!
                     var bayesnet_solution = $(".bayesnet-solution > table > tbody").empty();
                     bayesnet_solution.append('<tr>' +
-                        '<td class="w-50"><strong class="fs-1">' + nodeNames[indexXL] + '</strong></td>' +
-                        '<td class="w-50"><strong class="fs-1">' + 'No Solution Files Found!' + '</strong></td>' +
+                        '<td class="w-50 align-items-center"><strong class="fs-1 col col-auto">' + nodeNames[indexXL] + '</strong></td>' +
+                        '<td class="w-50 align-items-center"><strong class="fs-1 col col-auto">' + 'No Solution Files Found!' + '</strong></td>' +
                         '</tr>'
                     );
                 } // else
@@ -209,7 +209,7 @@ $(document).ready(function () {
         });
         window.location.href = '/';
     } // if
-    else if( sessionStorage.getItem("questionn") === null ) {
+    else if (sessionStorage.getItem("questionn") === null) {
         notyf.error({
             message: "Please Select An Issue !",
             duration: 1500,   //miliseconds, use 0 for infinite duration
@@ -478,6 +478,24 @@ $(document).ready(function () {
                 reDrawGraph("copy");
             } // success
         }); // ajax
+    });
+
+    $("#BacktoQuestionSel").on("click", function (e) {
+        e.preventDefault();
+        // console.log("clicked !") ; // test
+        window.location.href = "/question#IssueDiv";
+    });
+
+    $(".scrollToGraphDiv").on("click", function (e) {
+        e.preventDefault();
+        // console.log("clicked !") ; // test
+        $('html, body').animate({ scrollTop: $('#GraphDiv').offset().top - 50 }, 'fast');
+    });
+
+    $(".scrollToSolutionDiv").on("click", function (e) {
+        e.preventDefault();
+        // console.log("clicked !") ; // test
+        $('html, body').animate({ scrollTop: $('#SolutionDiv').offset().top - 50 }, 'fast');
     });
 
     (function () {

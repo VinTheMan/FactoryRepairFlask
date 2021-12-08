@@ -1,32 +1,44 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="-1" />
 
-    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/style.css')}}">
+    <!-- OG Meta Tags to improve the way the post looks when you share the page on Facebook, Twitter, LinkedIn -->
+    <meta property="og:site_name" content="" /> <!-- website name -->
+    <meta property="og:site" content="" /> <!-- website link -->
+    <meta property="og:title" content="" /> <!-- title shown in the actual shared post -->
+    <meta property="og:description" content="" /> <!-- description shown in the actual shared post -->
+    <meta property="og:image" content="" /> <!-- image link, make sure it's jpg -->
+    <meta property="og:url" content="" /> <!-- where do you want your post to link to -->
+    <meta name="twitter:card" content="summary_large_image"> <!-- to have large image post format in Twitter -->
 
-    <!-- <link rel="stylesheet" href="{{url_for('static', filename='/css/mainstyle.css')}}"> -->
+    <!-- Webpage Title -->
+    <title>BayesNet Main Page</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/style.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/fontawesome-all.min.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/vendors/semantic-ui/semantic.min.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/vendors/font-awesome/all.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/notyf.min.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/jquery.loadingModal.min.css')}}">
-    <title>
-        BayesNet Viewer
-    </title>
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/swiper.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/bayesnet/css/template_styles.css')}}">
 
     <!-- Favicon  -->
     <link rel="icon" href="{{url_for('static', filename='/bayesnet/images/favicon.png')}}">
 </head>
 
-<body class="">
+<body>
+
     <script src="{{url_for('static', filename='/bayesnet/js/bootstrap.bundle.min.js')}}"></script>
     <script src="{{url_for('static', filename='/bayesnet/vendors/jquery/jquery.min.js')}}"></script>
+    <script src="{{url_for('static', filename='/bayesnet/js/jquery.loadingModal.min.js')}}"></script>
 
     <script src="{{url_for('static', filename='/bayesnet/vendors/semantic-ui/semantic.min.js')}}"></script>
     <script src="{{url_for('static', filename='/bayesnet/vendors/puli-util/puli-util.clipboard.js')}}"></script>
@@ -49,7 +61,6 @@
     <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/div_graph/dragscroll.js')}}"></script>
     <!-- 繪圖需要的所有函式庫 -->
 
-    <script src="{{url_for('static', filename='/bayesnet/js/jquery.loadingModal.min.js')}}"></script>
     <script>
         //place your code to be executed early here
         $('body').loadingModal({
@@ -57,77 +68,221 @@
             animation: 'circle'
         });
     </script>
-    <!-- ------------------------------------------------------------ -->
-    <div class="head">FactoryRepair Main</div>
-    <br>
 
-    <div class="row w-100 justify-content-center">
-        <button id="toggleGraphs" class="col col-auto btn btn-secondary btn-lg">Show/Hide Graphs</button>
-        &nbsp;&nbsp;&nbsp;
-        <button id="changeXMLBtn" class="col col-auto btn btn-secondary btn-lg"></button>
-        &nbsp;&nbsp;&nbsp;
-        <button id="copyfromdatabase" class="col col-auto btn btn-secondary btn-lg" style="display: none;">Copy From
-            Database</button>
-    </div>
+    <!-- Navigation -->
+    <nav id="navbar" class="navbar navbar-expand-lg fixed-top navbar-dark" aria-label="Main navigation">
+        <div class="container">
 
-    <form class="file-process-framework" action="" class="main">
-        <h1 id="mainProblem"> Main </h1>
-        <div class="ui bottom attached active tab segment input-field-container">
+            <!-- Image Logo -->
+            <!-- <a class="navbar-brand logo-image" href="index.html"><img src="images/logo.svg" alt="alternative"></a> -->
 
-            <div class="item active" data-tab="mode_textarea" style="display: none;">文字框輸入</div>
-            <div class="ui top attached tabular menu" style="display: none;">
-                <div class="active item" data-tab="mode_file">選擇檔案輸入</div>
-            </div>
+            <!-- Text Logo - Use this if you don't have a graphic logo -->
+            <a id="toHome" class="navbar-brand logo-text" href="/">Factory Repair</a>
 
-            <div class="ui bottom attached  tab segment active" data-tab="mode_textarea" style="display: none;">
-                <div class="field">
-                    <label for="input_data">請輸入BIF XML資料</label>
-                    <textarea class="change-trigger focus_select" id="input_data"></textarea>
+            <button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav ms-auto navbar-nav-scroll">
+                    <li class="nav-item text-center">
+                        <a class="nav-link" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item text-center">
+                        <a class="nav-link" href="/question">Issue Selection</a>
+                    </li>
+                    <li class="nav-item text-center">
+                        <a class="scrollToGraphDiv nav-link" href="#">Graph</a>
+                    </li>
+                    <li class="nav-item text-center">
+                        <a class="scrollToSolutionDiv nav-link" href="#">Solution</a>
+                    </li>
+                    <!--<li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown"
+                            aria-expanded="false">Drop</a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdown01">
+                            <li><a class="dropdown-item" href="article.html">Article Details</a></li>
+                            <li>
+                                <div class="dropdown-divider"></div>
+                            </li>
+                            <li><a class="dropdown-item" href="terms.html">Terms Conditions</a></li>
+                            <li>
+                                <div class="dropdown-divider"></div>
+                            </li>
+                            <li><a class="dropdown-item" href="privacy.html">Privacy Policy</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li> -->
+                </ul>
+                <!-- <span class="nav-item social-icons">
+                    <span class="fa-stack">
+                        <a href="#your-link">
+                            <i class="fas fa-circle fa-stack-2x"></i>
+                            <i class="fab fa-facebook-f fa-stack-1x"></i>
+                        </a>
+                    </span>
+                    <span class="fa-stack">
+                        <a href="#your-link">
+                            <i class="fas fa-circle fa-stack-2x"></i>
+                            <i class="fab fa-twitter fa-stack-1x"></i>
+                        </a>
+                    </span>
+                </span> -->
+            </div> <!-- end of navbar-collapse -->
+        </div> <!-- end of container -->
+    </nav> <!-- end of navbar -->
+    <!-- end of navigation -->
+
+
+    <!-- Header -->
+    <header class="ex-header">
+        <div class="container">
+            <div class="row justify-content-between">
+                <h1 class="col col-auto m-0 p-0">Solution Finder</h1>
+                <div class="col col-6">
+                    <div class="button-container row justify-content-end align-items-center">
+                        <div class="w-100 d-block d-sm-block d-md-block d-lg-none" style="height: 2ch;"></div>
+                        <!-- </div>breaks cols to a new line-->
+                        <button id="scrollToGraphDiv"
+                            class="scrollToGraphDiv btn-solid-lg page-scroll col col-auto me-5">
+                            <strong>Graph</strong>
+                        </button>
+                        <div class="w-100 d-block d-sm-block d-md-block d-lg-none" style="height: 2ch;"></div>
+                        <!-- </div>breaks cols to a new line-->
+                        <button id="scrollToSolutionDiv"
+                            class="scrollToSolutionDiv btn-solid-lg page-scroll col col-auto me-5">
+                            <strong>Solution</strong>
+                        </button>
+                        <!-- <a class="btn-outline-lg page-scroll" href="#contact">Contact</a> -->
+                    </div> <!-- end of button-container -->
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </header> <!-- end of ex-header -->
+    <!-- end of header -->
+
+    <!-- Process -->
+    <div class="basic-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="h2-heading">Process</h2>
+                    <hr class="hr-heading">
                 </div>
             </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="step-container">
+                        <div class="step" style="color: rgb(92, 91, 94);"><strong>Issue</strong></div>
+                        <i class="fas fa-chevron-right" style="color: rgb(92, 91, 94);"></i>
+                        <div class="step" style="color: rgb(241, 201, 148);">BayesNet</div>
+                        <i class="fas fa-chevron-right"></i>
+                        <div class="step" style="color: rgb(241, 201, 148);">Solution</div>
+                        <br>
+                        <i class="fas fa-chevron-right" style="color: rgb(92, 91, 94);"></i>
+                        <div class="step" style="color: rgb(92, 91, 94);">Optimize</div>
+                        <i class="fas fa-chevron-right" style="color: rgb(92, 91, 94);"></i>
+                        <div class="step" style="color: rgb(92, 91, 94);">New Cycle</div>
+                    </div> <!-- end of step-container -->
+                    <p>Second Step : Bayesnet calculation.</p>
+                    <p>Third Step : Solution provided.</p>
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of basic-5 -->
+    <!-- end of process -->
 
-            <!-- change data -->
-            <div class="d-none">
-                <label for="change_data"></label>
-                <textarea class="focus_select" id="change_data"></textarea>
-            </div>
-
-            <div class="ui bottom attached active tab segment" data-tab="mode_file" style="display: none;">
-                <div class="field">
-                    <input type="file" id="input_file" class="file-change-trigger"
-                        data-file-to-textarea="#input_data" />
-                </div>
-            </div>
-            <br>
-            <div id="theGraphs" class="column">
-                <div class="ui segment display-result">
-                    <div id="preview_html_wrapper" class="dragscroll col col-auto"
-                        style="width: 900px; height: 900px; border-width: 0px;">
-                        <div id="preview_html" class="ui segment"></div>
+    <!-- Project 1 -->
+    <div class="basic-3 bg-gray pt-0">
+        <div class="container">
+            <div class="row justify-content-center">
+                <!-- <div class="col-lg-6 col-xl-7">
+                    <div class="image-container">
+                        <img class="img-fluid" src="images/project-2.jpg" alt="alternative">
                     </div>
-                    <div class="bayesnet-table">
-                        <table class="ui table" border="1" cellspacing="0" cellpadding="5">
-                            <thead>
-                                <tr>
-                                    <th>子節點</th>
-                                    <th>可能選項</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
+                </div> -->
+                <div class="col-lg-12">
+                    <div id="GraphDiv" class="text-container">
+                        <h2>Bayes Net</h2>
+                        <form class="file-process-framework" class="main">
+                            <div class="row align-items-center">
+                                <h1 id="mainProblem" class="col col-6 mb-0"> Main </h1>
+                                <div class="col col-6">
+                                    <!-- <button id="toggleGraphs" class="col col-auto btn btn-secondary btn-lg">Show/Hide
+                                        Graphs</button> -->
+                                    &nbsp;&nbsp;&nbsp;
+                                    <button id="changeXMLBtn" class="col col-auto btn btn-secondary btn-lg"></button>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <button id="copyfromdatabase" class="col col-auto btn btn-secondary btn-lg"
+                                        style="display: none;">Copy From
+                                        Database</button>
+                                </div>
+                            </div>
 
-    <div class="w-100" style="height: 4ch;"></div><!-- </div>breaks cols to a new line-->
-    <div class="row w-100 justify-content-center">
-        <button class="col col-auto btn btn-success btn-lg" onclick="self.location.href='/question'" type="button"
-            value="Back to Issue Selection"><strong>Back to Issue Selection</strong></button>
-    </div>
-    <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
+                            <!-- <div class="ui bottom attached active tab segment input-field-container"> -->
+
+                            <div class="item active" data-tab="mode_textarea" style="display: none;">文字框輸入</div>
+                            <div class="ui top attached tabular menu" style="display: none;">
+                                <div class="active item" data-tab="mode_file">選擇檔案輸入</div>
+                            </div>
+
+                            <div class="ui bottom attached  tab segment active" data-tab="mode_textarea"
+                                style="display: none;">
+                                <div class="field">
+                                    <label for="input_data">請輸入BIF XML資料</label>
+                                    <textarea class="change-trigger focus_select" id="input_data"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- change data -->
+                            <div class="d-none">
+                                <label for="change_data"></label>
+                                <textarea class="focus_select" id="change_data"></textarea>
+                            </div>
+
+                            <div class="ui bottom attached active tab segment" data-tab="mode_file"
+                                style="display: none;">
+                                <div class="field">
+                                    <input type="file" id="input_file" class="file-change-trigger"
+                                        data-file-to-textarea="#input_data" />
+                                </div>
+                            </div>
+                            <br>
+                            <div id="theGraphs" class="column row justify-content-center">
+                                <!-- <div class="ui segment display-result"> -->
+                                <div id="preview_html_wrapper" class="dragscroll col col-auto m-0 p-0"
+                                    style="width: 900px; height: 900px; border-width: 0px;">
+                                    <div id="preview_html" class="ui segment overflow-auto m-0 p-0"></div>
+                                </div>
+                                <div class="w-100" style="height: 5ch;"></div><!-- </div>breaks cols to a new line-->
+                                <div class="bayesnet-table">
+                                    <table class="ui table" border="1" cellspacing="0" cellpadding="5">
+                                        <thead>
+                                            <tr>
+                                                <th>子節點</th>
+                                                <th>可能選項</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- </div> -->
+                            </div>
+                            <!-- </div> -->
+                        </form>
+
+                        <!-- <a class="btn-solid-reg" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Modal</a> <a
+                            class="btn-outline-reg" href="article.html">Details</a> -->
+                    </div> <!-- end of text-container -->
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of basic-3 -->
+    <!-- end of project 1 -->
 
     <!--modal-->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -155,8 +310,9 @@
             </div>
         </div>
     </div>
+    <!-- end of modal -->
 
-
+    <!-- hidden buttons -->
     <div class="d-none">
         <div class="ui top attached tabular menu">
             <button id="isDone" style="display: none">Code Geass</button>
@@ -171,94 +327,175 @@
             </div>
         </div>
     </div>
+    <!-- end of hidden button -->
 
-    <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
-    <div class="bayesnet-solution table-responsive">
-        <table class="table table-warning table-bordered text-center">
-            <thead>
-                <tr class="table-active">
-                    <th class="w-6"><strong class="fs-3">Possible Phenomenon</strong></th>
-                    <th class="w-6"><strong class="fs-3">Related Document</strong></th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-    </div>
+    <!-- Project 2 -->
+    <div class="basic-2">
+        <div id="SolutionDiv" class="container pt-5">
+            <div class="row justify-content-center">
+                <!-- <h2>Mobile app for a major food catering business</h2> -->
+                <div class="bayesnet-solution table-responsive">
+                    <table
+                        class="table table-warning table-bordered text-center justify-content-center align-items-center">
+                        <thead>
+                            <tr class="table-active">
+                                <th class="w-6"><strong class="fs-3">Possible Phenomenon</strong></th>
+                                <th class="w-6"><strong class="fs-3">Related Document</strong></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div> <!-- end of row -->
 
-    <div class="row w-100 gy-0 justify-content-center">
-        <button class="col col-auto btn btn-secondary btn-sm" style="display: none;" id="toggleVideo"
-            data-bs-toggle="collapse" data-bs-target="#VideoDiv">Show/Close Video</button>
-    </div>
-    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-    <div id="VideoDiv" class="row w-100 gy-0 justify-content-center collapse">
-        <video id="solutionVideo" class="col col-auto solutionVideo" preload="auto" controls>
-            <source type="video/mp4" data-src="/assets/video/bg-ss-vid.mp4">
-        </video>
-    </div>
+            <div class="row w-100 gy-0 justify-content-center">
+                <button class="col col-auto btn btn-secondary btn-sm" style="display: none;" id="toggleVideo"
+                    data-bs-toggle="collapse" data-bs-target="#VideoDiv">Show/Close Video</button>
+            </div>
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+            <div id="VideoDiv" class="row w-100 gy-0 justify-content-center collapse">
+                <video id="solutionVideo" class="col col-auto solutionVideo" preload="auto" controls>
+                    <source type="video/mp4" data-src="/assets/video/bg-ss-vid.mp4">
+                </video>
+            </div>
 
-    <div class="row w-100 gy-0 justify-content-center">
-        <button class="col col-auto btn btn-secondary btn-sm" style="display: none;" id="show-pdf-button">Show
-            PDF</button>
-    </div>
-    <div class="row w-100 gy-0 justify-content-center">
-        <button class="col col-auto btn btn-secondary btn-sm" style="display: none;" id="close-pdf-button">Close
-            PDF</button>
-    </div>
+            <div class="row w-100 gy-0 justify-content-center">
+                <button class="col col-auto btn btn-secondary btn-sm" style="display: none;" id="show-pdf-button">Show
+                    PDF</button>
+            </div>
+            <div class="row w-100 gy-0 justify-content-center">
+                <button class="col col-auto btn btn-secondary btn-sm" style="display: none;" id="close-pdf-button">Close
+                    PDF</button>
+            </div>
 
-    <div class="row w-100 gy-0 gx-0 justify-content-center overflow-scroll">
-        <div id="pdf-main-container" class="col col-auto">
-            <div id="pdf-loader">Loading document ...</div>
-            <div id="pdf-contents">
-                <div id="pdf-meta">
-                    <div id="page-count-container">Page <div id="pdf-current-page"></div> of <div id="pdf-total-pages">
+            <div class="row w-100 gy-0 gx-0 justify-content-center overflow-scroll">
+                <div id="pdf-main-container" class="col col-auto">
+                    <div id="pdf-loader">Loading document ...</div>
+                    <div id="pdf-contents">
+                        <div id="pdf-meta">
+                            <div class="col col-auto" id="page-count-container">Page <div id="pdf-current-page"></div>
+                                of <div id="pdf-total-pages">
+                                </div>
+                            </div>
+                            <div id="pdf-buttons">
+                                <button id="pdf-prev">Previous</button>
+                                <button id="pdf-next">Next</button>
+                            </div>
                         </div>
-                    </div>
-                    <div id="pdf-buttons">
-                        <button id="pdf-prev">Previous</button>
-                        <button id="pdf-next">Next</button>
+                        <canvas id="pdf-canvas" width="900"></canvas>
+                        <div id="page-loader">Loading page ...</div>
                     </div>
                 </div>
-                <canvas id="pdf-canvas" width="900"></canvas>
-                <div id="page-loader">Loading page ...</div>
             </div>
-        </div>
-    </div>
-    <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
-    <div id="askIfOccurs" class="row justify-content-center align-items-center">
-        <div id="allDynamic" class="collapse card col-6 text-center">
-            <div class="card-body row justify-content-center align-items-center">
-                <h2 class="col col-auto">此現象是否發生？</h2>
-                <div class="w-100" style="height: 4ch;"></div><!-- </div>breaks cols to a new line-->
-                <a id="yesBtn" href="#" class="col col-auto btn btn-success btn-lg"><strong
-                        style="font-size: larger;">YES<strong></a>
-                <div class="w-100" style="height: 5ch;"></div><!-- </div>breaks cols to a new line-->
-                <a id="noBtn" href="#" class="col col-auto btn btn-danger btn-lg"><strong
-                        style="font-size: larger;">NO<strong></a>
+            <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
+            <div id="askIfOccurs" class="row justify-content-center align-items-center">
+                <div id="allDynamic" class="collapse card col-6 text-center">
+                    <div class="card-body row justify-content-center align-items-center">
+                        <h2 class="col col-auto">此現象是否發生？</h2>
+                        <div class="w-100" style="height: 4ch;"></div><!-- </div>breaks cols to a new line-->
+                        <a id="yesBtn" href="#" class="col col-auto btn btn-success btn-lg"><strong
+                                style="font-size: larger;">YES<strong></a>
+                        <div class="w-100" style="height: 5ch;"></div><!-- </div>breaks cols to a new line-->
+                        <a id="noBtn" href="#" class="col col-auto btn btn-danger btn-lg"><strong
+                                style="font-size: larger;">NO<strong></a>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <div id="askIfSolved" class="row justify-content-center align-items-center">
-        <div id="allDynamic1" class="collapse card col-6 text-center">
-            <div class="card-body row justify-content-center align-items-center">
-                <h2 class="col col-auto" id="askMainQ">排除此現象後，XXX是否解決？</h2>
-                <div class="w-100" style="height: 4ch;"></div><!-- </div>breaks cols to a new line-->
-                <a id="yesBtn2" href="#" class="col col-auto btn btn-success btn-lg"><strong
-                        style="font-size: larger;">YES<strong></a>
-                <div class="w-100" style="height: 5ch;"></div><!-- </div>breaks cols to a new line-->
-                <a id="noBtn2" href="#" class="col col-auto btn btn-danger btn-lg"><strong
-                        style="font-size: larger;">NO<strong></a>
+            <div id="askIfSolved" class="row justify-content-center align-items-center">
+                <div id="allDynamic1" class="collapse card col-6 text-center">
+                    <div class="card-body row justify-content-center align-items-center">
+                        <h2 class="col col-auto" id="askMainQ">排除此現象後，XXX是否解決？</h2>
+                        <div class="w-100" style="height: 4ch;"></div><!-- </div>breaks cols to a new line-->
+                        <a id="yesBtn2" href="#" class="col col-auto btn btn-success btn-lg"><strong
+                                style="font-size: larger;">YES<strong></a>
+                        <div class="w-100" style="height: 5ch;"></div><!-- </div>breaks cols to a new line-->
+                        <a id="noBtn2" href="#" class="col col-auto btn btn-danger btn-lg"><strong
+                                style="font-size: larger;">NO<strong></a>
+                    </div>
+                </div>
             </div>
-        </div>
+        </div> <!-- end of container -->
     </div>
+    <!-- end of project 2 -->
 
-    <div class="w-100" style="height: 5ch;"></div><!-- </div>breaks cols to a new line-->
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="container">
+            <div class="row justify-content-center">
+                <button id="BacktoQuestionSel" class="col col-auto btn btn-outline-light">
+                    Back to Issue Selection
+                </button>
+                <div class="col-lg-12">
+                    <div class="footer-col first">
+                        <!-- <h6>About Elma</h6>
+                        <p class="p-small">He oppose at thrown desire of no. Announcing impression unaffected day his
+                            are unreserved indulgence. Him hard find read are you</p> -->
+                    </div>
+                    <div class="footer-col second">
+                        <!-- <h6>Links</h6>
+                        <ul class="list-unstyled li-space-lg p-small">
+                            <li>Important: <a href="terms.html">Terms & Conditions</a>, <a href="privacy.html">Privacy
+                                    Policy</a></li>
+                            <li>Useful: <a href="#">Colorpicker</a>, <a href="#">Icon Library</a>, <a
+                                    href="#">Illustrations</a></li>
+                            <li>Menu: <a class="page-scroll" href="#header">Home</a>, <a class="page-scroll"
+                                    href="#projects">Projects</a>, <a class="page-scroll" href="#services">Services</a>,
+                                <a class="page-scroll" href="#contact">Contact</a>
+                            </li>
+                        </ul> -->
+
+                    </div>
+                    <div class="footer-col third">
+                        <!-- <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-facebook-f fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-twitter fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-pinterest-p fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-instagram fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <p class="p-small">We would love to hear from you <a
+                                href="mailto:contact@site.com"><strong>contact@site.com</strong></a></p> -->
+                    </div>
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of footer -->
+    <!-- end of footer -->
+
+    <!-- Back To Top Button -->
+    <button onclick="topFunction()" id="myBtn">
+        <img src="{{url_for('static', filename='/bayesnet/images/up-arrow.png')}}" alt="alternative">
+    </button>
+    <!-- end of back to top button -->
+
+    <!-- Scripts -->
+    <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/js/purecounter.min.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/js/swiper.min.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/js/template_scripts.js')}}"></script>
     <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/js/notyf.min.js')}}"></script>
     <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/js/pdf.js')}}"></script>
     <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/js/pdf.worker.js')}}"></script>
     <script type="text/javascript" src="{{url_for('static', filename='/bayesnet/js/index.js')}}"></script>
-
 </body>
 
 </html>

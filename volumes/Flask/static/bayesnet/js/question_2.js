@@ -1,3 +1,5 @@
+var notyf = new Notyf();
+
 function myFunction() {
     // Declare variables
     var input, filter, ul, li, a, i;
@@ -129,7 +131,7 @@ $(document).ready(function () {
 
             if (indexx !== -1) {
                 sessionStorage.setItem('questionn', JSON.stringify($("#input_question").val()));
-                console.log("hiii"); // test
+                // console.log("hiii"); // test
                 self.location.href = '/main';
             } // if
             else {

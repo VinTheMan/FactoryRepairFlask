@@ -5,7 +5,7 @@ var div_graph = function (_selector) {
     var _div_list = _container.find("div");
     _div_list.addClass("div_graph-node");
     
-    var _container_width = _container.outerWidth();
+    var _container_width = _container.outerWidth() ;
     var _container_height = _container.outerHeight();
     
     var _g = new Graph();

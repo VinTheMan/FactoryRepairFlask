@@ -579,15 +579,15 @@ var _resize_container = function (_var_length) {
     } // if
     _container.css({
         //"border": "1px solid red",
-        "width": (_node_width_unit * _square) + "px",     // change the grah box here
-        "height": (_node_width_unit * _square) + "px",    // change the grah box here
+        "width": (_node_width_unit * _square + 300) + "px",     // change the grah box here
+        "height": (_node_width_unit * _square + 200 ) + "px",    // change the grah box here
         "border-width": 0
     });
 
     $("#preview_html_wrapper").css({
         //"border": "1px solid red",
-        "width": (_node_width_unit * _square) + "px",     // change the grah box here
-        "height": (_node_width_unit * _square) + "px",    // change the grah box here
+        "width": (_node_width_unit * _square + 300 ) + "px",     // change the grah box here
+        "height": (_node_width_unit * _square + 200 ) + "px",    // change the grah box here
         "border-width": 0
     });
 

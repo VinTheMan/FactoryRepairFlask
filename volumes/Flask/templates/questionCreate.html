@@ -52,16 +52,16 @@
 
             <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
                 <ul class="navbar-nav ms-auto navbar-nav-scroll">
-                    <li class="nav-item">
+                    <li class="nav-item text-center">
                         <a class="nav-link" aria-current="page" href="/">Home</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item text-center">
                         <a class="nav-link" href="/question">Issue Selection</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item text-center">
                         <a class="scrollToNewIssue nav-link" href="#">New Issue</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item text-center">
                         <a class="scrollToAddSolution nav-link" href="#">Add Solution</a>
                     </li>
                     <!--<li class="nav-item dropdown">
@@ -110,9 +110,11 @@
                 <h1 class="col col-auto m-0 p-0">Add Issue / Solution</h1>
                 <div class="col col-6">
                     <div class="button-container row justify-content-end align-items-center">
+                        <div class="w-100 d-block d-sm-block d-md-block d-lg-none" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
                         <button id="scrollToNewIssue" class="scrollToNewIssue btn-solid-lg page-scroll col col-auto me-5">
                             <strong>New Issue</strong>
                         </button>
+                        <div class="w-100 d-block d-sm-block d-md-block d-lg-none" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
                         <button id="scrollToAddSolution" class="scrollToAddSolution btn-solid-lg page-scroll col col-auto me-5">
                             <strong>Add Solution</strong>
                         </button>
@@ -203,14 +205,14 @@
 
     <!-- Project 2 -->
     <div class="form-1">
-        <div id="addSolDiv" class="container pt-5">
+        <div id="addSolDiv" class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <h2 class="h2-heading">Add solution to an issue</h2>
                     <p class="p-heading">
                         <i class="fas fa-exclamation" style="color: orange;"></i>
                         &nbsp;<span style="color: orange;">If you choose an existing
-                            solution of an issue, the files will bereplaced by your upload.</span>&nbsp;
+                            solution of an issue, the files will be replaced by your upload.</span>&nbsp;
                         <i class="fas fa-exclamation" style="color: orange;"></i>
                     </p>
                     <!-- <ul class="list-unstyled li-space-lg">
