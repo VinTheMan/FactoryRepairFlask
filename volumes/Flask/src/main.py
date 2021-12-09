@@ -223,7 +223,7 @@ def func_Insert_Record_MongoDocument():
         Solution[Action] = 1
     Solution['Solved'] = result['Solved']
     doc = {"Date":datetime.datetime.today().strftime("%Y-%m-%d"), "Factory":result['Factory'],"ErrorName":result['ErrorName'],"Solution": Solution}
-    g_test.insert(doc)
+    g_test.insert_one(doc)
     return jsonify(message="Inserted"),200
 
 @app.route("/ReturnXML", methods=['POST'])
@@ -250,13 +250,14 @@ def func_Return_XML_From_MongoDocument():
         f_Combinations.close()
         return jsonify(message = "This Action list is empty") ,420
     result_record = g_test.find({"ErrorName":query_condition2})
+    counting = g_test.count_documents({"ErrorName":query_condition2})
     Action_list = []
     tmp_dict = {}
     tmp_dict[query_condition1] = 0
     tmp_dict["Solved"] = 0
     for Action in Config_Action_list:
         tmp_dict[Action] = 0
-    if result_record.count() == 0 or result_record == None :
+    if counting == 0 or result_record == None :
         f_Combinations.write('ResultOfRecord = None\n')
         Action_list.append(tmp_dict)
     else:
@@ -390,7 +391,7 @@ def func_Return_XML_From_MongoDocument():
     P0 = First_Layer_P0_Count/RowsCount
     P1 = 1-P0
     # test record not exist
-    if result_record.count() == 0 or result_record == None:
+    if counting == 0 or result_record == None:
         P0 = 0
         P1 = 0
     First_Layer_Body += str(P0) + ' ' + str(P1) + '\n'

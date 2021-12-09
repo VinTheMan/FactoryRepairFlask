@@ -180,7 +180,7 @@ var _draw_result_table = function (_xml_text) {
         // console.log(Bayes.sample(10000)); // test
         for (var _name in _bayes_nodes) {
             var _probs = _display_prob_dis(_bayes_nodes[_name].sampledLw);
-            console.log(_bayes_nodes[_name].sampledLw + "__" + _probs); // test
+            // console.log(_bayes_nodes[_name].sampledLw + "__" + _probs); // test
             for (var _i = 0; _i < _probs.length; _i++) {
                 var _p = _probs[_i];
                 _container.find('div[node_id="' + _name + '"] li[value_index="' + _i + '"] .prob').text(_p);

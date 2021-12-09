@@ -94,8 +94,8 @@ function FindNextSol() {
                     pdf = './download/' + ErrorName + '_' + nodeNames[indexXL] + '.pdf';
                     var bayesnet_solution = $(".bayesnet-solution > table > tbody").empty();
                     bayesnet_solution.append('<tr>' +
-                        '<td class="w-50 align-items-center"><strong class="fs-1 col col-auto">' + nodeNames[indexXL] + '</strong></td>' +
-                        '<td class="w-50 align-items-center"><strong class="fs-1 col col-auto">' + '<a href="./download/' +
+                        '<td class="w-50 align-items-center"><strong class="fs-3 col col-auto">' + nodeNames[indexXL] + '</strong></td>' +
+                        '<td class="w-50 align-items-center"><strong class="fs-3 col col-auto">' + '<a href="./download/' +
                         ErrorName + '_' + nodeNames[indexXL] + '.pdf" target="_blank">Open PDF in new window <span class="fas fa-long-arrow-alt-right"></span></a>' +
                         '</strong></td>' +
                         '</tr>'
@@ -108,8 +108,8 @@ function FindNextSol() {
                     // ------------  embedded Video --------
                     var bayesnet_solution = $(".bayesnet-solution > table > tbody").empty();
                     bayesnet_solution.append('<tr>' +
-                        '<td class="w-50 align-items-center"><strong class="fs-1 col col-auto">' + nodeNames[indexXL] + '</strong></td>' +
-                        '<td class="w-50 align-items-center"><strong class="fs-1 col col-auto">' + '<a href="./download/' +
+                        '<td class="w-50 align-items-center"><strong class="fs-3 col col-auto">' + nodeNames[indexXL] + '</strong></td>' +
+                        '<td class="w-50 align-items-center"><strong class="fs-3 col col-auto">' + '<a href="./download/' +
                         ErrorName + '_' + nodeNames[indexXL] + '.mp4" target="_blank">Open MP4 in new window <span class="fas fa-long-arrow-alt-right"></span></a>' +
                         '</strong></td>' +
                         '</tr>'
@@ -160,8 +160,8 @@ function FindNextSol() {
                 else { // NO FILES FOUND!
                     var bayesnet_solution = $(".bayesnet-solution > table > tbody").empty();
                     bayesnet_solution.append('<tr>' +
-                        '<td class="w-50 align-items-center"><strong class="fs-1 col col-auto">' + nodeNames[indexXL] + '</strong></td>' +
-                        '<td class="w-50 align-items-center"><strong class="fs-1 col col-auto">' + 'No Solution Files Found!' + '</strong></td>' +
+                        '<td class="w-50 align-items-center"><strong class="fs-3 col col-auto">' + nodeNames[indexXL] + '</strong></td>' +
+                        '<td class="w-50 align-items-center"><strong class="fs-3 col col-auto">' + 'No Solution Files Found!' + '</strong></td>' +
                         '</tr>'
                     );
                 } // else
@@ -498,6 +498,15 @@ $(document).ready(function () {
         $('html, body').animate({ scrollTop: $('#SolutionDiv').offset().top - 50 }, 'fast');
     });
 
+    var VideoDiv = document.getElementById('VideoDiv')
+    VideoDiv.addEventListener('hidden.bs.collapse', function () {
+        $("#toggleVideo").text("Show Video");
+    });
+
+    VideoDiv.addEventListener('shown.bs.collapse', function () {
+        $("#toggleVideo").text("Close Video");
+    });
+
     (function () {
         'use strict'
 
@@ -629,13 +638,13 @@ $(document).ready(function () {
             showPage(++_CURRENT_PAGE);
     });
     document.querySelector("#show-pdf-button").addEventListener('click', function () {
-        this.style.display = 'none';
-        document.querySelector("#close-pdf-button").style.display = 'block';
+        $(this).hide();
+        $("#close-pdf-button").show();
         showPDF(pdf);
     });
     document.querySelector("#close-pdf-button").addEventListener('click', function () {
-        this.style.display = 'none';
-        document.querySelector("#show-pdf-button").style.display = 'block';
+        $(this).hide();
+        $("#show-pdf-button").show();
         closePDF();
     });
 }); // on document ready

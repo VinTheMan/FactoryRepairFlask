@@ -28,4 +28,4 @@ RUN apt-get update && apt-get install -qq -y \
 ENV FLASK_DEBUG=1
 # Run app.py when the container launches
 #CMD ["python", "app.py"]
-CMD ["gunicorn", "-w", "1", "-b", "0.0.0.0:5001", "main:app"]
+CMD ["gunicorn", "--timeout", "80000", "-w", "1", "-b", "0.0.0.0:5001", "main:app"]

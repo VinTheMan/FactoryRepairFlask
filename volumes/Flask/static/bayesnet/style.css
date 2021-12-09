@@ -328,18 +328,6 @@ body {
     padding: 5px;
 }
 
-#show-pdf-button {
-	width: 130px;
-	display: block;
-	margin: 20px auto;
-}
-
-#close-pdf-button {
-	width: 130px;
-	display: none;
-	margin: 20px auto;
-}
-
 #file-to-upload {
 	display: none;
 }

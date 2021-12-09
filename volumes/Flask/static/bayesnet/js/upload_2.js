@@ -78,6 +78,18 @@ $(document).ready(function () {
         e.preventDefault();
     });
 
+    $("#BacktoQuestionSel").on("click", function (e) {
+        e.preventDefault();
+        // console.log("clicked !") ; // test
+        window.location.href = "/question#IssueDiv";
+    });
+
+    $(".scrollToResult").on("click", function (e) {
+        e.preventDefault();
+        // console.log("clicked !") ; // test
+        $('html, body').animate({ scrollTop: $('#ResultDiv').offset().top - 50 }, 'fast');
+    });
+
 }); // on document ready
 
 $(window).on('load', function () {

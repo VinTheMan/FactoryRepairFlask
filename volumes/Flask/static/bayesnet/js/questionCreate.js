@@ -242,7 +242,7 @@ $(document).ready(function () {
                     animation: 'circle'
                 });
 
-                console.log("test loading modal trigger");
+                // console.log("test loading modal trigger"); // test
 
                 var formData = new FormData();
                 $('.uploadfile').each(function (i, obj) {
